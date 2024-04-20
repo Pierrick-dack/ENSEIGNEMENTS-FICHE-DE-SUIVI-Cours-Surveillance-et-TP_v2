@@ -1,2 +1,2 @@
-# ENSEIGNEMENTS-FICHE-DE-SUIVI-Cours-Surveillance-et-TP_v2
-Projet de soutenance version 2
+# ENSEIGNEMENTS-FICHE-DE-SUIVI-Cours-Surveillance-et-TP
+Projet de soutenance
