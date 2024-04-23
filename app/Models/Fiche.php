@@ -16,6 +16,7 @@ class Fiche extends Model
         'salle',
         'typeSeance',
         'titreSeance',
+        'niveau',
         'contenu',
         'confidentialite',
     ];

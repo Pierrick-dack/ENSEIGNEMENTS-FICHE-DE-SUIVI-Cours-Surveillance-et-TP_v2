@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Fiche;
 use App\Models\Cours;
 use App\Models\Enseignant;
+use App\Models\Niveaux;
 use Illuminate\Http\Request;
-use App\Models\Administrateur;
+// use App\Models\Administrateur;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Notification;
 use App\Notifications\NouvelleFicheCoursNotification;
 
 
@@ -25,6 +27,7 @@ class ficheController extends Controller {
             'salle' => 'required',
             'typeSeance' => 'required',
             'titreSeance' => 'required',
+            'niveau' => 'required',
             'contenu' => 'required',
             'confidentialite' => 'accepted',
         ]);
@@ -42,6 +45,7 @@ class ficheController extends Controller {
         $fiche->salle = $request->input('salle');
         $fiche->typeSeance = $request->input('typeSeance');
         $fiche->titreSeance = $request->input('titreSeance');
+        $fiche->niveau = $request->input('niveau');
         $fiche->contenu = $request->input('contenu');
         $fiche->confidentialite = true;
 
@@ -55,18 +59,6 @@ class ficheController extends Controller {
 
         $fiche->save();
         toastr()->success("Sauvegarde Réussie !");
-
-        //$chefId = auth()->user()->id;
-        $chefId = 1;
-
-        // Déclenchez la notification
-        $chef = Enseignant::find($chefId);
-
-        // Vérifiez si l'administrateur a été trouvé
-        if ($chef) {
-            $chef->notify(new NouvelleFicheCoursNotification());
-        }
-
         return redirect()->route('analytics');
 
     }
@@ -74,8 +66,9 @@ class ficheController extends Controller {
     public function showForm() {
         $enseignants = Enseignant::all();
         $cours = Cours::all();
+        $niveaux = Niveaux::all();
 
-        return view('delegue.fiche' , compact('enseignants', 'cours'));
+        return view('delegue.fiche', compact('enseignants', 'cours', 'niveaux'));
     }
 
 }

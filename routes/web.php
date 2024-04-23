@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Http\Controllers\EnseignantController;
+use App\Http\Controllers\TableL3Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FicheController;
 use App\Http\Controllers\OrderController;
@@ -53,11 +55,6 @@ Route::get('/dashboard', function () {
     return view('chef.index');
 })->name('Dashboard_chef');
 
-// Routes pour le professeur
-Route::get('/dashboardprof', function () {
-    return view('enseignant.index');
-})->name('Dashboard_prof');
-
 
 
 
@@ -69,7 +66,6 @@ Route::post('/administrateur/logout', [AuthAdministrateurController::class, 'log
 
 // comptes des identifiants
 Route::get('/administrateur/registration', [DashboardProfController::class, 'counterRegister'])->name('counter.register');
-
 
 // Routes pour les actions sur la fiche de suivi
 Route::get('/afficher-formulaire-fiche', [FicheController::class, 'showForm'])->name('afficher-formulaire-fiche');
@@ -86,6 +82,7 @@ Route::get('/analytics', [AnalyticsController::class, 'index'])->name('analytics
 Route::get('/delegues', [TableDelController::class, 'main'])->name('delegues.main');
 Route::get('/professeurs', [TableProfController::class, 'main'])->name('professeurs.main');
 
+
 // Route pour supprimer les délégués et professeurs
 Route::delete('/delegues/{delegue}', [TableDelController::class, 'destroy'])->name('delegues.destroy');
 Route::delete('/professeurs/{professeur}', [TableProfController::class, 'destroy'])->name('enseignants.destroy');
@@ -97,3 +94,9 @@ Route::post('/enregistrer-delegue', [AuthDelegueController::class, 'store'])->na
 // Routes pour les actions de modifications des informations des délégués et professeurs
 Route::put('/delegues/{id}', [AuthDelegueController::class, 'update'])->name('delegues.update');
 Route::put('/enseignants/{id}', [AuthEnseignantController::class, 'updateProf'])->name('enseignant.update');
+
+// Routes d'accès aux pages
+Route::get('/dashboardprof', [EnseignantController::class, 'index'])->name('Dashboard_prof');
+
+// Routes d'accès aux fiches par le chef
+Route::get('/fiches_L3', [TableL3Controller::class, 'mainl3'])->name('fichesl3');

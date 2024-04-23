@@ -22,6 +22,7 @@
                 <div class="navbar-bg"></div>
 
                 @include('partials._prof_navbar')
+                @yield('contenu')
                 @include('partials._prof_sidebar')
 
                 <!-- Main Content -->

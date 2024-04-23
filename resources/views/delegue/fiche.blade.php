@@ -33,6 +33,15 @@
                     <label for="titreSeance">Titre de la séance</label>
                     <input type="text" id="titreSeance" name="titreSeance" required>
                 </div>
+                <div class="form-group">
+                    <label for="niveau">Niveau</label>
+                    <select id="niveau" name="niveau" class="form-control" required>
+                        <option value="">Sélectionnez un niveau</option>
+                        @foreach($niveaux as $niveau)
+                            <option value="{{ $niveau->id }}">{{ $niveau->codeNiveau }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
@@ -339,6 +348,7 @@
                 // Ajouter les informations du formulaire au document PDF
                 var formData = [
                     { label: "Semestre", value: document.getElementById('semestre').value },
+                    { label: "Niveau", value: document.getElementById('niveau').options[document.getElementById('niveau').selectedIndex].text },
                     { label: "Date", value: document.getElementById('date').value },
                     { label: "Code du cours", value: document.getElementById('codeCours').options[document.getElementById('codeCours').selectedIndex].text },
                     { label: "Heure de début", value: document.getElementById('heureDebut').value },

@@ -20,6 +20,7 @@ class CreateFichesTable extends Migration
             $table->string('salle');
             $table->string('typeSeance');
             $table->string('titreSeance');
+            $table->text('niveau');
             $table->text('contenu');
             $table->text('signatureDelegue')->nullable();
             $table->text('signatureProf')->nullable();

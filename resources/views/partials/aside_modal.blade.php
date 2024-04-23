@@ -167,7 +167,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href=" {{ route('professeurs.main') }} " class="nav-link">
+                                    <a href="{{ route('fichesl3') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiche de cours</p>
                                     </a>

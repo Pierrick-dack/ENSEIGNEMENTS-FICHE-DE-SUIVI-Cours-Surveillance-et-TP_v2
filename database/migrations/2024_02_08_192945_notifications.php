@@ -15,9 +15,8 @@ return new class extends Migration
             $table->string('id')->primary();
             $table->string('type');
             $table->string('data');
-            $table->string('read_at');
-            $table->string('notifiable_id');
-            $table->string('notifiable_type');
+            $table->string('read_at')->nullable();
+            $table->string('notifiable');
             $table->timestamps();
         });
     }
