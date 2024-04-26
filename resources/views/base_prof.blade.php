@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-        <title>ICT FOLLOW UP - Accueil</title>
+        <title>@yield('title')</title>
         <!-- General CSS Files -->
         <link rel="stylesheet" href="{{ asset('assets/css/app.min.css') }}">
         <!-- Template CSS -->
@@ -148,5 +148,22 @@
         <script src="{{ asset('assets/js/scripts.js') }}"></script>
         <!-- Custom JS File -->
         <script src="{{ asset('assets/js/custom.js') }}"></script>
+        <script src="{{ asset('assets/js/page/form-wizard.js') }}"></script>
+        <script src="{{ asset('assets/bundles/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+        <!-- JS Libraies -->
+        <script src="{{ asset('assets/bundles/jquery-steps/jquery.steps.min.js') }}"></script>
+        {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+        <!-- JS for data table grid -->
+        <script src="{{ asset('assets/bundles/datatables/datatables.min.js') }}"></script>
+        <script src="{{ asset('assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}"></script>
+        <script src="{{ asset('assets/bundles/datatables/export-tables/dataTables.buttons.min.js') }}"></script>
+        <script src="{{ asset('assets/bundles/datatables/export-tables/buttons.flash.min.js') }}"></script>
+        <script src="{{ asset('assets/bundles/datatables/export-tables/jszip.min.js') }}"></script>
+        <script src="{{ asset('assets/bundles/datatables/export-tables/pdfmake.min.js') }}"></script>
+        <script src="{{ asset('assets/bundles/datatables/export-tables/vfs_fonts.js') }}"></script>
+        <script src="{{ asset('assets/bundles/datatables/export-tables/buttons.print.min.js') }}"></script>
+        <script src="{{ asset('assets/js/page/datatables.js') }}"></script>
+
     </body>
 </html>

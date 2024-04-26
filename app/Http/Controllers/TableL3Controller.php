@@ -26,10 +26,10 @@ class TableL3Controller extends Controller
         $fichesl3 = Fiche::find($id);
 
         if (!$fichesl3) {
-            return redirect()->route('fichesl3.main')->with('error', 'Délégué non trouvé.');
+            return redirect()->route('fichescoursl3')->with('error', 'Délégué non trouvé.');
         }
         $fichesl3->delete();
 
-        return redirect()->route('fichesl3.main')->with('success', 'La fiche a été supprimée avec succès.');
+        return redirect()->route('fichescoursl3')->with('success', 'La fiche a été supprimée avec succès.');
     }
 }

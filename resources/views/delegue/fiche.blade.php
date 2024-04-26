@@ -72,7 +72,7 @@
                     <select id="codeCours" name="codeCours" class="form-control" required>
                         <option value="">Sélectionnez un cours</option>
                         @foreach($cours as $cour)
-                            <option value="{{ $cour->id }}">{{ $cour->codeUE }}</option>
+                            <option value="{{ $cour->codeUE }}">{{ $cour->codeUE }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -82,7 +82,7 @@
                     <select id="enseignant" name="enseignant" class="form-control" required>
                         <option value="">Sélectionnez un enseignant</option>
                         @foreach($enseignants as $enseignant)
-                            <option value="{{ $enseignant->id }}">{{ $enseignant->nomEns }}</option>
+                            <option value="{{ $enseignant->nomEns }}">{{ $enseignant->nomEns }}</option>
                         @endforeach
                     </select>
                 </div>

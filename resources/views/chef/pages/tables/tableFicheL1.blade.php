@@ -1,5 +1,5 @@
 @extends('base_chef')
-@section('title', 'FOLLOW UP | Listes des fiches du niveau 3')
+@section('title', 'FOLLOW UP | Listes des fiches du niveau 1')
 
 
 
@@ -28,7 +28,7 @@
             <section class="content">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Licence 3</h3>
+                        <h3 class="card-title">Licence 1</h3>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
@@ -41,12 +41,12 @@
                                             <th scope="col">Date & Heure</th>
                                             <th scope="col">Titre de la séance</th>
                                             <th scope="col">Salle</th>
-                                            <th scope="col">Modifier</th>
+                                            <th scope="col">Afficher</th>
                                             <th scope="col">Supprimer</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($fichesl3 as $fiche)
+                                        @forelse ($fichesl1 as $fiche)
                                             <tr>
                                                 <td>{{ $fiche->id }}</td>
                                                 <td>{{ $fiche->created_at }}</td>
@@ -54,11 +54,11 @@
                                                 <td>{{ $fiche->salle }}</td>
                                                 <td>
                                                     <a href="#" class="btn btn-primary edit-btn"  data-id="{{ $fiche->id }}">
-                                                        Modifier
+                                                        Afficher
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <form action="{{ route('destroy.fichescoursl3', $fiche->id) }}" method="POST">
+                                                    <form action="{{ route('destroy.fichescoursl1', $fiche->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Supprimer</button>

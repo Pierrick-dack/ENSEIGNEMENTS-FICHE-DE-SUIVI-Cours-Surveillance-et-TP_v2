@@ -29,7 +29,7 @@
                 <a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle">
                     <i data-feather="mail"></i>
                     <span class="badge headerBadge1">
-                        
+
                     </span>
                 </a>
                 <div class="dropdown-menu dropdown-list dropdown-menu-right pullDown">
@@ -84,7 +84,7 @@
                         Settings
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="auth-login.html" class="dropdown-item has-icon text-danger">
+                    <a href="#" class="dropdown-item has-icon text-danger">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </a>

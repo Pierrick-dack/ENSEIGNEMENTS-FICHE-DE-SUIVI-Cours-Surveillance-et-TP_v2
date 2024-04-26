@@ -109,7 +109,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href=" {{ route('professeurs.main') }} " class="nav-link">
+                                    <a href=" {{ route('fichescoursl1') }} " class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiches de cours</p>
                                     </a>
@@ -138,7 +138,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href=" {{ route('professeurs.main') }} " class="nav-link">
+                                    <a href=" {{ route('fichescoursl2') }} " class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiches de cours</p>
                                     </a>
@@ -167,7 +167,7 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="{{ route('fichesl3') }}" class="nav-link">
+                                    <a href="{{ route('fichescoursl3') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiche de cours</p>
                                     </a>
