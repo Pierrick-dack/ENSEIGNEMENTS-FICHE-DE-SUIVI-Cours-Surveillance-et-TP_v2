@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Controllers\CreerFicheController;
 use App\Http\Controllers\EnseignantController;
 use App\Http\Controllers\FicheSurveillanceController;
 use App\Http\Controllers\TableL3Controller;
@@ -78,7 +79,7 @@ Route::delete('/fiches/{fiche}', [AnalyticsController::class, 'destroy'])->name(
 
 // Routes pour les actions sur la fiche de surveillance
 Route::post('/enregistrer_fiches_surveillance', [FicheSurveillanceController::class, 'store'])->name('creer_fiches_surveillance');
-
+Route::get('/creer_fiche', [CreerFicheController::class, 'PageCreerFiche'])->name('PageCreerFiche');
 
 // Routes du MenuList
 Route::get('/order', [OrderController::class, 'index'])->name('order');
@@ -114,5 +115,4 @@ Route::get('/fiches_cours_licence_1', [TableL1Controller::class, 'mainl1'])->nam
 // Suppression
 Route::get('/fiches_cours_licence_3/{fichel3}', [TableL3Controller::class, 'destroy'])->name('destroy.fichescoursl3');
 Route::get('/fiches_cours_licence_2/{fichel2}', [TableL2Controller::class, 'destroy'])->name('destroy.fichescoursl2');
-
 Route::get('/fiches_cours_licence_1/{fichel1}', [TableL1Controller::class, 'destroy'])->name('destroy.fichescoursl1');

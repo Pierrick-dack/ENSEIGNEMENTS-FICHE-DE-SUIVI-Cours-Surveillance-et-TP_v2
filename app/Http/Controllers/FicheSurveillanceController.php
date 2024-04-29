@@ -36,13 +36,5 @@ class FicheSurveillanceController extends Controller
         return redirect()->route('VoirFicheSurvey')->with('success', 'Fiche de surveillance créée avec succès');
     }
 
-    public function index()
-    {
-        // Récupération des fiches de surveillance avec les surveillants associés
-        $fiches = FicheSurveillance::with('surveillants')->get();
-
-        // Passer les données à la vue
-        return view('votre_vue', compact('fiches'));
-    }
 
 }
