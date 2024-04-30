@@ -107,6 +107,7 @@ Route::put('/enseignants/{id}', [AuthEnseignantController::class, 'updateProf'])
 // Routes d'accès aux pages
 Route::get('/dashboardprof', [EnseignantController::class, 'index'])->name('Dashboard_prof');
 Route::get('/listesfichesurveillance', [VoirFicheController::class, 'voirFicheSurvey'])->name('VoirFicheSurvey');
+Route::delete('/fiche_surveillance{ficheSurveillance}', [FicheSurveillanceController::class,'destroy'])->name('DeleteFicheSurveillance');
 
 // Routes d'accès aux fiches par le chef
 Route::get('/fiches_cours_licence_3', [TableL3Controller::class, 'mainl3'])->name('fichescoursl3');

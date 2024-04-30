@@ -43,7 +43,7 @@
                                                 <a href="" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></a>
                                             </td>
                                             <td>
-                                                <form action="" method="POST" style="display: inline;">
+                                                <form action="{{ route('DeleteFicheSurveillance', $fiche->id) }}" method="POST" style="display: inline;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm">

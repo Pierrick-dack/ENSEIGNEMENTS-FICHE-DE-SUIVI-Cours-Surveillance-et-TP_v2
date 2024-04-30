@@ -11,14 +11,15 @@
                             <div class="row ">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pr-0 pt-3">
                                     <div class="card-content">
-                                        <h5 class="font-15">New Booking</h5>
+                                        <h5 class="font-15">Fiches</h5>
                                         <h2 class="mb-3 font-18">...</h2>
                                         <p class="mb-0"><span class="col-green">...</span> ...</p>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 pl-0">
                                     <div class="banner-img">
-                                        <img src="{{ asset('assets/img/banner/1.png') }}" alt="">
+                                        <br>
+                                        <img src="{{ asset('asset/attached.svg') }}" alt="">
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +170,10 @@
                             <h3>Etape 2</h3>
                             <fieldset>
                                 <div class="form-group form-float">
-                                    <a href="#" id="add-input" class="btn btn-icon icon-left btn-primary"><i class="far fa-edit"></i> Ajouter</a>
+                                    <a href="#" id="add-input" class="btn btn-icon icon-left btn-primary">
+                                        <i class="far fa-edit"></i>
+                                        Ajouter
+                                    </a>
                                     <div class="input-fields">
                                         <div class="form-line">
                                             <label class="form-label">Noms et prénoms*</label>
@@ -183,7 +187,7 @@
                             <h3>Signature</h3>
                             <fieldset style="display: block;">
                                 <input id="presence_confirmee" name="presence_confirmee" type="checkbox" required>
-                                <label for="presence_confirmee">Je confirme la présence de tous les surveillants.</label><br> <!-- Ajout de <br> pour un retour à la ligne -->
+                                <label for="presence_confirmee">Je confirme la présence de tous les surveillants.</label><br>
 
                                 <div id="signature-container" style="margin-top: 20px; position: relative;">
                                     <label for="signature-pad">Signature du chef de salle:</label><br>

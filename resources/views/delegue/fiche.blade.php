@@ -157,7 +157,7 @@
     </div>
 
     <footer class="my-5 pt-5 text-muted text-center text-small">
-        <p class="mb-1">&copy; 2022–2023 ICT4D</p>
+        <p class="mb-1">&copy; 2023–2024 ICT4D</p>
     </footer>
 
     <script>

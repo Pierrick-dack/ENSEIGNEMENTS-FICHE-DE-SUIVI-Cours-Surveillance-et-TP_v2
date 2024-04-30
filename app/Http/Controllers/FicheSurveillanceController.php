@@ -36,5 +36,18 @@ class FicheSurveillanceController extends Controller
         return redirect()->route('VoirFicheSurvey')->with('success', 'Fiche de surveillance créée avec succès');
     }
 
+    public function destroy($id)
+    {
+
+        $fichesSurveillance = FicheSurveillance::find($id);
+
+        if (!$fichesSurveillance) {
+            return redirect()->route('VoirFicheSurvey')->with('error', 'Fiche non trouvée.');
+        }
+        $fichesSurveillance->delete();
+
+        return redirect()->route('VoirFicheSurvey')->with('success', 'La fiche a été supprimée avec succès.');
+    }
+
 
 }
