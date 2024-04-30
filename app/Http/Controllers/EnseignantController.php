@@ -17,4 +17,12 @@ class EnseignantController extends Controller
         // Récupérez toutes les fiches depuis la base de données
         return Cours::all();
     }
+
+    public function logout(Request $request) {
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        toastr()->success('Déconnexion réussie !');
+        return redirect()->route('welcome');
+    }
 }

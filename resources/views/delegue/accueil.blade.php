@@ -46,8 +46,8 @@
 
         <!-- Deuxième section - Fiche de surveillance -->
         <section>
-            <h2>Fiche de surveillance</h2>
-            <p>Cette fiche est utilisée pour consigner les informations liées à la surveillance d'examens ou de sessions de travail.</p>
+            <h2>Fiche de travaux pratiques</h2>
+            <p>Cette fiche est utilisée pour consigner les informations liées à un travail pratique.</p>
             <div class="card-container">
                 <div class="card new-card">
                     <div class="fiche-icon">
@@ -58,21 +58,6 @@
                 </div>
             </div>
         </section>
-{{--
-        <!-- Troisième section - Fiches de Travaux Pratiques -->
-        <section>
-            <h2>Fiches de Travaux Pratiques</h2>
-            <p>Ces fiches sont conçues pour enregistrer les détails des travaux pratiques réalisés en laboratoire ou en salle spécialisée.</p>
-            <div class="card-container">
-                <div class="card new-card">
-                    <div class="fiche-icon">
-                        <!-- Utilisation de l'icône "+" de Font Awesome -->
-                        <i class="fas fa-plus"></i>
-                    </div>
-                    <p>Ajouter une nouvelle fiche</p>
-                </div>
-            </div>
-        </section> --}}
     </div>
 
     <script>

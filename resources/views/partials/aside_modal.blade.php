@@ -115,13 +115,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href=" {{ route('delegues.main') }} " class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiches de surveillance</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href=" {{ route('delegues.main') }} " class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiche des TP</p>
                                     </a>
@@ -144,13 +144,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href=" {{ route('delegues.main') }} " class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiche de surveillances</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href=" {{ route('delegues.main') }} " class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiche des TP</p>
                                     </a>
@@ -173,13 +173,13 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href=" {{ route('delegues.main') }} " class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiche de surveillance</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href=" {{ route('delegues.main') }} " class="nav-link">
+                                    <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiche des TP</p>
                                     </a>

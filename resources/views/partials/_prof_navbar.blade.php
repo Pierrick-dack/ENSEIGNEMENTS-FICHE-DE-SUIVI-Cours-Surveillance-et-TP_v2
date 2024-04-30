@@ -84,10 +84,14 @@
                         Settings
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item has-icon text-danger">
+                    <a href="#" class="dropdown-item has-icon text-danger" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         <i class="fas fa-sign-out-alt"></i>
                         Logout
                     </a>
+                    <form id="logout-form" action="{{ route('enseignant.logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+
                 </div>
             </li>
         </ul>
