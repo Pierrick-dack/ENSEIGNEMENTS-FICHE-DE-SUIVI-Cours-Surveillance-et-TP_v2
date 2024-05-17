@@ -39,7 +39,6 @@
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
-
                 </li>
 
                 <li class="nav-item">
@@ -114,18 +113,6 @@
                                         <p>Fiches de cours</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fiches de surveillance</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fiche des TP</p>
-                                    </a>
-                                </li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -141,18 +128,6 @@
                                     <a href=" {{ route('fichescoursl2') }} " class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Fiches de cours</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fiche de surveillances</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fiche des TP</p>
                                     </a>
                                 </li>
                             </ul>
@@ -172,21 +147,22 @@
                                         <p>Fiche de cours</p>
                                     </a>
                                 </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fiche de surveillance</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fiche des TP</p>
-                                    </a>
-                                </li>
                             </ul>
                         </li>
+
                     </ul>
+                    <li class="nav-item">
+                        <a href="{{ route('fiches_surveillances') }}" class="nav-link">
+                            <i class="fas fa-chevron-right mr-2"></i>
+                            <p>Fiches de surveillances</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('fiches_travaux_pratiques') }}" class="nav-link">
+                            <i class="fas fa-chevron-right mr-2"></i>
+                            <p>Fiches de travaux pratiques</p>
+                        </a>
+                    </li>
                 </li>
             </ul>
         </nav>

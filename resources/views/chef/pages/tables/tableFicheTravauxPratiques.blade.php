@@ -1,5 +1,5 @@
 @extends('base_chef')
-@section('title', 'FOLLOW UP | Listes des fiches du niveau 3')
+@section('title', 'FOLLOW UP | Listes des fiches du niveau 1')
 
 
 
@@ -12,7 +12,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Fiches de cours</h1>
+                            <h1>Fiches de travaux pratiques</h1>
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
@@ -27,9 +27,6 @@
             <!-- Main content -->
             <section class="content">
                 <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Licence 3</h3>
-                    </div>
                     <!-- /.card-header -->
                     <div class="card-body">
                         <div id="jsGrid1">
@@ -37,23 +34,29 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">N°</th>
-                                            <th scope="col">Date & Heure</th>
+                                            <th >N°</th>
                                             <th scope="col">Titre de la séance</th>
                                             <th scope="col">Salle</th>
+                                            <th scope="col">Objectifs</th>
+                                            <th scope="col">Observations</th>
+                                            <th scope="col">Heure de début</th>
+                                            <th scope="col">Heure de fin</th>
                                             <th scope="col">Supprimer</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($fichesl3 as $fiche)
+                                        @forelse ($fichesTP as $fiche)
                                             <tr>
                                                 <td>{{ $fiche->id }}</td>
-                                                <td>{{ $fiche->created_at }}</td>
-                                                <td>{{ $fiche->titreSeance }}</td>
-                                                <td>{{ $fiche->salle }}</td>
+                                                <td>{{ $fiche->titreSeanceTP }}</td>
+                                                <td>{{ $fiche->codeCours }}</td>
+                                                <td>{{ $fiche->objectifsTP }}</td>
+                                                <td>{{ $fiche->observations }}</td>
+                                                <td>{{ $fiche->heureDebut }}</td>
+                                                <td>{{ $fiche->heureFin }}</td>
 
                                                 <td>
-                                                    <form action="{{ route('destroy.fichescoursl3', $fiche->id) }}" method="POST">
+                                                    <form action="{{ route('destroy.fichescoursl1', $fiche->id) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-danger">Supprimer</button>

@@ -41,7 +41,6 @@
                                             <th scope="col">Date & Heure</th>
                                             <th scope="col">Titre de la séance</th>
                                             <th scope="col">Salle</th>
-                                            <th scope="col">Afficher</th>
                                             <th scope="col">Supprimer</th>
                                         </tr>
                                     </thead>
@@ -52,11 +51,7 @@
                                                 <td>{{ $fiche->created_at }}</td>
                                                 <td>{{ $fiche->titreSeance }}</td>
                                                 <td>{{ $fiche->salle }}</td>
-                                                <td>
-                                                    <a href="#" class="btn btn-primary edit-btn"  data-id="{{ $fiche->id }}">
-                                                        Afficher
-                                                    </a>
-                                                </td>
+                                                
                                                 <td>
                                                     <form action="{{ route('destroy.fichescoursl1', $fiche->id) }}" method="POST">
                                                         @csrf

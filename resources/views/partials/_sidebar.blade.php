@@ -20,7 +20,7 @@
                     <div class="text">Tableau Fiches</div>
                 </a>
             </li>
-            <li style="--bg:#b145e9;" class="{{ request()->routeIs('order') ? 'active' : '' }}">
+            {{-- <li style="--bg:#b145e9;" class="{{ request()->routeIs('order') ? 'active' : '' }}">
                 <a href="{{ route('order') }}">
                     <div class="icon"><i class="fa-solid fa-cart-shopping"></i></div>
                     <div class="text">Corbeille</div>
@@ -31,7 +31,7 @@
                     <div class="icon"><i class="fa-solid fa-gear"></i></div>
                     <div class="text">Paramètres</div>
                 </a>
-            </li>
+            </li> --}}
         </div>
 
         <div class="bottom">

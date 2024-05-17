@@ -135,4 +135,42 @@ function enregistrerFicheSurveillance() {
 }
 
 
+$(document).ready(function() {
+    $('.edit-btn').click(function() {
+        var ficheId = $(this).data('fiche-id');
+
+        // AJAX request
+        $.ajax({
+            url: '{{ url("/fiches-surveillance/") }}/' + ficheId,
+            type: 'GET',
+            success: function(response) {
+                fillModalForm(response);
+                $('#editFicheModal').modal('show');
+            },
+            error: function(xhr) {
+                console.error("Erreur lors de la récupération des données de la fiche.");
+            }
+        });
+    });
+
+    function fillModalForm(fiche) {
+        $('#chefdesalle').val(fiche.chefdesalle);
+        $('#salle').val(fiche.salle);
+        $('#date').val(fiche.date);
+        $('#session').val(fiche.session);
+        $('#codeCours').val(fiche.codeCours);
+        $('#intituleUE').val(fiche.intituleUE);
+
+        // Gérer les surveillants si nécessaire
+        var surveillantsHTML = '';
+        fiche.surveillants.forEach(function(surveillant) {
+            surveillantsHTML += '<input type="text" name="name[]" class="form-control" required value="' + surveillant.nom + '">';
+        });
+        $('.input-fields').html(surveillantsHTML);
+    }
+});
+
+
+
+
 

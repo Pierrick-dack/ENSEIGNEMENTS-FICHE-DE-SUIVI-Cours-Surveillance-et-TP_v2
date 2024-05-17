@@ -1,7 +1,8 @@
 <?php
 
 
-use App\Http\Controllers\CreerFicheController;
+use App\Http\Controllers\TableFichesSurveillancesController;
+use App\Http\Controllers\TableFichesTravauxPratiquesController;
 use App\Http\Controllers\EnseignantController;
 use App\Http\Controllers\FicheSurveillanceController;
 use App\Http\Controllers\TableL3Controller;
@@ -76,10 +77,21 @@ Route::get('/administrateur/registration', [DashboardProfController::class, 'cou
 Route::get('/afficher-formulaire-fiche', [FicheController::class, 'showForm'])->name('afficher-formulaire-fiche');
 Route::post('/enregistrer-fiche', [FicheController::class, 'enregistrerFiche'])->name('enregistrer-fiche');
 Route::delete('/fiches/{fiche}', [AnalyticsController::class, 'destroy'])->name('fiche.destroy');
+Route::get('/Créer-fiche-travaux-pratiques', [FicheController::class, 'showFicheTP'])->name('Créer-fiche-travaux-pratiques');
+Route::post('/enregistrer-fiche-tp', [FicheController::class, 'enregistrerFicheTP'])->name('enregistrer-fiche-tp');
+Route::delete('/fichesTp/{fiche}', [AnalyticsController::class, 'destroyFicheTP'])->name('fiche-tp.destroy');
 
 // Routes pour les actions sur la fiche de surveillance
 Route::post('/enregistrer_fiches_surveillance', [FicheSurveillanceController::class, 'store'])->name('creer_fiches_surveillance');
-Route::get('/creer_fiche', [CreerFicheController::class, 'PageCreerFiche'])->name('PageCreerFiche');
+Route::get('/dashboardprof', [EnseignantController::class, 'index'])->name('Dashboard_prof');
+Route::get('/listesfichesurveillance', [VoirFicheController::class, 'voirFicheSurvey'])->name('VoirFicheSurvey');
+Route::delete('/fiche_surveillance{ficheSurveillance}', [FicheSurveillanceController::class,'destroy'])->name('DeleteFicheSurveillance');
+Route::post('/logout_professeur', [EnseignantController::class, 'logout'])->name('enseignant.logout');
+Route::get('/fiches-surveillance/{id}', [FicheSurveillanceController::class, 'getFiche'])->name('get_fiche_surveillance');
+Route::post('/fiches-surveillance/{id}', [FicheSurveillanceController::class, 'update'])->name('update_fiche_surveillance');
+
+
+// Route::get('/creer_fiche', [CreerFicheController::class, 'PageCreerFiche'])->name('PageCreerFiche');
 
 // Routes du MenuList
 Route::get('/order', [OrderController::class, 'index'])->name('order');
@@ -104,13 +116,9 @@ Route::post('/enregistrer-delegue', [AuthDelegueController::class, 'store'])->na
 Route::put('/delegues/{id}', [AuthDelegueController::class, 'update'])->name('delegues.update');
 Route::put('/enseignants/{id}', [AuthEnseignantController::class, 'updateProf'])->name('enseignant.update');
 
-// Routes d'accès aux pages
-Route::get('/dashboardprof', [EnseignantController::class, 'index'])->name('Dashboard_prof');
-Route::get('/listesfichesurveillance', [VoirFicheController::class, 'voirFicheSurvey'])->name('VoirFicheSurvey');
-Route::delete('/fiche_surveillance{ficheSurveillance}', [FicheSurveillanceController::class,'destroy'])->name('DeleteFicheSurveillance');
-Route::post('/logout_professeur', [EnseignantController::class, 'logout'])->name('enseignant.logout');
-
 // Routes d'accès aux fiches par le chef
+Route::get('/fiches_surveillances', [TableFichesSurveillancesController::class, 'mainFichesSurveillances'])->name('fiches_surveillances');
+Route::get('/fiches_travaux_pratiques', [TableFichesTravauxPratiquesController::class, 'mainFichesTravauxPratiques'])->name('fiches_travaux_pratiques');
 Route::get('/fiches_cours_licence_3', [TableL3Controller::class, 'mainl3'])->name('fichescoursl3');
 Route::get('/fiches_cours_licence_2', [TableL2Controller::class, 'mainl2'])->name('fichescoursl2');
 Route::get('/fiches_cours_licence_1', [TableL1Controller::class, 'mainl1'])->name('fichescoursl1');

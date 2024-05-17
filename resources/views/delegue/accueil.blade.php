@@ -13,28 +13,19 @@
         <section>
             <h2>Fiche de suivi</h2>
             <p>Cette fiche permet de suivre les informations importantes concernant une séance d'enseignement.</p>
+            <br>
             <div class="card-container">
-                <!-- Nouvelle carte pour ajouter une fiche -->
-                <!-- Nouvelle carte pour ajouter une fiche avec lien vers la page de création -->
                 <a href="{{ route('afficher-formulaire-fiche') }}" class="card new-card">
                     <div class="fiche-icon">
-                        <!-- Utilisation de l'icône "+" de Font Awesome -->
                         <i class="fas fa-plus"></i>
                         <div id="loader" class="loader"></div>
                     </div>
                     <p>Ajouter une nouvelle fiche</p>
                 </a>
-
-
-
-                <!-- Cartes de la section Fiche de suivi -->
                 <div class="card">
-                    <!-- Fichier de la fiche -->
                     <div class="fiche-file">
-                        <!-- Ajoutez ici le contenu du fichier, comme un bouton ou une icône -->
-                        <i class="fas fa-file-pdf"></i> <!-- Exemple d'icône pour un fichier PDF -->
+                        <i class="fas fa-file-pdf"></i>
                     </div>
-                    <!-- Texte de la fiche -->
                     <div class="fiche-text">
                         <h3>Nom de la fiche</h3>
                         <p>Description ou détails supplémentaires sur la fiche de suivi.</p>
@@ -44,18 +35,29 @@
             </div>
         </section>
 
-        <!-- Deuxième section - Fiche de surveillance -->
+        <!-- Deuxième section - Fiche de Travaux pratiques -->
         <section>
-            <h2>Fiche de travaux pratiques</h2>
-            <p>Cette fiche est utilisée pour consigner les informations liées à un travail pratique.</p>
+            <h2>Fiche de Travaux pratiques</h2>
+            <p>Cette fiche permet de suivre les informations importantes concernant une séance de travail pratique.</p>
+            <br>
             <div class="card-container">
-                <div class="card new-card">
+                <a href="{{ route('Créer-fiche-travaux-pratiques') }}" class="card new-card">
                     <div class="fiche-icon">
-                        <!-- Utilisation de l'icône "+" de Font Awesome -->
                         <i class="fas fa-plus"></i>
+                        <div id="loader" class="loader"></div>
                     </div>
                     <p>Ajouter une nouvelle fiche</p>
+                </a>
+                <div class="card">
+                    <div class="fiche-file">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="fiche-text">
+                        <h3>Nom de la fiche</h3>
+                        <p>Description ou détails supplémentaires sur la fiche de suivi.</p>
+                    </div>
                 </div>
+
             </div>
         </section>
     </div>

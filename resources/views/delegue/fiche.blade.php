@@ -61,7 +61,6 @@
                     <select id="typeSeance" name="typeSeance" required>
                         <option value="CM"></option>
                         <option value="CM">Cours magistral (CM)</option>
-                        <option value="TP">Surveillance</option>
                         <option value="Surveillance">Travaux pratiques (TP)</option>
                     </select>
                 </div>
