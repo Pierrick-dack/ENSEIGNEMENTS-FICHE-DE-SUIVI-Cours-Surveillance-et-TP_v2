@@ -19,6 +19,8 @@
         <link rel="stylesheet" href="{{ asset('plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('../../plugins/jsgrid/jsgrid.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('../../plugins/jsgrid/jsgrid-theme.min.css') }}">
 
 
     </head>
@@ -137,7 +139,6 @@
 			</nav>
 			<!-- /.navbar -->
 
-
             @yield('content')
 
 
@@ -178,5 +179,7 @@
         <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
         <script src="{{ asset('dist/js/adminlte.js') }}"></script>
         <script src="{{ asset('dist/js/pages/dashboard.js') }}"></script>
+        <script src="../../plugins/jsgrid/demos/db.js"></script>
+        <script src="{{ asset('../../plugins/jsgrid/jsgrid.min.js') }}"></script>
     </body>
 </html>

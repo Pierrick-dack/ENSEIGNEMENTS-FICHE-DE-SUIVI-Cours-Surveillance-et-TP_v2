@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('delegues', function (Blueprint $table) {
+        Schema::create('semestres', function (Blueprint $table) {
             $table->id();
-            $table->string('nameDel');
-            $table->string('emailDel');
-            $table->string('matDel');
-            $table->string('mdpDel');
+            $table->string('numSemestre');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('delegues');
+        Schema::dropIfExists('semestres');
     }
 };

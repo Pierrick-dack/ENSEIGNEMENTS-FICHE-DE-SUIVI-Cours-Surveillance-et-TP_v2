@@ -40,6 +40,7 @@
                                             <th scope="col">N°</th>
                                             <th scope="col">Date & Heure</th>
                                             <th scope="col">Titre de la séance</th>
+                                            <th scope="col">Contenu</th>
                                             <th scope="col">Salle</th>
                                             <th scope="col">Supprimer</th>
                                         </tr>
@@ -50,6 +51,7 @@
                                                 <td>{{ $fiche->id }}</td>
                                                 <td>{{ $fiche->created_at }}</td>
                                                 <td>{{ $fiche->titreSeance }}</td>
+                                                <td>{{ $fiche->contenu }}</td>
                                                 <td>{{ $fiche->salle }}</td>
 
                                                 <td>

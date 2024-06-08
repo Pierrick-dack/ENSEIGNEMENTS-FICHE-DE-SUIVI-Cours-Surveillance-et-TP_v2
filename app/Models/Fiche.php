@@ -20,6 +20,4 @@ class Fiche extends Model
         'contenu',
         'confidentialite',
     ];
-
-    // Définissez les éventuelles relations avec d'autres modèles ici
 }

@@ -32,9 +32,9 @@ class AuthAdministrateurController extends Controller {
 
     public function logout(Request $request) {
 
-        $request->session()->invalidate(); // Invalider la session actuelle
-        $request->session()->regenerateToken(); // Régénérer le jeton de session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         toastr()->success('Déconnexion réussie !');
-        return redirect()->route('welcome'); // Redirection vers la page d'accueil
+        return redirect()->route('welcome');
     }
 }

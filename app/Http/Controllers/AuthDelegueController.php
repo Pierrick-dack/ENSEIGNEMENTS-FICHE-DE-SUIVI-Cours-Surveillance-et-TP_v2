@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateDelRequest;
 use App\Models\Delegue;
 use Illuminate\Http\Request;
 use App\Http\Requests\LogDelRequest;
@@ -17,7 +18,7 @@ class AuthDelegueController extends Controller {
         $credentials = $request -> validated();
 
         $delegue = Delegue::where([
-            'matDel' => $credentials['matDel'],
+            'emailDel' => $credentials['emailDel'],
         ])->first();
 
         if ($delegue && Hash::check($credentials['mdpDel'], $delegue -> mdpDel)) {
@@ -28,20 +29,20 @@ class AuthDelegueController extends Controller {
             $username = $delegue->nameDel;
 
             return redirect()->route('accueilDel')->with('username', $username);
-
         }
 
         toastr()->error('Identifiants invalides !!');
         return back()->withInput()->withErrors(['matDel' => 'Identifiants invalides']);
     }
 
-    public function store(LogDelRequest $request) {
+    public function store(CreateDelRequest $request) {
         $data = $request->validated();
 
         // Vérifier si le matricule existe déjà dans la base de données
         $matriculeExiste = Delegue::where('matDel', $data['matDel'])->exists();
+        $emailExiste = Delegue::where('emailDel', $data['emailDel'])->exists();
 
-        if ($matriculeExiste) {
+        if ($matriculeExiste || $emailExiste) {
             return redirect()->route('delegues.main')->with('error', 'Le matricule existe déjà.');
         }
 
@@ -49,6 +50,7 @@ class AuthDelegueController extends Controller {
         $delegue = new Delegue();
         $delegue->nameDel = $data['nameDel'];
         $delegue->matDel = $data['matDel'];
+        $delegue->emailDel = $data['emailDel'];
         $delegue->mdpDel = Hash::make($data['mdpDel']);
         $delegue->save();
 

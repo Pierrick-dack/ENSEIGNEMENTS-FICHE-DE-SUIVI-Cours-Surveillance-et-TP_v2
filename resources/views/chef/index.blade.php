@@ -32,7 +32,6 @@
                         <div class="small-box bg-info">
                             <div class="inner">
                                 <h3>150</h3>
-
                                 <p>New Orders</p>
                             </div>
                             <div class="icon">
@@ -90,7 +89,48 @@
                     <!-- ./col -->
                 </div>
                 <!-- /.row -->
+
+                <!-- New Section for Classes -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h2>Classes</h2>
+                    </div>
+                    <div class="col-lg-4 col-6">
+                        <!-- small box -->
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h1 class="card-title">ICTL1</h1>
+                                <p class="card-text">Cliquez sur le bouton ci-dessous pour plus d'informations concernant ICTL1.</p>
+                                <a href="{{ route('ictl1') }}" class="btn btn-light">Voir la page</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-4 col-6">
+                        <!-- small box -->
+                        <div class="card bg-secondary text-white">
+                            <div class="card-body">
+                                <h3 class="card-title">ICTL2</h3>
+                                <p class="card-text">Cliquez sur le bouton ci-dessous pour plus d'informations concernant ICTL2.</p>
+                                <a href="{{ route('ictl2') }}" class="btn btn-light">Voir la page</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ./col -->
+                    <div class="col-lg-4 col-6">
+                        <!-- small box -->
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h3 class="card-title">ICTL3</h3>
+                                <p class="card-text">Cliquez sur le bouton ci-dessous pour plus d'informations concernant ICTL3.</p>
+                                <a href="#" class="btn btn-light">Voir la page</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
             </div><!-- /.container-fluid -->
         </section>
+        <!-- /.content -->
     </div>
 @endsection

@@ -35,7 +35,7 @@
             <div class="card">
                 <div class="card-content">
                     <h3>Chef de département</h3>
-                    <p>Description de la card. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>En tant que chef de département, consultez les différentes fiches qui ont été remplies, pour le suivi des cours, surveillance et TP.</p>
                     <a href="{{ route('signinchef') }}" class="login-button">
                         <i class="fas fa-sign-in-alt"></i> Connexion
                     </a>
@@ -46,7 +46,7 @@
             <div class="card">
                 <div class="card-content">
                     <h3>Professeur</h3>
-                    <p>Description de la card. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>En tant que professeur, vous avez la possibilité de créer les fiches de surveillance relatives aux surveillance lors des examens.</p>
                     <a href="{{ route('signinprof') }}" class="login-button">
                         <i class="fas fa-sign-in-alt"></i> Connexion
                     </a>
@@ -57,7 +57,7 @@
             <div class="card">
                 <div class="card-content">
                     <h3>Délégué</h3>
-                    <p>Description de la card. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                    <p>En tant que délégué, vous avez la possibilité de créer les fiches de suivi relatives aux cours et lors des travaux pratiques.</p>
                     <a href="{{ route('signin') }}" class="login-button">
                         <i class="fas fa-sign-in-alt"></i> Connexion
                     </a>

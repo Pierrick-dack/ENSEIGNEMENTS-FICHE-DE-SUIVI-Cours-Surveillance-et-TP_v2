@@ -69,13 +69,13 @@ class FicheSurveillanceController extends Controller
             'codeCours' => 'required|string',
             'intituleUE' => 'required|string',
             'name' => 'array|required',
-            'name.*' => 'required|string',  // Valider chaque entrée du tableau de noms
+            'name.*' => 'required|string',
 
         ]);
 
         $fiche = FicheSurveillance::findOrFail($id);
         $fiche->update($validatedData);
-        $fiche->surveillants()->delete(); // Optionnel : supprimer les anciens surveillants pour les remplacer
+        $fiche->surveillants()->delete();
 
         // Ajouter ou mettre à jour les surveillants
         foreach ($validatedData['name'] as $name) {

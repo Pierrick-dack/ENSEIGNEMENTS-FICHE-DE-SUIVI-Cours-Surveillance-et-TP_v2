@@ -1,6 +1,9 @@
 <?php
 
 
+use App\Http\Controllers\ICTL1Controller;
+use App\Http\Controllers\ICTL2Controller;
+use App\Http\Controllers\ICTL3Controller;
 use App\Http\Controllers\TableFichesSurveillancesController;
 use App\Http\Controllers\TableFichesTravauxPratiquesController;
 use App\Http\Controllers\EnseignantController;
@@ -126,3 +129,11 @@ Route::get('/fiches_cours_licence_1', [TableL1Controller::class, 'mainl1'])->nam
 Route::get('/fiches_cours_licence_3/{fichel3}', [TableL3Controller::class, 'destroy'])->name('destroy.fichescoursl3');
 Route::get('/fiches_cours_licence_2/{fichel2}', [TableL2Controller::class, 'destroy'])->name('destroy.fichescoursl2');
 Route::get('/fiches_cours_licence_1/{fichel1}', [TableL1Controller::class, 'destroy'])->name('destroy.fichescoursl1');
+
+// Route pour les détails des pages
+Route::get('/ICTL1', [ICTL1Controller::class, 'index'])->name('ictl1');
+Route::get('/ICTL2', [ICTL2Controller::class, 'index'])->name('ictl2');
+Route::get('/ICTL3', [ICTL3Controller::class, 'index'])->name('ictl3');
+// Suppression
+Route::get('/ICTL1_delete', [ICTL1Controller::class, 'destroy'])->name('ue_l1.destroy');
+Route::get('/ICTL2_delete', [ICTL2Controller::class, 'destroy'])->name('ue_l2.destroy');

@@ -41,15 +41,9 @@
                         <h3 class="title">Connexion</h3><br>
 
                         <div class="input-container">
-                            <input type="text" name="nomDel" class="input" required>
-                            <label for="Nom">Nom</label>
-                            <span>Nom</span>
-                        </div>
-
-                        <div class="input-container">
-                            <input type="text" name="matDel" class="input" required>
-                            <label for="matricule">Matricule</label>
-                            <span>Matricule</span>
+                            <input type="email" name="emailDel" class="input" required>
+                            <label for="email">Email</label>
+                            <span>Email</span>
                         </div>
 
                         <div class="input-container">

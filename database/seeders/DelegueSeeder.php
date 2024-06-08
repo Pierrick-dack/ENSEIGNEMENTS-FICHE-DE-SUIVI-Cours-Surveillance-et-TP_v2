@@ -10,9 +10,10 @@ use Illuminate\Support\Facades\Hash;
 class DelegueSeeder extends Seeder {
 
     public function run() {
-        
+
         Delegue::create([
             'nameDel' => 'Pierrick',
+            'emailDel' => 'pierrick@gmail.com',
             'matDel' => '21Q2493',
             'mdpDel' => Hash::make('rnbking2001'),
         ]);

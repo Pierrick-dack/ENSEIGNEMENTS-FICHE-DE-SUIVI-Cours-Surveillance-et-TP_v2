@@ -213,7 +213,6 @@
                     return true;
                 }
             }
-
             return false;
         }
         // Fonctions pour les signatures

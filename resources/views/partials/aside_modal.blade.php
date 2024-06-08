@@ -93,63 +93,29 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Fiches
+                            Fiches de cours
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>
-                                    ICT-L1
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
+                            <a href=" {{ route('fichescoursl1') }} " class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>ICT-L1</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href=" {{ route('fichescoursl1') }} " class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fiches de cours</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>
-                                    ICT-L2
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
+                            <a href=" {{ route('fichescoursl2') }} " class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>ICT-L2</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href=" {{ route('fichescoursl2') }} " class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fiches de cours</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-table"></i>
-                                <p>
-                                    ICT-L3
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
+                            <a href=" {{ route('fichescoursl3') }} " class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>ICT-L3</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{{ route('fichescoursl3') }}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Fiche de cours</p>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
-
                     </ul>
                     <li class="nav-item">
                         <a href="{{ route('fiches_surveillances') }}" class="nav-link">
@@ -224,12 +190,23 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group" >
+                            <label for="emailDel">Email</label>
+                            <div class="input-group" >
+                                <input type="email" class="form-control" id="emailDel" name="emailDel" placeholder="Email">
+                                <div class="input-group-append">
+                                    <div class="input-group-text">
+                                        <span class="fas fa-envelope"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <label for="matDel">Matricule</label>
                             <div class="input-group">
                                 <input type="text" class="form-control" id="matDel" name="matDel" placeholder="Matricule">
                                 <div class="input-group-append">
-                                    <div class="input-group-text"><span class="fas fa-envelope"></span></div>
+                                    <div class="input-group-text"><span class="fas fa-id-card"></span></div>
                                 </div>
                             </div>
                         </div>

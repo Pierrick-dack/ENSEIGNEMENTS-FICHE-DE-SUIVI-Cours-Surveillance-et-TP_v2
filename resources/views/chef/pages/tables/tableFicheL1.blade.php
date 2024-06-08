@@ -40,7 +40,8 @@
                                             <th scope="col">N°</th>
                                             <th scope="col">Date & Heure</th>
                                             <th scope="col">Titre de la séance</th>
-                                            <th scope="col">Salle</th>
+                                            <th scope="col">Contenu</th>
+                                            <th scope="col" >Salle</th>
                                             <th scope="col">Supprimer</th>
                                         </tr>
                                     </thead>
@@ -50,8 +51,9 @@
                                                 <td>{{ $fiche->id }}</td>
                                                 <td>{{ $fiche->created_at }}</td>
                                                 <td>{{ $fiche->titreSeance }}</td>
+                                                <td>{{ $fiche->contenu }}</td>
                                                 <td>{{ $fiche->salle }}</td>
-                                                
+
                                                 <td>
                                                     <form action="{{ route('destroy.fichescoursl1', $fiche->id) }}" method="POST">
                                                         @csrf

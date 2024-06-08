@@ -39,6 +39,7 @@
                                         <tr>
                                             <th scope="col">N°</th>
                                             <th scope="col">Noms</th>
+                                            <th scope="col">Email</th>
                                             <th scope="col">Matricules</th>
                                             <th scope="col">Date de création</th>
                                             <th scope="col">Modifier</th>
@@ -50,6 +51,7 @@
                                             <tr>
                                                 <td>{{ $delegue->id }}</td>
                                                 <td>{{ $delegue->nameDel }}</td>
+                                                <td>{{ $delegue->emailDel }}</td>
                                                 <td>{{ $delegue->matDel }}</td>
                                                 <td>{{ $delegue->created_at }}</td>
                                                 <td>
@@ -87,7 +89,7 @@
         </div>
         <!-- /.content-wrapper -->
     </div>
-    
+
     <!-- Modal de modification -->
 	<div class="modal fade" id="editDelegateModal" tabindex="-1" aria-labelledby="editDelegateModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -106,6 +108,12 @@
 							<label for="nameDel">Nom</label>
 							<input type="text" class="form-control" id="nameDel" name="nameDel" required>
 						</div>
+
+                        <div class="form-group">
+                            <label for="emailDel">Email</label>
+                            <input type="email" class="form-control" id="emailDel" name="emailDel" required>
+                        </div>
+
 						<div class="form-group">
 							<label for="matDel">Matricule</label>
 							<input type="text" class="form-control" id="matDel" name="matDel" required>
@@ -132,11 +140,14 @@
             $('.edit-btn').on('click', function() {
                 var id = $(this).data('id'); // Récupérez l'ID à partir des données du bouton
                 var name = $(this).data('name'); // Récupérez le nom
+                var email = $(this).data('email'); // Récupérez l'email
                 var matricule = $(this).data('matricule'); // Récupérez le matricule
 
                 // Remplissez les champs du formulaire dans le modal
                 $('#editDelegateModal').find('.modal-body #nameDel').val(name);
+                $('#editDelegateModal').find('.modal-body #emailDel').val(email);
                 $('#editDelegateModal').find('.modal-body #matDel').val(matricule);
+
 
                 // Mettez à jour l'attribut 'action' du formulaire avec l'URL correcte, en incluant l'ID
                 $('#editDelegateForm').attr('action', '/delegues/' + id); // Assurez-vous que l'URL correspond à votre structure d'URL réelle

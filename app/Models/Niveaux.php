@@ -13,4 +13,8 @@ class Niveaux extends Model
         'codeNiveau',
         'intituleNiveau',
     ];
+    public function cours()
+    {
+        return $this->hasMany(Cours::class, 'niveau_id');
+    }
 }
