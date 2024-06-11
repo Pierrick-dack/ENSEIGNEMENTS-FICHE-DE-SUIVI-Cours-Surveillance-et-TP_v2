@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('intituleUE');
             $table->foreignId('niveau_id')->constrained('niveaux_etude')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('semestre_id')->constrained('semestres')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('enseignant_id')->constrained('enseignants')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }
