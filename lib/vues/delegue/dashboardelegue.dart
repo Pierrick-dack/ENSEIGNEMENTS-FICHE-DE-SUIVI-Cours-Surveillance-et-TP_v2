@@ -135,7 +135,7 @@ class _DashboardDelegue extends State<DashboardDelegue> {
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => const FicheTravaux(),
+                                builder: (_) => const FicheTravau(),
                               ),
                             );
                           },

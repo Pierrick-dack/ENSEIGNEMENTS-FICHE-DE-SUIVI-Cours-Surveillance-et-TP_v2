@@ -1,13 +1,6 @@
-import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:firstapp/urls.dart';
 
 //String url = 'http://127.0.0.1:8000';
 

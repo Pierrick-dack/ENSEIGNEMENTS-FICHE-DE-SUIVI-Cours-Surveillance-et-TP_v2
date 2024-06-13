@@ -125,71 +125,74 @@ class _PagePdf extends State<PagePdf> {
                 Uint8List image = Uint8List.fromList(
                   data.buffer.asUint8List(),
                 );
-                fichepdf.addPage(pw.MultiPage(
-                  pageFormat: PdfPageFormat.a4,
-                  build: (context) {
-                    return [
-                      Personal(
-                          cours: widget.cours,
-                          prof: widget.prof,
-                          code: widget.code,
-                          titre: widget.titre,
-                          salle: widget.salle,
-                          heuredebut: widget.heuredebut,
-                          heurefin: widget.heurefin,
-                          duree: widget.duree,
-                          date: widget.date,
-                          semestre: widget.semestre,
-                          nature: widget.nature,
-                          contenu: widget.contenu,
-                          signP: widget.signP,
-                          signD: widget.signD,
-                          logo: image)
-                    ];
-                  },
-                ));
+                fichepdf.addPage(
+                  pw.MultiPage(
+                    pageFormat: PdfPageFormat.a4,
+                    build: (context) {
+                      return [
+                        Personal(
+                            cours: widget.cours,
+                            prof: widget.prof,
+                            code: widget.code,
+                            titre: widget.titre,
+                            salle: widget.salle,
+                            heuredebut: widget.heuredebut,
+                            heurefin: widget.heurefin,
+                            duree: widget.duree,
+                            date: widget.date,
+                            semestre: widget.semestre,
+                            nature: widget.nature,
+                            contenu: widget.contenu,
+                            signP: widget.signP,
+                            signD: widget.signD,
+                            logo: image)
+                      ];
+                    },
+                  ),
+                );
 
                 // ignore: use_build_context_synchronously
                 showCupertinoModalPopup(
-                    context: context,
-                    builder: (_) {
-                      return AlertDialog(
-                        title: const Text(
-                          "Confirmation",
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 30,
+                  context: context,
+                  builder: (_) {
+                    return AlertDialog(
+                      title: const Text(
+                        "Confirmation",
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 30,
+                        ),
+                      ),
+                      content: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Vous avez enregistré la fiche avec succès dans l'appareil",
+                            style: TextStyle(fontSize: 16),
                           ),
-                        ),
-                        content: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Vous avez enregistré la fiche avec succès dans l'appareil",
-                              style: TextStyle(fontSize: 16),
+                          const SizedBox(
+                            height: 15,
+                          ),
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.green),
                             ),
-                            const SizedBox(
-                              height: 15,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text(
+                              "OK",
+                              style: TextStyle(fontSize: 18),
                             ),
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.green),
-                              ),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text(
-                                "OK",
-                                style: TextStyle(fontSize: 18),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    });
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
                 /*Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => DashboardDelegue()),
                 );*/
@@ -378,6 +381,9 @@ class MyWidget extends StatelessWidget {
             text,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
+          const SizedBox(
+            width: 10,
+          ),
           Text(
             content,
             style: const TextStyle(
@@ -418,6 +424,9 @@ class MyWidgetSec extends StatelessWidget {
               text,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
+          ),
+          const SizedBox(
+            width: 10,
           ),
           Flexible(
             flex: deux,
@@ -462,6 +471,9 @@ class MyWidgetImg extends StatelessWidget {
               text,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
+          ),
+          const SizedBox(
+            width: 10,
           ),
           Flexible(
             flex: deux,

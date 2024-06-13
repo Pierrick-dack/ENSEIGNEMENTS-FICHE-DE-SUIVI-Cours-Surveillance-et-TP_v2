@@ -2,19 +2,20 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:firstapp/vues/delegue/pagepdf.dart';
+import 'package:firstapp/vues/delegue/pagepdftravaux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:signature/signature.dart';
 
-class FicheTravaux extends StatefulWidget {
-  const FicheTravaux({super.key});
+class FicheTravau extends StatefulWidget {
+  const FicheTravau({super.key});
 
-  State<FicheTravaux> createState() {
-    return _FicheTravaux();
+  State<FicheTravau> createState() {
+    return _FicheTravau();
   }
 }
 
-class _FicheTravaux extends State<FicheTravaux> {
+class _FicheTravau extends State<FicheTravau> {
   TextEditingController titleSeance = TextEditingController();
   TextEditingController cod = TextEditingController();
   TextEditingController prof = TextEditingController();
@@ -111,7 +112,7 @@ class _FicheTravaux extends State<FicheTravaux> {
                   ),
                 ),
               ),
-              const SizedBox(height: 4),
+              const SizedBox(height: 6),
               TextField(
                 maxLines: 6,
                 controller: objectifs,
@@ -119,7 +120,7 @@ class _FicheTravaux extends State<FicheTravaux> {
                   label: Text("Objectifs du TP :"),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(50.0),
+                      Radius.circular(20.0),
                     ),
                   ),
                 ),
@@ -135,7 +136,7 @@ class _FicheTravaux extends State<FicheTravaux> {
                   labelText: "Matériel necessaire :",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
-                      Radius.circular(50.0),
+                      Radius.circular(20.0),
                     ),
                   ),
                 ),
@@ -227,9 +228,14 @@ class _FicheTravaux extends State<FicheTravaux> {
                                 setState(
                                   () {
                                     data =
-                                        "l'heure de fin est superieure a l'heure de debut";
+                                        "l'heure de fin est inferieure a l'heure de debut";
                                   },
                                 );
+                              } else {
+                                setState(() {
+                                  data = "";
+                                  timefin = value;
+                                });
                               }
                             },
                           );
@@ -604,28 +610,21 @@ class _FicheTravaux extends State<FicheTravaux> {
                         observation = observations.text;
                         resultats = results.text;
                         // ignore: use_build_context_synchronously
-                        /*Navigator.of(context).push(
+                        Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (_) => PagePdf(
-                              cours: cours,
-                              prof: professeur,
-                              code: code,
-                              titre: titreseance,
-                              salle: salle,
-                              heuredebut: timedebut,
-                              heurefin: timefin,
-                              duree: total,
-                              date: date,
-                              niveaux: niveau,
-                              semestre: semestre,
-                              nature: nature,
-                              contenu: content,
-                              signP: signP!,
-                              signD: signD!,
-                              confidentialite: confidentialite,
-                            ),
+                            builder: (_) => PagePdfTravaux(
+                                titreSeanceTP: titreSeance,
+                                enseignant: professeur,
+                                codeCours: code,
+                                heureDebut: timedebut,
+                                heureFin: timefin,
+                                objectifsTP: objectif,
+                                materielNecessaire: materiel,
+                                procedureTP: procedure,
+                                observation: observation,
+                                resultatsAttendus: resultats),
                           ),
-                        );*/
+                        );
                       }
                     },
                     child: const Text(

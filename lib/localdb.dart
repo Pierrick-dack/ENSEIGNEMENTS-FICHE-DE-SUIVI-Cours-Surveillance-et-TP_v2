@@ -1,21 +1,16 @@
 import 'dart:convert';
-import 'dart:io';
-
-import 'package:firstapp/api.dart';
 import 'package:firstapp/models/admin.dart';
 import 'package:firstapp/models/cours.dart';
 import 'package:firstapp/models/delegue.dart';
 import 'package:firstapp/models/enseignant.dart';
 import 'package:firstapp/models/fiche.dart';
+import 'package:firstapp/models/fichesurveillance.dart';
+import 'package:firstapp/models/fichetravaux.dart';
 import 'package:firstapp/models/filiere.dart';
 import 'package:firstapp/models/niveau.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:http/http.dart' as http;
-import 'package:firstapp/urls.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 Database? _database;
@@ -240,6 +235,36 @@ class LocalDataBase {
       EasyLoading.showError(
           duration: const Duration(milliseconds: 2500),
           'Erreur lors de l\'ajout de la fiche de suivi');
+    }
+  }
+
+  Future<void> addFicheTravaux(
+      FicheTravaux ficheTravaux, BuildContext context) async {
+    EasyLoading.show(status: 'Chargement en cours', dismissOnTap: false);
+    try {
+      final db = await database;
+      await db.insert('fiche_travaux_pratiques', ficheTravaux.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+      EasyLoading.showSuccess('Enregistrement effectué');
+    } catch (e) {
+      EasyLoading.showError(
+          duration: const Duration(milliseconds: 2500),
+          'Erreur lors de l\'ajout de la fiche de travaux pratique');
+    }
+  }
+
+  Future<void> addFicheSurveillance(
+      FicheSurveillance ficheSurveillance, BuildContext context) async {
+    EasyLoading.show(status: 'Chargement en cours', dismissOnTap: false);
+    try {
+      final db = await database;
+      await db.insert('fiche_surveillance', ficheSurveillance.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+      EasyLoading.showSuccess('Enregistrement effectué');
+    } catch (e) {
+      EasyLoading.showError(
+          duration: const Duration(milliseconds: 2500),
+          'Erreur lors de l\'ajout de la fiche de surveillance');
     }
   }
 
@@ -488,11 +513,5 @@ class LocalDataBase {
     };
   }
 
-  void updateBd() async {
-    final db = await database;
-    String update = "DROP TABLE cours";
-
-    //db.execute(update);
-    db.execute(coursTable);
-  }
+  void updateBd() async {}
 }
