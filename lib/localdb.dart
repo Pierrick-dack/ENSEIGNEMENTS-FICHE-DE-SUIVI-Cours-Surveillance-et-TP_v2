@@ -47,7 +47,6 @@ class LocalDataBase {
     await db.execute(deleguesTable);
     await db.execute(enseignantsTable);
     await db.execute(ficheTable);
-    await db.execute(filieresTable);
     await db.execute(niveauxTable);
   }
 
@@ -105,18 +104,45 @@ class LocalDataBase {
         confidentialite TINYINT NOT NULL
       );''';
 
-  static const filieresTable = '''
-      CREATE TABLE filieres(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        codeFil VARCHAR(16) NOT NULL,
-        intFil VARCHAR(64) NOT NULL
-      );''';
-
   static const niveauxTable = '''
       CREATE TABLE niveaux(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         numero INTEGER NOT NULL
       );''';
+
+  static const ficheSurveillanceTable = '''
+      CREATE TABLE fiche_surveillance(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        chefDeSalle VARCHAR(64) NOT NULL,
+        salle VARCHAR(64) NOT NULL,
+        date DATE NOT NULL,
+        session VARCHER(64) NOT NULL,
+        codeCours VARCHAR(64) NOT NULL,
+        intituleUE VARCHAR(64) NOT NULL,
+        confirmation TINYINT NOT NULL
+      )''';
+
+  static const ficheTravauxTable = '''
+      CREATE TABLE fiche_travaux_pratiques(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        titreSeanceTP VARCHAR(64) NOT NULL,
+        enseignant VARCHAR(64) NOT NULL,
+        codeCours VARCHAR(64) NOT NULL,
+        heureDebut TIME NOT NULL,
+        heureFin TIME NOT NULL,
+        objectifsTP VARCHAR(256) NOT NULL,
+        materielNecessaire VARCHAR(256) NOT NULL,
+        procedure VARCHAR(256) NOT NULL,
+        observation VARCHAR(256) NOT NULL,
+        resultatsAttendus VARCHAR(256) NOT NULL
+      )''';
+
+  static const semestreTable = '''
+      CREATE TABLE semestre(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        numSemestre VARCHAR(64) NOT NULL
+      )
+      ''';
 
   Future<void> addProfesseur(
       Enseignant enseignant, BuildContext context) async {
@@ -464,10 +490,9 @@ class LocalDataBase {
 
   void updateBd() async {
     final db = await database;
-    String update = "ALTER TABLE cours ADD COLUMN niveau_id INTEGER";
-    String update2 =
-        "ALTER TABLE cours ADD CONSRAINT niveau_id FOREIGN KEY (niveau_id) REFERENCES niveaux(id)";
-    db.execute(update);
-    db.execute(update2);
+    String update = "DROP TABLE cours";
+
+    //db.execute(update);
+    db.execute(coursTable);
   }
 }
