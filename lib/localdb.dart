@@ -56,7 +56,8 @@ class LocalDataBase {
     CREATE TABLE cours(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       codeUE VARCHAR(64) NOT NULL,
-      intituleUE VARCHAR(255) NOT NULL
+      intituleUE VARCHAR(255) NOT NULL,
+      niveau_id INTEGER, FOREIGN KEY (niveau_id) REFERENCES niveaux(id)
     );''';
 
   static const chefsTable = '''
@@ -198,7 +199,6 @@ class LocalDataBase {
   }
 
   Future<void> addFiche(Fiche fiche, BuildContext context) async {
-    
     EasyLoading.show(
       status: 'Chargement en cours',
       dismissOnTap: false,
@@ -333,7 +333,7 @@ class LocalDataBase {
           typeSeance: items[index]['typeSeance'],
           titreSeance: items[index]['titreSeance'],
           niveaux: items[index]['niveaux'],
-          contenu: items[index]['contenu'], 
+          contenu: items[index]['contenu'],
           confidentialite: items[index]['confidentialite']),
     );
   }
@@ -358,7 +358,7 @@ class LocalDataBase {
           typeSeance: items[index]['typeSeance'],
           titreSeance: items[index]['titreSeance'],
           niveaux: items[index]['niveaux'],
-          contenu: items[index]['contenu'], 
+          contenu: items[index]['contenu'],
           confidentialite: items[index]['confidentialite']),
     );
   }
@@ -460,5 +460,14 @@ class LocalDataBase {
       'filieres': filiereJson,
       'niveaux': niveauxJson
     };
+  }
+
+  void updateBd() async {
+    final db = await database;
+    String update = "ALTER TABLE cours ADD COLUMN niveau_id INTEGER";
+    String update2 =
+        "ALTER TABLE cours ADD CONSRAINT niveau_id FOREIGN KEY (niveau_id) REFERENCES niveaux(id)";
+    db.execute(update);
+    db.execute(update2);
   }
 }
