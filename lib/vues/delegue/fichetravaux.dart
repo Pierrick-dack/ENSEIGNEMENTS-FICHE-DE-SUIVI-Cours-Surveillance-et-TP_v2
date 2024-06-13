@@ -15,41 +15,29 @@ class FicheTravaux extends StatefulWidget {
 }
 
 class _FicheTravaux extends State<FicheTravaux> {
-  TextEditingController cour = TextEditingController();
+  TextEditingController titleSeance = TextEditingController();
   TextEditingController cod = TextEditingController();
   TextEditingController prof = TextEditingController();
-  TextEditingController contenu = TextEditingController();
-  TextEditingController sal = TextEditingController();
-  TextEditingController title = TextEditingController();
-  TextEditingController niveaux = TextEditingController();
-  SignatureController signatureControllerP = SignatureController(
-      penStrokeWidth: 3,
-      penColor: Colors.black,
-      exportBackgroundColor: const Color.fromARGB(255, 205, 211, 216));
-  SignatureController signatureControllerD = SignatureController(
-      penStrokeWidth: 3,
-      penColor: Colors.black,
-      exportBackgroundColor: const Color.fromARGB(255, 205, 211, 216));
-  String? signD;
+  TextEditingController objectifs = TextEditingController();
+  TextEditingController materielNecessaire = TextEditingController();
+  TextEditingController procedureTp = TextEditingController();
+  TextEditingController observations = TextEditingController();
+  TextEditingController results = TextEditingController();
+
   TextEditingController totalHeure = TextEditingController();
-  String? signP;
 
   String data = "";
 
-  String cours = "";
+  String titreSeance = "";
   String code = "";
   String professeur = "";
-  String content = "";
   TimeOfDay timedebut = TimeOfDay.now();
   TimeOfDay timefin = TimeOfDay.now();
-  String nature = "";
-  int semestre = 0;
-  DateTime date = DateTime.now();
-  String salle = "";
-  String titreseance = '';
-  String niveau = '';
-  TimeOfDay total = TimeOfDay.now();
-  int confidentialite = 1;
+  String objectif = "";
+  String materiel = "";
+  String procedure = "";
+  String observation = "";
+  String resultats = "";
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +75,9 @@ class _FicheTravaux extends State<FicheTravaux> {
             scrollDirection: Axis.vertical,
             children: [
               TextField(
-                controller: cour,
+                controller: titleSeance,
                 decoration: const InputDecoration(
-                  labelText: "libelé du cours",
+                  labelText: "Titre de la séance :",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(50.0),
@@ -113,17 +101,6 @@ class _FicheTravaux extends State<FicheTravaux> {
               ),
               const SizedBox(height: 4),
               TextField(
-                controller: niveaux,
-                decoration: const InputDecoration(
-                  label: Text("Niveau"),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50.0),
-                    ),
-                  ),
-                ),
-              ),
-              TextField(
                 controller: cod,
                 decoration: const InputDecoration(
                   label: Text("Code de la matière"),
@@ -135,28 +112,27 @@ class _FicheTravaux extends State<FicheTravaux> {
                 ),
               ),
               const SizedBox(height: 4),
-              Flexible(
-                flex: 1,
-                child: TextField(
-                  controller: title,
-                  //expands: true,
-                  decoration: const InputDecoration(
-                    label: Text("Titre de la seance"),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(50.0),
-                      ),
+              TextField(
+                maxLines: 6,
+                controller: objectifs,
+                decoration: const InputDecoration(
+                  label: Text("Objectifs du TP :"),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50.0),
                     ),
                   ),
                 ),
               ),
+              const SizedBox(height: 4),
               const SizedBox(
                 height: 5,
               ),
               TextField(
-                controller: sal,
+                maxLines: 4,
+                controller: materielNecessaire,
                 decoration: const InputDecoration(
-                  labelText: "Numero de salle",
+                  labelText: "Matériel necessaire :",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(50.0),
@@ -254,23 +230,6 @@ class _FicheTravaux extends State<FicheTravaux> {
                                         "l'heure de fin est superieure a l'heure de debut";
                                   },
                                 );
-                              } else {
-                                setState(
-                                  () {
-                                    data = "";
-                                    timefin = value;
-                                    int totaldebut =
-                                        timedebut.hour * 60 + timedebut.minute;
-                                    int totalfin =
-                                        timefin.hour * 60 + timefin.minute;
-                                    int result = totalfin - totaldebut;
-                                    TimeOfDay remplace = TimeOfDay(
-                                        hour: (result - (result % 60)) ~/ 60,
-                                        minute: result % 60);
-
-                                    total = remplace;
-                                  },
-                                );
                               }
                             },
                           );
@@ -299,33 +258,8 @@ class _FicheTravaux extends State<FicheTravaux> {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        width: 3,
-                        color: const Color.fromARGB(255, 2, 53, 95),
-                      ),
-                    ),
-                    child: Text(
-                      "Durée: ${total.format(context)}",
-                      style: const TextStyle(
-                        fontSize: 25,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
+
+              /*Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -363,8 +297,8 @@ class _FicheTravaux extends State<FicheTravaux> {
                     ),
                   )
                 ],
-              ),
-              Row(
+              ),*/
+              /*Row(
                 children: [
                   const Text("Semestre"),
                   Radio(
@@ -390,12 +324,12 @@ class _FicheTravaux extends State<FicheTravaux> {
                       }),
                   const Text("semestre 2"),
                 ],
-              ),
+              ),*/
               TextField(
-                maxLines: 10,
-                controller: contenu,
+                maxLines: 12,
+                controller: procedureTp,
                 decoration: const InputDecoration(
-                  label: Text("contenu du cours"),
+                  label: Text("Procedure de travaux pratiques :"),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(
                       Radius.circular(10.0),
@@ -406,7 +340,37 @@ class _FicheTravaux extends State<FicheTravaux> {
               const SizedBox(
                 height: 10,
               ),
-              Row(
+              TextField(
+                maxLines: 6,
+                controller: observations,
+                decoration: const InputDecoration(
+                  label: Text("Observations :"),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                maxLines: 6,
+                controller: results,
+                decoration: const InputDecoration(
+                  label: Text("Resultats attendus :"),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10.0),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              /*Row(
                 children: [
                   Column(
                     children: [
@@ -568,7 +532,7 @@ class _FicheTravaux extends State<FicheTravaux> {
                     ],
                   )
                 ],
-              ),
+              ),*/
               const SizedBox(
                 height: 20,
               ),
@@ -580,17 +544,14 @@ class _FicheTravaux extends State<FicheTravaux> {
                         backgroundColor:
                             MaterialStateProperty.all(Colors.green)),
                     onPressed: () async {
-                      if (cour.text.isEmpty ||
+                      if (titleSeance.text.isEmpty ||
                           prof.text.isEmpty ||
                           cod.text.isEmpty ||
-                          title.text.isEmpty ||
-                          niveaux.text.isEmpty ||
-                          sal.text.isEmpty ||
-                          (total.hour == 00 && total.minute == 00) ||
-                          semestre == 0 ||
-                          contenu.text.isEmpty ||
-                          signatureControllerP.isEmpty ||
-                          signatureControllerD.isEmpty) {
+                          objectifs.text.isEmpty ||
+                          materielNecessaire.text.isEmpty ||
+                          procedureTp.text.isEmpty ||
+                          observations.text.isEmpty ||
+                          results.text.isEmpty) {
                         showCupertinoModalPopup(
                             context: context,
                             builder: (_) {
@@ -634,16 +595,16 @@ class _FicheTravaux extends State<FicheTravaux> {
                       } else {
                         //creation du pdf et enregistrement dans le telephone
 
-                        cours = cour.text;
+                        titreSeance = titleSeance.text;
                         professeur = prof.text;
                         code = cod.text;
-                        titreseance = title.text;
-                        nature = "TP";
-                        salle = sal.text;
-                        content = contenu.text;
-                        niveau = niveaux.text;
+                        objectif = objectifs.text;
+                        materiel = materielNecessaire.text;
+                        procedure = procedureTp.text;
+                        observation = observations.text;
+                        resultats = results.text;
                         // ignore: use_build_context_synchronously
-                        Navigator.of(context).push(
+                        /*Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => PagePdf(
                               cours: cours,
@@ -664,7 +625,7 @@ class _FicheTravaux extends State<FicheTravaux> {
                               confidentialite: confidentialite,
                             ),
                           ),
-                        );
+                        );*/
                       }
                     },
                     child: const Text(
@@ -680,22 +641,16 @@ class _FicheTravaux extends State<FicheTravaux> {
                         backgroundColor: MaterialStateProperty.all(Colors.red)),
                     onPressed: () {
                       setState(() {
-                        cour.clear();
-                        cod.clear();
+                        titleSeance.clear();
                         prof.clear();
-                        contenu.clear();
-                        title.clear();
-                        sal.clear();
-                        data = "";
-                        niveaux.clear();
+                        cod.clear();
                         timedebut = TimeOfDay.now();
                         timefin = TimeOfDay.now();
-                        total = const TimeOfDay(hour: 00, minute: 00);
-                        date = DateTime.now();
-                        semestre = 0;
-                        contenu.clear();
-                        signatureControllerP.clear();
-                        signatureControllerD.clear();
+                        objectifs.clear();
+                        materielNecessaire.clear();
+                        procedureTp.clear();
+                        observations.clear();
+                        results.clear();
                       });
                     },
                     child: const Text(
