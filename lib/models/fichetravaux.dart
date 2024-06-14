@@ -36,7 +36,7 @@ class FicheTravaux {
       'heureFin': heureFin.toString(),
       'objectifsTP': objectifsTP,
       'materielNecessaire': materielNecessaire,
-      'procedureTP': procedureTP,
+      'procedure': procedureTP,
       'observation': observation,
       'resultatsAttendus': resultatsAttendus
     };
@@ -51,7 +51,7 @@ class FicheTravaux {
         heureFin: map['heureFin'],
         objectifsTP: map['objectifsTP'],
         materielNecessaire: map['materielNecessaire'],
-        procedureTP: map['procedureTP'],
+        procedureTP: map['procedure'],
         observation: map['observation'],
         resultatsAttendus: map['resultatsAttendus']);
   }
@@ -65,7 +65,7 @@ class FicheTravaux {
         heureFin: json['heureFin'],
         objectifsTP: json['objectifsTP'],
         materielNecessaire: json['materielNecessaire'],
-        procedureTP: json['procedureTP'],
+        procedureTP: json['procedure'],
         observation: json['observation'],
         resultatsAttendus: json['resultatsAttendus']);
   }

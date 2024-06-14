@@ -113,14 +113,17 @@ class _FicheSuivi extends State<FicheSuivi> {
               const SizedBox(
                 height: 5,
               ),
-              DropdownButton(
+              /*DropdownButton(
+                style: TextStyle(
+                  
+                ),
                 items: enseigne,
                 onChanged: (value) {
                   if (value!.isNotEmpty) {
                     professeur = value;
                   }
                 },
-              ),
+              ),*/
               const SizedBox(height: 4),
               TextField(
                 controller: niveaux,
@@ -588,7 +591,7 @@ class _FicheSuivi extends State<FicheSuivi> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(Colors.green)),
-                    onPressed: () async {
+                    onPressed: () {
                       if (cour.text.isEmpty ||
                           prof.text.isEmpty ||
                           cod.text.isEmpty ||

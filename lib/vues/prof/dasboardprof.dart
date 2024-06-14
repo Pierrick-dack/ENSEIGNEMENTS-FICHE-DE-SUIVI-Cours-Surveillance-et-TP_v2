@@ -2,6 +2,7 @@ import 'package:firstapp/localdb.dart';
 import 'package:firstapp/models/enseignant.dart';
 import 'package:firstapp/models/fiche.dart';
 import 'package:firstapp/vues/admin/dashboardadmin.dart';
+import 'package:firstapp/vues/prof/formfichesurveillance.dart';
 import 'package:firstapp/vues/prof/listfiche.dart';
 import 'package:firstapp/vues/prof/profile.dart';
 import 'package:flutter/material.dart';
@@ -180,7 +181,13 @@ class _DashboardProf extends State<DashboardProf> {
                     const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.add),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const FormFicheSurveillance(),
+                          ),
+                        );
+                      },
                       iconSize: 35,
                       style: ButtonStyle(
                         visualDensity:
