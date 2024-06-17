@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:firstapp/models/fiche.dart';
-import 'package:firstapp/vues/delegue/dashboardelegue.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -85,7 +84,7 @@ class _PagePdf extends State<PagePdf> {
               onPressed: () async {
                 EasyLoading.init();
                 final directory = await getExternalStorageDirectory();
-                const dossierPers = 'ICT FOLLOW UP';
+                const dossierPers = 'ICT FOLLOW UP/fiches de suivi';
                 final cherminPers = '${directory?.path}/$dossierPers';
                 if (!Directory(cherminPers).existsSync()) {
                   Directory(cherminPers).createSync();
@@ -316,6 +315,10 @@ class _PagePdf extends State<PagePdf> {
               MyWidget(
                   text: "Heure de debut :",
                   content: widget.heuredebut.format(context)),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidget(text: "Date :", content: widget.date.toString()),
               const SizedBox(
                 height: 10,
               ),

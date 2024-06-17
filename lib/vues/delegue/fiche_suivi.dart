@@ -55,15 +55,15 @@ class _FicheSuivi extends State<FicheSuivi> {
   TimeOfDay total = TimeOfDay.now();
   int confidentialite = 1;
 
-  List<Enseignant> enseignants = [];
-  List<DropdownMenuItem<String>> enseigne = [];
+  //List<Enseignant> enseignants = [];
+  //List<DropdownMenuItem<String>> enseigne = [];
 
   @override
   Widget build(context) {
-    recup(enseignants, context);
-    for (int i = 0; i < enseignants.length; i++) {
+    //recup(enseignants, context);
+    /*for (int i = 0; i < enseignants.length; i++) {
       enseigne.add(enseignants[i].nomEns as DropdownMenuItem<String>);
-    }
+    }*/
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -112,6 +112,18 @@ class _FicheSuivi extends State<FicheSuivi> {
               ),
               const SizedBox(
                 height: 5,
+              ),
+              const SizedBox(height: 4),
+              TextField(
+                controller: prof,
+                decoration: const InputDecoration(
+                  label: Text("Professeur "),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(50.0),
+                    ),
+                  ),
+                ),
               ),
               /*DropdownButton(
                 style: TextStyle(

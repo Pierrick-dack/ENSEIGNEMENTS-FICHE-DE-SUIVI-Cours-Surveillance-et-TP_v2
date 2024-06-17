@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firstapp/localdb.dart';
 import 'package:firstapp/vues/delegue/pagepdf.dart';
+import 'package:firstapp/vues/delegue/pdftravaux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
             TextButton(
               onPressed: () async {
                 final directory = await getExternalStorageDirectory();
-                const dossierPers = 'ICT FOLLOW UP';
+                const dossierPers = 'ICT FOLLOW UP/fiches de TP';
                 final cheminPers = '${directory?.path}/$dossierPers';
                 if (!Directory(cheminPers).existsSync()) {
                   Directory(cheminPers).createSync();
@@ -105,7 +106,20 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
                   pw.MultiPage(
                     pageFormat: PdfPageFormat.a4,
                     build: (context) {
-                      return [];
+                      return [
+                        PdfTravaux(
+                            titreSeanceTP: widget.titreSeanceTP,
+                            enseignant: widget.enseignant,
+                            codeCours: widget.codeCours,
+                            heureDebut: widget.heureDebut,
+                            heureFin: widget.heureFin,
+                            objectifsTP: widget.objectifsTP,
+                            materielNecessaire: widget.materielNecessaire,
+                            procedureTP: widget.procedureTP,
+                            observation: widget.observation,
+                            resultatsAttendus: widget.resultatsAttendus,
+                            logo: image)
+                      ];
                     },
                   ),
                 );
@@ -152,6 +166,7 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
                     );
                   },
                 );
+                await file.writeAsBytes(await ficheTravau.save());
               },
               child: const Text(
                 "Enregistrer",

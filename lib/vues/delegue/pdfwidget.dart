@@ -142,15 +142,15 @@ class Personal extends pw.StatelessWidget {
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Heure de debut :", content: heuredebut.toString()),
+          Partie(text: "Heure de debut :", content: "${heuredebut.hour}:${heuredebut.minute}"),
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Heure de fin :", content: heurefin.toString()),
+          Partie(text: "Heure de fin :", content: "${heurefin.hour}:${heurefin.minute}"),
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Durée:", content: duree.toString()),
+          Partie(text: "Durée:", content: "${duree.hour}: ${duree.minute}"),
           pw.SizedBox(
             height: 10,
           ),
