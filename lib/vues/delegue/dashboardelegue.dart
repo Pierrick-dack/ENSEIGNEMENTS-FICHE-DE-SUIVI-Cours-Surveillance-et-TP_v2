@@ -1,9 +1,14 @@
 import 'dart:io';
 
+import 'package:firstapp/localdb.dart';
+import 'package:firstapp/models/enseignant.dart';
+import 'package:firstapp/vues/admin/dashboardadmin.dart';
 import 'package:firstapp/vues/delegue/fiche_suivi.dart';
 import 'package:firstapp/vues/delegue/fiches.dart';
 import 'package:firstapp/vues/delegue/fichetravaux.dart';
 import 'package:firstapp/vues/delegue/profile.dart';
+import 'package:firstapp/vues/prof/connexionprof.dart';
+import 'package:firstapp/vues/prof/dasboardprof.dart';
 import 'package:flutter/material.dart';
 import 'package:firstapp/models/fiche.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -18,12 +23,25 @@ class DashboardDelegue extends StatefulWidget {
   }
 }
 
+List<Enseignant> enseignants = [];
+List<String> nomEns = [];
+
 class _DashboardDelegue extends State<DashboardDelegue> {
   List<Fiche>? fiches;
   TextEditingController search = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    recup(enseignants, context);
+    print(enseignants);
+    print(enseignants.length);
+    nomEns.clear();
+
+    for (int i = 0; i < enseignants.length; i++) {
+      //print(enseignants[i].nomEns);
+      nomEns.add(enseignants[i].nomEns);
+      print(nomEns[i]);
+    }
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -77,11 +95,18 @@ class _DashboardDelegue extends State<DashboardDelegue> {
                         IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const FicheSuivi(),
-                              ),
-                            );
+                            print(nomEns);
+                            if (nomEns.length == 0) {
+                              print("Il n'y a rien dans la liste");
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => FicheSuivi(
+                                    nomEns: nomEns,
+                                  ),
+                                ),
+                              );
+                            }
                           },
                           iconSize: 35,
                           style: ButtonStyle(
@@ -188,12 +213,13 @@ class _DashboardDelegue extends State<DashboardDelegue> {
                 iconSize: 40,
                 color: const Color.fromARGB(255, 5, 48, 69),
                 onPressed: () async {
-                  List<String> pdfname = await readPdf();
+                  List<Fiche> pdfname = [];
+                  recupAllsuivi(pdfname, context);
                   // ignore: use_build_context_synchronously
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => Fiches(
-                        pdfname: pdfname,
+                        fiches: pdfname,
                       ),
                     ),
                   );
@@ -243,10 +269,9 @@ Future<List<String>> readPdf() async {
   if (!Directory(cherminPers).existsSync()) {
     Directory(cherminPers).createSync();
   }
-  print("entrée ");
+
   try {
     await for (var file in Directory(cherminPers).list()) {
-      print("chemin d'accès");
       if (file.path.endsWith('.pdf')) {
         //final List<int> bytes = await File(file.path).readAsBytes();
         String fileName = file.uri.pathSegments.last;
@@ -257,9 +282,7 @@ Future<List<String>> readPdf() async {
         }
       }
     }
-  } catch (Exep) {
-    print("une exception est arrivée");
-  }
+  } catch (Exep) {}
 
   return pdfText;
 }

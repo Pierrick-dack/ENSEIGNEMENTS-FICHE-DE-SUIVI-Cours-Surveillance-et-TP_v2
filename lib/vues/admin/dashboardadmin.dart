@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:firstapp/models/enseignant.dart';
+import 'package:firstapp/models/fiche.dart';
 import 'package:firstapp/vues/admin/delist.dart';
 import 'package:firstapp/vues/admin/profilechef.dart';
 import 'package:firstapp/vues/admin/uelist.dart';
@@ -89,7 +90,7 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                       onPressed: () {
                         showCupertinoModalPopup(
                             context: context,
-                            builder: (_) {
+                            builder: (BuildContext context) {
                               return AlertDialog(
                                 content: SingleChildScrollView(
                                   child: Column(
@@ -207,6 +208,11 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                                 await LocalDataBase(context)
                                                     .addProfesseur(
                                                         enseignant, context);
+                                                nomP.clear();
+                                                emailP.clear();
+                                                bureau.clear();
+                                                mdpEns.clear();
+                                                Navigator.of(context).pop();
                                               }
                                             },
                                             child: const Text(
@@ -258,7 +264,7 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                       onPressed: () {
                         showCupertinoModalPopup(
                             context: context,
-                            builder: (_) {
+                            builder: (BuildContext context) {
                               return AlertDialog(
                                 content: SingleChildScrollView(
                                   child: Column(
@@ -369,9 +375,17 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                                 classe =
                                                     filiere.text + niveau.text;
                                                 mdpS = mdp.text;
-                                                recup(delegues.length, delegues,
-                                                    context);
-
+                                                recupDele(delegues.length,
+                                                    delegues, context);
+                                                /*for (int i = 0;
+                                                    i < delegues.length;
+                                                    i++) {
+                                                  if (delegues[i].matDel ==
+                                                      mat) {
+                                                    EasyLoading.showInfo(
+                                                        "Vous avez deja un etudiant avec le meme matricule");
+                                                  }else if(del)
+                                                }*/
                                                 Delegue delegue = Delegue(
                                                     id: delegues.length + 1,
                                                     nameDel: name,
@@ -381,6 +395,12 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                                     .addDelegue(
                                                         delegue, context);
 
+                                                nom.clear();
+                                                filiere.clear();
+                                                niveau.clear();
+                                                matricule.clear();
+
+                                                Navigator.of(context).pop();
                                                 /*await LocalDataBase(context)
                                                 .sendToApi();*/
                                               }
@@ -675,13 +695,13 @@ class _DesignState extends State<Designwidget> {
 List<Delegue> delegues = [];
 List<Enseignant> enseignants = [];
 
-void recup(int count, List<Delegue> delegue, context) async {
+void recupDele(int count, List<Delegue> delegue, context) async {
   Future<List<Delegue>> delegues = LocalDataBase(context).getDelegues();
   List<Delegue> del = await delegues;
   if (del.isNotEmpty) {
     delegue.clear();
-    delegue.addAll(del);
   }
+  delegue.addAll(del);
   print("liste recupéré");
 }
 
@@ -689,8 +709,17 @@ void recupProf(List<Enseignant> enseignant, context) async {
   Future<List<Enseignant>> enseignants =
       LocalDataBase(context).getEnseignants();
   List<Enseignant> enseigne = await enseignants;
-  if (enseigne.isNotEmpty) {
+  if (enseignant.isNotEmpty) {
     enseignant.clear();
-    enseignant.addAll(enseigne);
   }
+  enseignant.addAll(enseigne);
+}
+
+void recupAllsuivi(List<Fiche> fiche, context) async {
+  Future<List<Fiche>> fiches = LocalDataBase(context).getFiche();
+  List<Fiche> fichess = await fiches;
+  if (fiche.isNotEmpty) {
+    fiche.clear();
+  }
+  fiche.addAll(fichess);
 }

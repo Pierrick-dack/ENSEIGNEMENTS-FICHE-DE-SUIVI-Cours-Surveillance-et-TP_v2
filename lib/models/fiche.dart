@@ -13,40 +13,39 @@ class Fiche {
   final String typeSeance;
   final String titreSeance;
   final String niveaux;
-  final String? signatureDelegue;
-  final String? signatureProf;
+  final String signatureDelegue;
+  final String signatureProf;
   final String contenu;
   final int confidentialite;
 
-  Fiche({
-    this.id,
-    required this.semestre,
-    required this.date,
-    required this.codeCours,
-    required this.enseignant,
-    required this.heureDebut,
-    required this.heureFin,
-    required this.totalHeures,
-    required this.salle,
-    required this.typeSeance,
-    required this.titreSeance,
-    required this.niveaux,
-    this.signatureDelegue,
-    this.signatureProf,
-    required this.contenu,
-    required this.confidentialite
-  });
+  Fiche(
+      {this.id,
+      required this.semestre,
+      required this.date,
+      required this.codeCours,
+      required this.enseignant,
+      required this.heureDebut,
+      required this.heureFin,
+      required this.totalHeures,
+      required this.salle,
+      required this.typeSeance,
+      required this.titreSeance,
+      required this.niveaux,
+      required this.signatureDelegue,
+      required this.signatureProf,
+      required this.contenu,
+      required this.confidentialite});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'semestre': semestre,
-      'date': date.toString(),
+      'date': date,
       'codeCours': codeCours,
       'enseignant': enseignant,
-      'heureDebut': heureDebut.toString(),
-      'heureFin': heureFin.toString(),
-      'totalHeures': totalHeures.toString(),
+      'heureDebut': heureDebut,
+      'heureFin': heureFin,
+      'totalHeures': totalHeures,
       'salle': salle,
       'typeSeance': typeSeance,
       'titreSeance': titreSeance,

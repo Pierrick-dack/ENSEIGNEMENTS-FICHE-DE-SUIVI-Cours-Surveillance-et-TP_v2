@@ -102,7 +102,7 @@ class _UeList extends State<UeList> {
                 onPressed: () {
                   showCupertinoModalPopup(
                     context: context,
-                    builder: (_) {
+                    builder: (BuildContext context) {
                       return AlertDialog(
                         content: SingleChildScrollView(
                           child: Column(
@@ -266,7 +266,7 @@ class _UeList extends State<UeList> {
                 onPressed: () {
                   showCupertinoModalPopup(
                     context: context,
-                    builder: (_) {
+                    builder: (BuildContext context) {
                       return AlertDialog(
                         content: SingleChildScrollView(
                           child: Column(
@@ -438,7 +438,7 @@ class _UeList extends State<UeList> {
                 onPressed: () {
                   showCupertinoModalPopup(
                     context: context,
-                    builder: (_) {
+                    builder: (BuildContext context) {
                       return AlertDialog(
                         content: SingleChildScrollView(
                           child: Column(

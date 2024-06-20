@@ -18,13 +18,21 @@ class DashboardProf extends StatefulWidget {
 }
 
 List<Fiche> ficheslist = [];
+TimeOfDay heuretotale = const TimeOfDay(hour: 00, minute: 00);
 Enseignant enseignant =
     Enseignant(nomEns: "", emailEns: "", numBurEns: "", mdpEns: "");
 
 class _DashboardProf extends State<DashboardProf> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     enseignant = widget.prof;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    recupFiche(ficheslist,widget.prof, context);
+    heuretotale = calculheure(ficheslist, context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -77,7 +85,7 @@ class _DashboardProf extends State<DashboardProf> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              recupFiche(ficheslist, context);
+                              recupFiche(ficheslist, widget.prof,context);
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) =>
@@ -107,14 +115,30 @@ class _DashboardProf extends State<DashboardProf> {
                     height: MediaQuery.of(context).size.height * 0.2,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Container(
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 195, 255, 198),
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 61, 215, 0),
-                              width: 2),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          )),
+                        color: const Color.fromARGB(255, 237, 255, 238),
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 61, 215, 0),
+                            width: 2),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            heuretotale.format(context),
+                            style: const TextStyle(fontSize: 35),
+                          ),
+                          const Text(
+                            "Total d'heures de cours",
+                            style: TextStyle(
+                                fontSize: 25, fontFamily: "Times New Roman"),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -144,13 +168,14 @@ class _DashboardProf extends State<DashboardProf> {
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Container(
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 195, 255, 198),
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 61, 215, 0),
-                              width: 2),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          )),
+                        color: const Color.fromARGB(255, 195, 255, 198),
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 61, 215, 0),
+                            width: 2),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -215,15 +240,31 @@ class _DashboardProf extends State<DashboardProf> {
   }
 }
 
-void recupFiche(List<Fiche> fiche, context) async {
-  Future<List<Fiche>> fiches = LocalDataBase(context).getFiche();
-  //Future<List<Fiche>> fiches = LocalDataBase(context).getFicheProf(enseignant);
+void recupFiche(List<Fiche> fiche, Enseignant enseignan,context) async {
+  //Future<List<Fiche>> fiches = LocalDataBase(context).getFiche();
+  Future<List<Fiche>> fiches = LocalDataBase(context).getFicheProf(enseignan);
   List<Fiche> ficheList = await fiches;
 
   if (fiche.isNotEmpty) {
     fiche.clear();
   }
   fiche.addAll(ficheList);
+}
 
-  print("liste recupéré");
+TimeOfDay calculheure(List<Fiche> fiches, context) {
+  int totalHeure = 0;
+  int totalMinutes = 0;
+  
+  for (int i = 0; i < fiches.length; i++) {
+    totalHeure = fiches[i].totalHeures.hour + totalHeure;
+    totalMinutes = fiches[i].totalHeures.minute + totalMinutes;
+  }
+  
+  //print("$totalHeure et $totalMinutes");
+  int restHeure = (totalMinutes - totalMinutes % 60) ~/ 60;
+  ;
+  totalHeure = restHeure + totalHeure;
+  totalMinutes = totalMinutes - (restHeure * 60);
+  
+  return TimeOfDay(hour: totalHeure, minute: totalMinutes);
 }

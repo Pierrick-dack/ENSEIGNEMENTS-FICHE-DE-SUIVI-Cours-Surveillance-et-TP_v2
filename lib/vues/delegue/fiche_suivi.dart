@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:firstapp/models/enseignant.dart';
+import 'package:firstapp/models/fiche.dart';
+import 'package:firstapp/vues/admin/dashboardadmin.dart';
 import 'package:firstapp/vues/prof/connexionprof.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,9 @@ import 'package:firstapp/vues/delegue/pagepdf.dart';
 import 'package:firstapp/vues/delegue/dashboardelegue.dart';
 
 class FicheSuivi extends StatefulWidget {
-  const FicheSuivi({super.key});
+  const FicheSuivi({super.key, required this.nomEns});
+
+  final List<String> nomEns;
 
   @override
   State<FicheSuivi> createState() {
@@ -19,7 +23,6 @@ class FicheSuivi extends StatefulWidget {
 }
 
 class _FicheSuivi extends State<FicheSuivi> {
-  TextEditingController cour = TextEditingController();
   TextEditingController cod = TextEditingController();
   TextEditingController prof = TextEditingController();
   TextEditingController contenu = TextEditingController();
@@ -40,9 +43,8 @@ class _FicheSuivi extends State<FicheSuivi> {
 
   String data = "";
 
-  String cours = "";
   String code = "";
-  String professeur = "";
+  String professeur = nomEns[0];
   String content = "";
   TimeOfDay timedebut = TimeOfDay.now();
   TimeOfDay timefin = TimeOfDay.now();
@@ -52,18 +54,12 @@ class _FicheSuivi extends State<FicheSuivi> {
   String salle = "";
   String titreseance = '';
   String niveau = '';
-  TimeOfDay total = TimeOfDay.now();
+  TimeOfDay total = const TimeOfDay(hour: 00, minute: 00);
   int confidentialite = 1;
 
-  //List<Enseignant> enseignants = [];
-  //List<DropdownMenuItem<String>> enseigne = [];
-
+  @override
   @override
   Widget build(context) {
-    //recup(enseignants, context);
-    /*for (int i = 0; i < enseignants.length; i++) {
-      enseigne.add(enseignants[i].nomEns as DropdownMenuItem<String>);
-    }*/
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -99,43 +95,39 @@ class _FicheSuivi extends State<FicheSuivi> {
           child: ListView(
             scrollDirection: Axis.vertical,
             children: [
-              TextField(
-                controller: cour,
-                decoration: const InputDecoration(
-                  labelText: "libelé du cours",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50.0),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
               const SizedBox(height: 4),
-              TextField(
-                controller: prof,
-                decoration: const InputDecoration(
-                  label: Text("Professeur "),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(50.0),
-                    ),
+              Container(
+                height: 70,
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(50),
                   ),
                 ),
+                child: widget.nomEns.isNotEmpty
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          hint: const Text("Professeur :"),
+                          value: professeur,
+                          onChanged: (valueNew) {
+                            setState(() {
+                              professeur = valueNew!;
+                            });
+                          },
+                          items: widget.nomEns
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      )
+                    : const Center(child: Text("Aucun professeur disponible")),
               ),
-              /*DropdownButton(
-                style: TextStyle(
-                  
-                ),
-                items: enseigne,
-                onChanged: (value) {
-                  if (value!.isNotEmpty) {
-                    professeur = value;
-                  }
-                },
-              ),*/
               const SizedBox(height: 4),
               TextField(
                 controller: niveaux,
@@ -604,8 +596,7 @@ class _FicheSuivi extends State<FicheSuivi> {
                         backgroundColor:
                             MaterialStateProperty.all(Colors.green)),
                     onPressed: () {
-                      if (cour.text.isEmpty ||
-                          prof.text.isEmpty ||
+                      if (prof.text.isEmpty ||
                           cod.text.isEmpty ||
                           title.text.isEmpty ||
                           niveaux.text.isEmpty ||
@@ -658,7 +649,6 @@ class _FicheSuivi extends State<FicheSuivi> {
                       } else {
                         //creation du pdf et enregistrement dans le telephone
 
-                        cours = cour.text;
                         professeur = prof.text;
                         code = cod.text;
                         titreseance = title.text;
@@ -667,26 +657,28 @@ class _FicheSuivi extends State<FicheSuivi> {
                         content = contenu.text;
                         niveau = niveaux.text;
 
+                        Fiche fiche = Fiche(
+                            semestre: semestre,
+                            date: date,
+                            codeCours: code,
+                            enseignant: professeur,
+                            heureDebut: timedebut,
+                            heureFin: timefin,
+                            totalHeures: total,
+                            salle: salle,
+                            typeSeance: nature,
+                            titreSeance: titreseance,
+                            niveaux: niveau,
+                            signatureDelegue: signD!,
+                            signatureProf: signP!,
+                            contenu: content,
+                            confidentialite: confidentialite);
+
                         // ignore: use_build_context_synchronously
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (_) => PagePdf(
-                              cours: cours,
-                              prof: professeur,
-                              code: code,
-                              titre: titreseance,
-                              salle: salle,
-                              heuredebut: timedebut,
-                              heurefin: timefin,
-                              duree: total,
-                              date: date,
-                              niveaux: niveau,
-                              semestre: semestre,
-                              nature: nature,
-                              contenu: content,
-                              signP: signP!,
-                              signD: signD!,
-                              confidentialite: confidentialite,
+                              fiche: fiche,
                             ),
                           ),
                         );
@@ -705,7 +697,6 @@ class _FicheSuivi extends State<FicheSuivi> {
                         backgroundColor: MaterialStateProperty.all(Colors.red)),
                     onPressed: () {
                       setState(() {
-                        cour.clear();
                         cod.clear();
                         prof.clear();
                         contenu.clear();

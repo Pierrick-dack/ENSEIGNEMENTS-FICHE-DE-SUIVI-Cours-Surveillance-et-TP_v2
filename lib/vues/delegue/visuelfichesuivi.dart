@@ -1,50 +1,30 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:firstapp/localdb.dart';
+import 'package:firstapp/models/fiche.dart';
 import 'package:firstapp/vues/delegue/pagepdf.dart';
-import 'package:firstapp/vues/delegue/pdftravaux.dart';
+import 'package:firstapp/vues/delegue/pdfwidget.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:firstapp/models/fichetravaux.dart';
 
-class PagePdfTravaux extends StatefulWidget {
-  const PagePdfTravaux(
-      {Key? key,
-      required this.titreSeanceTP,
-      required this.enseignant,
-      required this.codeCours,
-      required this.heureDebut,
-      required this.heureFin,
-      required this.objectifsTP,
-      required this.materielNecessaire,
-      required this.procedureTP,
-      required this.observation,
-      required this.resultatsAttendus})
-      : super(key: key);
+class VisuelFicheSuivi extends StatefulWidget {
+  const VisuelFicheSuivi({Key? key, required this.fiche}) : super(key: key);
 
-  final String titreSeanceTP;
-  final String enseignant;
-  final String codeCours;
-  final TimeOfDay heureDebut;
-  final TimeOfDay heureFin;
-  final String objectifsTP;
-  final String materielNecessaire;
-  final String procedureTP;
-  final String observation;
-  final String resultatsAttendus;
+  final Fiche fiche;
 
-  State<PagePdfTravaux> createState() {
-    return _PagePdfTravaux();
+  State<VisuelFicheSuivi> createState() {
+    return _VisuelFicheSuivi();
   }
 }
 
-class _PagePdfTravaux extends State<PagePdfTravaux> {
+class _VisuelFicheSuivi extends State<VisuelFicheSuivi> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -58,68 +38,44 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
           ),
           backgroundColor: const Color.fromARGB(255, 2, 53, 95),
           leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
             icon: const Icon(
               Icons.arrow_back,
               color: Colors.white,
             ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
           ),
           actions: [
             TextButton(
               onPressed: () async {
+                EasyLoading.init();
                 final directory = await getExternalStorageDirectory();
-                const dossierPers = 'ICT FOLLOW UP/fiches de TP';
-                final cheminPers = '${directory?.path}/$dossierPers';
-                if (!Directory(cheminPers).existsSync()) {
-                  Directory(cheminPers).createSync();
+                const dossierPers = 'ICT FOLLOW UP/fiches de suivi';
+                final cherminPers = '${directory?.path}/$dossierPers';
+                if (!Directory(cherminPers).existsSync()) {
+                  Directory(cherminPers).createSync();
                 }
-                final ficheTravau = pw.Document();
-                Directory dossier = Directory(cheminPers);
+                final fichepdf = pw.Document();
+                Directory dossier = Directory(cherminPers);
                 List<FileSystemEntity> element = await dossier.list().toList();
                 int nombreFiche = element.length;
-                final cheminpdf =
-                    '$cheminPers/fiche de travaux $nombreFiche.pdf';
-
+                final cheminpdf = '$cherminPers/fiche $nombreFiche.pdf';
+                /*if (a != 0) {
+                  File(cheminpdf).deleteSync();
+                }*/
                 final file = File(cheminpdf);
 
-                FicheTravaux ficheTravaux = FicheTravaux(
-                    titreSeanceTP: widget.titreSeanceTP,
-                    enseignant: widget.enseignant,
-                    codeCours: widget.codeCours,
-                    heureDebut: widget.heureDebut,
-                    heureFin: widget.heureFin,
-                    objectifsTP: widget.objectifsTP,
-                    materielNecessaire: widget.materielNecessaire,
-                    procedureTP: widget.procedureTP,
-                    observation: widget.observation,
-                    resultatsAttendus: widget.resultatsAttendus);
-
-                //ajouter la fiche dans la base de données
-                LocalDataBase(context).addFicheTravaux(ficheTravaux, context);
-
                 final ByteData data =
-                    await rootBundle.load("assets/images/logouniv/jpg");
-                Uint8List image = Uint8List.fromList(data.buffer.asInt8List());
-                ficheTravau.addPage(
+                    await rootBundle.load("assets/images/logouniv.jpg");
+                Uint8List image = Uint8List.fromList(
+                  data.buffer.asUint8List(),
+                );
+                fichepdf.addPage(
                   pw.MultiPage(
                     pageFormat: PdfPageFormat.a4,
                     build: (context) {
-                      return [
-                        PdfTravaux(
-                            titreSeanceTP: widget.titreSeanceTP,
-                            enseignant: widget.enseignant,
-                            codeCours: widget.codeCours,
-                            heureDebut: widget.heureDebut,
-                            heureFin: widget.heureFin,
-                            objectifsTP: widget.objectifsTP,
-                            materielNecessaire: widget.materielNecessaire,
-                            procedureTP: widget.procedureTP,
-                            observation: widget.observation,
-                            resultatsAttendus: widget.resultatsAttendus,
-                            logo: image)
-                      ];
+                      return [Personal(fiche: widget.fiche, logo: image)];
                     },
                   ),
                 );
@@ -154,7 +110,7 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
                                   MaterialStateProperty.all(Colors.green),
                             ),
                             onPressed: () {
-                              Navigator.of(context).pop();
+                              Navigator.pop(context);
                             },
                             child: const Text(
                               "OK",
@@ -166,7 +122,10 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
                     );
                   },
                 );
-                await file.writeAsBytes(await ficheTravau.save());
+                /*Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => DashboardDelegue()),
+                );*/
+                await file.writeAsBytes(await fichepdf.save());
               },
               child: const Text(
                 "Enregistrer",
@@ -198,7 +157,7 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
                           style: TextStyle(fontSize: 10, fontFamily: 'Arial'),
                         ),
                         Text(
-                          "BLABLABLA",
+                          "PAIX-TRAVAIL-PATRIE",
                           style: TextStyle(fontSize: 10, fontFamily: 'Arial'),
                         ),
                         Text(
@@ -225,7 +184,7 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
                           style: TextStyle(fontSize: 10),
                         ),
                         Text(
-                          "BLABLABLA",
+                          "PAIX-TRAVAIL-PATRIE",
                           style: TextStyle(fontSize: 10),
                         ),
                         Text(
@@ -242,89 +201,88 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
               ),
               const Center(
                 child: Text(
-                  "FICHE DE TRAVAUX PRATIQUES ",
+                  "FICHE DE SUIVI ",
                   style: TextStyle(
                       fontSize: 30,
                       fontFamily: 'Times New Roman',
                       fontWeight: FontWeight.w300),
                 ),
               ),
+              const SizedBox(
+                height: 30,
+              ),
+              MyWidget(
+                  text: "Nom du professeur: ",
+                  content: widget.fiche.enseignant),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidget(
+                  text: "Code de la matière : ",
+                  content: widget.fiche.codeCours),
+              const SizedBox(
+                height: 10,
+              ),
               MyWidgetSec(
-                text: "Titre de la séance : ",
-                content: widget.titreSeanceTP,
+                text: "Titre de la séance : \n",
+                content: widget.fiche.titreSeance,
                 un: 1,
                 deux: 2,
               ),
               const SizedBox(
                 height: 10,
               ),
-              MyWidgetSec(
-                text: "Nom du professeur : ",
-                content: widget.enseignant,
-                un: 1,
-                deux: 2,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              MyWidgetSec(
-                text: "Code de l'unité d'enseignement : ",
-                content: widget.codeCours,
-                un: 1,
-                deux: 1,
-              ),
+              MyWidget(
+                  text: "Numéro de la salle : ", content: widget.fiche.salle),
               const SizedBox(
                 height: 10,
               ),
               MyWidget(
-                text: "Heure de debut : ",
-                content: widget.heureDebut.format(context),
-              ),
+                  text: "Heure de debut :",
+                  content: widget.fiche.heureDebut.format(context)),
               const SizedBox(
                 height: 10,
               ),
               MyWidget(
-                text: "Heure de fin : ",
-                content: widget.heureFin.format(context),
+                  text: "Heure de fin :",
+                  content: widget.fiche.heureFin.format(context)),
+              const SizedBox(
+                height: 10,
               ),
+              MyWidget(text: "Date :", content: widget.fiche.date.toString()),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidget(
+                  text: "Durée :",
+                  content: widget.fiche.totalHeures.format(context)),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidget(
+                  text: "Semestre : ",
+                  content: widget.fiche.semestre.toString()),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidget(
+                  text: "Nature du cours : ", content: widget.fiche.typeSeance),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
-                  text: "Objectifs : ",
-                  content: widget.objectifsTP,
-                  un: 1,
-                  deux: 3),
-              const SizedBox(
-                height: 10,
-              ),
-              MyWidgetSec(
-                  text: "Materiel necessaire : ",
-                  content: widget.materielNecessaire,
-                  un: 1,
-                  deux: 2),
-              const SizedBox(
-                height: 10,
-              ),
-              MyWidgetSec(
-                  text: "Procedure à respecter : ",
-                  content: widget.procedureTP,
-                  un: 1,
-                  deux: 2),
-              const SizedBox(
-                height: 10,
-              ),
-              MyWidgetSec(
-                  text: "Observations : ",
-                  content: widget.observation,
+                  text: "Contenu : \n",
+                  content: widget.fiche.contenu,
                   un: 1,
                   deux: 2),
-              const SizedBox(
-                height: 10,
-              ),
-              MyWidgetSec(
-                  text: "Resultats attendus : ",
-                  content: widget.resultatsAttendus,
+              MyWidgetImg(
+                  text: "Signature du professeur : ",
+                  content: base64Decode(widget.fiche.signatureProf),
+                  un: 1,
+                  deux: 2),
+              MyWidgetImg(
+                  text: "Signature du Delegué : ",
+                  content: base64Decode(widget.fiche.signatureDelegue),
                   un: 1,
                   deux: 2)
             ],

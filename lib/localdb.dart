@@ -141,7 +141,6 @@ class LocalDataBase {
 
   Future<void> addProfesseur(
       Enseignant enseignant, BuildContext context) async {
-    EasyLoading.init();
     EasyLoading.show(
       status: 'Chargement en cours',
       dismissOnTap: false,
@@ -161,6 +160,28 @@ class LocalDataBase {
     }
   }
 
+  Future<void> updateNomProfessseur(
+      Enseignant enseignant, String newNom, BuildContext context) async {
+    EasyLoading.show(status: "Chargement en cours", dismissOnTap: false);
+    try {
+      final db = await database;
+
+      String requete = '''
+        UPDATE 'nom_table'
+        SET nom == ?
+        WHERE id_professeur == ?
+      ''';
+
+      db.execute(requete, [newNom, enseignant.id]);
+
+      EasyLoading.showSuccess("Information mise de jour avec succès",
+          duration: const Duration(milliseconds: 2500));
+    } catch (e) {
+      EasyLoading.showError("Erreur lors de la mise à jour de l'information",
+          duration: const Duration(milliseconds: 2500));
+    }
+  }
+
   Future<void> addDelegue(Delegue delegue, BuildContext context) async {
     EasyLoading.show(
       status: 'Chargement en cours',
@@ -174,7 +195,6 @@ class LocalDataBase {
 
       EasyLoading.showSuccess('Enregistrement Effectué');
     } catch (e) {
-      print("erreur $e");
       EasyLoading.showError(
           duration: const Duration(milliseconds: 2500),
           'Erreur lors de l\'ajout du délégué');
@@ -231,7 +251,6 @@ class LocalDataBase {
 
       EasyLoading.showSuccess('Enregistrement Effectué');
     } catch (e) {
-      print("erreur $e");
       EasyLoading.showError(
           duration: const Duration(milliseconds: 2500),
           'Erreur lors de l\'ajout de la fiche de suivi');
@@ -345,11 +364,12 @@ class LocalDataBase {
     return List.generate(
       items.length,
       (index) => Enseignant(
-          id: items[index]['id'],
-          nomEns: items[index]['nomEns'],
-          emailEns: items[index]['emailEns'],
-          numBurEns: items[index]['numBurEns'],
-          mdpEns: items[index]['mdpEns']),
+        id: items[index]['id'],
+        nomEns: items[index]['nomEns'],
+        emailEns: items[index]['emailEns'],
+        numBurEns: items[index]['numBurEns'],
+        mdpEns: items[index]['mdpEns'],
+      ),
     );
   }
 
@@ -361,7 +381,9 @@ class LocalDataBase {
     return List.generate(
       items.length,
       (index) => Cours(
-          codeUE: items[index]['codeUe'], intituleUE: items[index]['codeUE']),
+        codeUE: items[index]['codeUe'],
+        intituleUE: items[index]['codeUE'],
+      ),
     );
   }
 
@@ -372,20 +394,50 @@ class LocalDataBase {
     return List.generate(
       items.length,
       (index) => Fiche(
-          id: items[index]['id'],
-          semestre: items[index]['semestre'],
-          date: items[index]['date'],
-          codeCours: items[index]['codeCours'],
-          enseignant: items[index]['enseignant'],
-          heureDebut: items[index]['heureDebut'],
-          heureFin: items[index]['heureFin'],
-          totalHeures: items[index]['totalHeures'],
-          salle: items[index]['salle'],
-          typeSeance: items[index]['typeSeance'],
-          titreSeance: items[index]['titreSeance'],
-          niveaux: items[index]['niveaux'],
-          contenu: items[index]['contenu'],
-          confidentialite: items[index]['confidentialite']),
+        id: items[index]['id'],
+        semestre: items[index]['semestre'],
+        date: DateTime.parse(items[index]['date']),
+        codeCours: items[index]['codeCours'],
+        enseignant: items[index]['enseignant'],
+        heureDebut: stringToTimeOfDay(items[index]['heureDebut']),
+        heureFin: stringToTimeOfDay(items[index]['heureFin']),
+        totalHeures: stringToTimeOfDay(items[index]['totalHeures']),
+        salle: items[index]['salle'],
+        typeSeance: items[index]['typeSeance'],
+        titreSeance: items[index]['titreSeance'],
+        niveaux: items[index]['niveaux'],
+        contenu: items[index]['contenu'],
+        signatureDelegue: items[index]['signatureDelegue'],
+        signatureProf: items[index]['signatureProf'],
+        confidentialite: items[index]['confidentialite'],
+      ),
+    );
+  }
+
+  Future<List<Fiche>> getFicheCours(Cours cours) async {
+    final db = await database;
+    List<Map<String, dynamic>> items = await db
+        .query('fiches', where: "codeCours == ?", whereArgs: [cours.codeUE]);
+    return List.generate(
+      items.length,
+      (index) => Fiche(
+        id: items[index]['id'],
+        semestre: items[index]['semestre'],
+        date: DateTime.parse(items[index]['date']),
+        codeCours: items[index]['codeCours'],
+        enseignant: items[index]['enseignant'],
+        heureDebut: stringToTimeOfDay(items[index]['heureDebut']),
+        heureFin: stringToTimeOfDay(items[index]['heureFin']),
+        totalHeures: stringToTimeOfDay(items[index]['totalHeures']),
+        salle: items[index]['salle'],
+        typeSeance: items[index]['typeSeance'],
+        titreSeance: items[index]['titreSeance'],
+        niveaux: items[index]['niveaux'],
+        contenu: items[index]['contenu'],
+        signatureDelegue: items[index]['signatureDelegue'],
+        signatureProf: items[index]['signatureProf'],
+        confidentialite: items[index]['confidentialite'],
+      ),
     );
   }
 
@@ -397,20 +449,144 @@ class LocalDataBase {
     return List.generate(
       items.length,
       (index) => Fiche(
-          id: items[index]['id'],
-          semestre: items[index]['semestre'],
-          date: items[index]['date'],
-          codeCours: items[index]['codeCours'],
-          enseignant: items[index]['enseignant'],
-          heureDebut: items[index]['heureDebut'],
-          heureFin: items[index]['heureFin'],
-          totalHeures: items[index]['totalHeures'],
-          salle: items[index]['salle'],
-          typeSeance: items[index]['typeSeance'],
-          titreSeance: items[index]['titreSeance'],
-          niveaux: items[index]['niveaux'],
-          contenu: items[index]['contenu'],
-          confidentialite: items[index]['confidentialite']),
+        id: items[index]['id'],
+        semestre: items[index]['semestre'],
+        date: DateTime.parse(items[index]['date']),
+        codeCours: items[index]['codeCours'],
+        enseignant: items[index]['enseignant'],
+        heureDebut: stringToTimeOfDay(items[index]['heureDebut']),
+        heureFin: stringToTimeOfDay(items[index]['heureFin']),
+        totalHeures: stringToTimeOfDay(items[index]['totalHeures']),
+        salle: items[index]['salle'],
+        typeSeance: items[index]['typeSeance'],
+        titreSeance: items[index]['titreSeance'],
+        niveaux: items[index]['niveaux'],
+        contenu: items[index]['contenu'],
+        signatureDelegue: items[index]['signatureDelegue'],
+        signatureProf: items[index]['signatureProf'],
+        confidentialite: items[index]['confidentialite'],
+      ),
+    );
+  }
+
+  Future<List<FicheTravaux>> getFicheTravaux() async {
+    final db = await database;
+    List<Map<String, dynamic>> items =
+        await db.query('fiche_travaux_pratiques');
+    return List.generate(
+      items.length,
+      (index) => FicheTravaux(
+        id: items[index]['id'],
+        titreSeanceTP: items[index]['titreSeanceTP'],
+        enseignant: items[index]['enseignant'],
+        codeCours: items[index]['codeCours'],
+        heureDebut: stringToTimeOfDay(items[index]['heureDebut']),
+        heureFin: stringToTimeOfDay(items[index]['heureFin']),
+        objectifsTP: items[index]['objectifsTP'],
+        materielNecessaire: items[index]['materielNecessaire'],
+        procedureTP: items[index]['procedureTP'],
+        observation: items[index]['observation'],
+        resultatsAttendus: items[index]['resultatsAttendus'],
+      ),
+    );
+  }
+
+  Future<List<FicheTravaux>> getFicheTravauxProf(Enseignant enseignant) async {
+    final db = await database;
+    List<Map<String, dynamic>> items = await db.query('fiche_travaux_pratiques',
+        where: "enseignant == ?", whereArgs: [enseignant.nomEns]);
+    return List.generate(
+      items.length,
+      (index) => FicheTravaux(
+        id: items[index]['id'],
+        titreSeanceTP: items[index]['titreSeanceTP'],
+        enseignant: items[index]['enseignant'],
+        codeCours: items[index]['codeCours'],
+        heureDebut: stringToTimeOfDay(items[index]['heureDebut']),
+        heureFin: stringToTimeOfDay(items[index]['heureFin']),
+        objectifsTP: items[index]['objectifsTP'],
+        materielNecessaire: items[index]['materielNecessaire'],
+        procedureTP: items[index]['procedureTP'],
+        observation: items[index]['observation'],
+        resultatsAttendus: items[index]['resultatsAttendus'],
+      ),
+    );
+  }
+
+  Future<List<FicheTravaux>> getFicheTravauxCours(Cours cours) async {
+    final db = await database;
+    List<Map<String, dynamic>> items = await db.query('fiche_travaux_pratiques',
+        where: "CodeCours == ?", whereArgs: [cours.codeUE]);
+    return List.generate(
+      items.length,
+      (index) => FicheTravaux(
+        id: items[index]['id'],
+        titreSeanceTP: items[index]['titreSeanceTP'],
+        enseignant: items[index]['enseignant'],
+        codeCours: items[index]['codeCours'],
+        heureDebut: stringToTimeOfDay(items[index]['heureDebut']),
+        heureFin: stringToTimeOfDay(items[index]['heureFin']),
+        objectifsTP: items[index]['objectifsTP'],
+        materielNecessaire: items[index]['materielNecessaire'],
+        procedureTP: items[index]['procedureTP'],
+        observation: items[index]['observation'],
+        resultatsAttendus: items[index]['resultatsAttendus'],
+      ),
+    );
+  }
+
+  Future<List<FicheSurveillance>> getFicheSurveillance() async {
+    final db = await database;
+    List<Map<String, dynamic>> items = await db.query('fiche_surveillance');
+    return List.generate(
+      items.length,
+      (index) => FicheSurveillance(
+        id: items[index]['id'],
+        chefDeSalle: items[index]['chefDeSalle'],
+        salle: items[index]['salle'],
+        date: DateTime.parse(items[index]['date']),
+        session: items[index]['session'],
+        codeCours: items[index]['codeCours'],
+        intituleUE: items[index]['intituleUE'],
+        confirmation: items[index]['confirmation'],
+      ),
+    );
+  }
+
+  Future<List<FicheSurveillance>> getFicheSurveillanceProf(
+      Enseignant enseignant) async {
+    final db = await database;
+    List<Map<String, dynamic>> items = await db.query('fiche_surveillance',
+        where: "chefDeSalle == ?", whereArgs: [enseignant.nomEns]);
+    return List.generate(
+      items.length,
+      (index) => FicheSurveillance(
+        chefDeSalle: items[index]['chefDeSalle'],
+        salle: items[index]['salle'],
+        date: DateTime.parse(items[index]['date']),
+        session: items[index]['session'],
+        codeCours: items[index]['codeCours'],
+        intituleUE: items[index]['intituleUE'],
+        confirmation: items[index]['confirmation'],
+      ),
+    );
+  }
+
+  Future<List<FicheSurveillance>> getFicheSurveillanceCours(Cours cours) async {
+    final db = await database;
+    List<Map<String, dynamic>> items = await db.query('fiche_surveillance',
+        where: "CodeCours == ?", whereArgs: [cours.codeUE]);
+    return List.generate(
+      items.length,
+      (index) => FicheSurveillance(
+        chefDeSalle: items[index]['chefDeSalle'],
+        salle: items[index]['salle'],
+        date: DateTime.parse(items[index]['date']),
+        session: items[index]['session'],
+        codeCours: items[index]['codeCours'],
+        intituleUE: items[index]['intituleUE'],
+        confirmation: items[index]['confirmation'],
+      ),
     );
   }
 
@@ -513,5 +689,32 @@ class LocalDataBase {
     };
   }
 
-  void updateBd() async {}
+  void updateBd() async {
+    final db = await database;
+    String requete = "DELETE FROM enseignants";
+    db.execute(requete);
+  }
+}
+
+TimeOfDay stringToTimeOfDay(String tod) {
+  // Vérifiez si la chaîne est déjà au format TimeOfDay(hh:mm)
+  if (tod.startsWith('TimeOfDay')) {
+    final format = RegExp(r'TimeOfDay\((\d{2}):(\d{2})\)');
+    final match = format.firstMatch(tod);
+    if (match != null) {
+      final hours = int.parse(match.group(1)!);
+      final minutes = int.parse(match.group(2)!);
+      return TimeOfDay(hour: hours, minute: minutes);
+    }
+  } else {
+    // Sinon, essayez le format HH:MM:SS
+    final format = RegExp(r'(\d{2}):(\d{2}):(\d{2})');
+    final match = format.firstMatch(tod);
+    if (match != null) {
+      final hours = int.parse(match.group(1)!);
+      final minutes = int.parse(match.group(2)!);
+      return TimeOfDay(hour: hours, minute: minutes);
+    }
+  }
+  throw FormatException('Invalid TimeOfDay format: $tod');
 }

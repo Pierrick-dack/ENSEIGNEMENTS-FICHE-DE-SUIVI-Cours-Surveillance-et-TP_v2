@@ -159,7 +159,6 @@ class _ConnexionProf extends State<ConnexionProf> {
                           }
                           EasyLoading.showError("Identifiants incorrect",
                               duration: const Duration(milliseconds: 2500));
-                          
                         }
                       }
                     },
@@ -193,5 +192,5 @@ void recup(List<Enseignant> enseignant, context) async {
   }
   enseignant.addAll(enseigne);
 
-  print(enseignant);
+  //print(Enseignant);
 }

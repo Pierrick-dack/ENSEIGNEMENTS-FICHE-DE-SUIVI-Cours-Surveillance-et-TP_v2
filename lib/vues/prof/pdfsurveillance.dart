@@ -1,3 +1,4 @@
+import 'package:firstapp/models/fichesurveillance.dart';
 import 'package:firstapp/vues/delegue/pdfwidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,23 +16,9 @@ Font font = Font();
 
 class PdfSurveillance extends pw.StatelessWidget {
   PdfSurveillance(
-      {Key? key,
-      required this.chefSalle,
-      required this.salle,
-      required this.date,
-      required this.session,
-      required this.codeCours,
-      required this.intitule,
-      required this.confirmation,
-      required this.logo});
+      {Key? key, required this.ficheSurveillance, required this.logo});
 
-  final String chefSalle;
-  final String salle;
-  final DateTime date;
-  final String session;
-  final String codeCours;
-  final String intitule;
-  final int confirmation;
+  final FicheSurveillance ficheSurveillance;
   final Uint8List logo;
 
   @override
@@ -101,18 +88,18 @@ class PdfSurveillance extends pw.StatelessWidget {
           ),
           pw.SizedBox(height: 20),
           PartieSec(
-              text: "Chef de salle :", content: chefSalle, un: 1, deux: 2),
+              text: "Chef de salle :", content: ficheSurveillance.chefDeSalle, un: 1, deux: 2),
           pw.SizedBox(height: 10),
-          PartieSec(text: "Salle :", content: salle, un: 1, deux: 2),
+          PartieSec(text: "Salle :", content: ficheSurveillance.salle, un: 1, deux: 2),
           pw.SizedBox(height: 10),
-          PartieSec(text: "Date :", content: date.toString(), un: 1, deux: 2),
+          PartieSec(text: "Date :", content: ficheSurveillance.date.toString(), un: 1, deux: 2),
           pw.SizedBox(height: 10),
-          PartieSec(text: "Session :", content: session, un: 1, deux: 2),
+          PartieSec(text: "Session :", content: ficheSurveillance.session, un: 1, deux: 2),
           pw.SizedBox(height: 10),
           PartieSec(
-              text: "Code du cours :", content: codeCours, un: 1, deux: 1),
+              text: "Code du cours :", content: ficheSurveillance.codeCours, un: 1, deux: 1),
           pw.SizedBox(height: 10),
-          PartieSec(text: "Intitulé :", content: intitule, un: 1, deux: 2),
+          PartieSec(text: "Intitulé :", content: ficheSurveillance.intituleUE, un: 1, deux: 2),
         ]);
   }
 }

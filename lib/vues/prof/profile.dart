@@ -1,10 +1,13 @@
 import 'package:firstapp/accueil_page.dart';
+import 'package:firstapp/models/enseignant.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ProfileProf extends StatefulWidget {
-  const ProfileProf({super.key});
+  const ProfileProf({super.key, required this.enseignant});
+
+  final Enseignant enseignant;
 
   @override
   State<ProfileProf> createState() {
@@ -99,27 +102,17 @@ class _ProfileProfState extends State<ProfileProf> {
                     child: Column(
                       children: [
                         DesignWidget(
-                          text: "nom",
-                          information: "information",
+                          text: "Nom",
+                          information: widget.enseignant.nomEns,
                           controller: controler,
                           icon: const Icon(Icons.person),
                         ),
-                        DesignWidget(
-                            text: "prenom",
-                            information: "information",
-                            controller: controler,
-                            icon: const Icon(
-                              Icons.label,
-                            )),
-                        DesignWidget(
-                            text: "departement",
-                            information: "information",
-                            controller: controler,
-                            icon: const Icon(Icons.school_sharp)),
+                        
+                        
                         DesignWidget(
                             text: "email",
                             controller: controler,
-                            information: "information",
+                            information: widget.enseignant.emailEns,
                             icon: const Icon(Icons.email_outlined)),
                         Center(
                           child: SizedBox(
@@ -278,6 +271,3 @@ class _DesignWidget extends State<DesignWidget> {
     );
   }
 }
-
-
-

@@ -560,7 +560,7 @@ class _FicheTravau extends State<FicheTravau> {
                           results.text.isEmpty) {
                         showCupertinoModalPopup(
                             context: context,
-                            builder: (_) {
+                            builder: (BuildContext context) {
                               return AlertDialog(
                                 title: const Text(
                                   "Alerte",

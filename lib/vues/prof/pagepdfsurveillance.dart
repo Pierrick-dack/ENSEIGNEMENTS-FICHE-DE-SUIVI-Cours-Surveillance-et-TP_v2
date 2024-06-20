@@ -14,22 +14,10 @@ import 'package:pdf/widgets.dart' as pw;
 class PagePdfSurveillance extends StatefulWidget {
   const PagePdfSurveillance({
     Key? key,
-    required this.chefSalle,
-    required this.salle,
-    required this.date,
-    required this.session,
-    required this.codeCours,
-    required this.intitule,
-    required this.confidentialite,
+    required this.ficheSurveillance,
   }) : super(key: key);
 
-  final String chefSalle;
-  final String salle;
-  final DateTime date;
-  final String session;
-  final String codeCours;
-  final String intitule;
-  final int confidentialite;
+  final FicheSurveillance ficheSurveillance;
 
   @override
   State<PagePdfSurveillance> createState() {
@@ -76,18 +64,10 @@ class _PagePdfSurveillance extends State<PagePdfSurveillance> {
 
                 final file = File(cheminpdf);
 
-                FicheSurveillance ficheSurveillance = FicheSurveillance(
-                    chefDeSalle: widget.chefSalle,
-                    salle: widget.salle,
-                    date: widget.date,
-                    session: widget.session,
-                    codeCours: widget.codeCours,
-                    intituleUE: widget.intitule,
-                    confirmation: true);
-
+                
                 // ignore: use_build_context_synchronously
                 await LocalDataBase(context)
-                    .addFicheSurveillance(ficheSurveillance, context);
+                    .addFicheSurveillance(widget.ficheSurveillance, context);
 
                 final ByteData data =
                     await rootBundle.load("assets/images/logouniv.jpg");
@@ -98,13 +78,7 @@ class _PagePdfSurveillance extends State<PagePdfSurveillance> {
                     build: (context) {
                       return [
                         PdfSurveillance(
-                            chefSalle: widget.chefSalle,
-                            salle: widget.salle,
-                            date: widget.date,
-                            session: widget.session,
-                            codeCours: widget.codeCours,
-                            intitule: widget.intitule,
-                            confirmation: widget.confidentialite,
+                            ficheSurveillance: widget.ficheSurveillance,
                             logo: image)
                       ];
                     },
@@ -114,7 +88,7 @@ class _PagePdfSurveillance extends State<PagePdfSurveillance> {
                 // ignore: use_build_context_synchronously
                 showCupertinoModalPopup(
                   context: context,
-                  builder: (_) {
+                  builder: (BuildContext context) {
                     return AlertDialog(
                       title: const Text(
                         "Confirmation",
@@ -242,33 +216,33 @@ class _PagePdfSurveillance extends State<PagePdfSurveillance> {
               ),
               MyWidgetSec(
                   text: "Chef de salle :",
-                  content: widget.chefSalle,
+                  content: widget.ficheSurveillance.chefDeSalle,
                   un: 1,
                   deux: 2),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
-                  text: "Salle :", content: widget.salle, un: 1, deux: 2),
+                  text: "Salle :", content: widget.ficheSurveillance.salle, un: 1, deux: 2),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
                   text: "Date :",
-                  content: widget.date.toString(),
+                  content: widget.ficheSurveillance.date.toString(),
                   un: 1,
                   deux: 1),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
-                  text: "Session :", content: widget.session, un: 1, deux: 2),
+                  text: "Session :", content: widget.ficheSurveillance.session, un: 1, deux: 2),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
                   text: "Code de l'unité d'enseignement :",
-                  content: widget.codeCours,
+                  content: widget.ficheSurveillance.codeCours,
                   un: 2,
                   deux: 1),
               const SizedBox(
@@ -276,7 +250,7 @@ class _PagePdfSurveillance extends State<PagePdfSurveillance> {
               ),
               MyWidgetSec(
                   text: "Intitulé de l'unité d'enseignement :",
-                  content: widget.intitule,
+                  content: widget.ficheSurveillance.intituleUE,
                   un: 1,
                   deux: 1)
             ],

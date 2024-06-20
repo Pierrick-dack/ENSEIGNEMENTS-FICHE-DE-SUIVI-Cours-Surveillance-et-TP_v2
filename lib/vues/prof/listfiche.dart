@@ -1,4 +1,5 @@
 import 'package:firstapp/models/fiche.dart';
+import 'package:firstapp/vues/admin/dashboardadmin.dart';
 import 'package:firstapp/vues/delegue/fiches.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class _ListeFiche extends State<ListeFiche> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  readPdf();
+                  recupAllsuivi(widget.fiches, context);
                 });
               },
               icon: const Icon(Icons.refresh),
@@ -73,8 +74,7 @@ List<Widget> repeatWidgetText(int count, List<Fiche> fiches) {
     );
   } else {
     for (int i = 0; i < count; i++) {
-      widgets.add(
-          FicheRep(fiche: "${fiches[i].codeCours} ${fiches[i].enseignant}"));
+      widgets.add(FicheRep(fiche: fiches[i]));
     }
   }
 

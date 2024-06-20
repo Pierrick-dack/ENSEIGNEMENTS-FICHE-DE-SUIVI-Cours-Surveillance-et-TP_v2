@@ -1,3 +1,5 @@
+import 'package:firstapp/models/fichesurveillance.dart';
+import 'package:firstapp/vues/prof/pagepdfsurveillance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -195,8 +197,21 @@ class _FormFicheSurveillance extends State<FormFicheSurveillance> {
                         sesion = session.text;
                         codeCours = code.text;
                         intituleUe = intitule.text;
+                        FicheSurveillance ficheSurveillance = FicheSurveillance(
+                            chefDeSalle: chefSalle,
+                            salle: sall,
+                            date: date,
+                            session: sesion,
+                            codeCours: codeCours,
+                            intituleUE: intituleUe,
+                            confirmation: true);
 
-                        
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => PagePdfSurveillance(
+                                ficheSurveillance: ficheSurveillance),
+                          ),
+                        );
                       }
                     },
                     child: const Text(

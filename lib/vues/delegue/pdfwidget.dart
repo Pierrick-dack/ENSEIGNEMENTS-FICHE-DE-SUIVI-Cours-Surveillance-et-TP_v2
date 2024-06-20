@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firstapp/models/fiche.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -15,38 +16,9 @@ Future<pw.Font> loadFont() async {
 Font font = Font();
 
 class Personal extends pw.StatelessWidget {
-  Personal(
-      {Key? key,
-      required this.cours,
-      required this.prof,
-      required this.code,
-      required this.titre,
-      required this.salle,
-      required this.heuredebut,
-      required this.heurefin,
-      required this.duree,
-      required this.date,
-      required this.semestre,
-      required this.nature,
-      required this.contenu,
-      required this.signP,
-      required this.signD,
-      required this.logo});
+  Personal({Key? key, required this.fiche, required this.logo});
 
-  final String cours;
-  final String prof;
-  final String code;
-  final String titre;
-  final String salle;
-  final TimeOfDay heuredebut;
-  final TimeOfDay heurefin;
-  final TimeOfDay duree;
-  final DateTime date;
-  final int semestre;
-  final String nature;
-  final String contenu;
-  final String signP;
-  final String signD;
+  final Fiche fiche;
   final Uint8List logo;
 
   @override
@@ -119,63 +91,67 @@ class Personal extends pw.StatelessWidget {
           pw.SizedBox(
             height: 20,
           ),
-          Partie(text: "Libellé du cours: \n", content: cours),
+          
+          Partie(text: "Nom du professeur", content: fiche.enseignant),
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Nom du professeur", content: prof),
-          pw.SizedBox(
-            height: 10,
-          ),
-          Partie(text: "Code de la matière : ", content: code),
+          Partie(text: "Code de la matière : ", content: fiche.codeCours),
           pw.SizedBox(
             height: 10,
           ),
           Partie(
             text: "Titre de la séance : \n",
-            content: titre,
+            content: fiche.titreSeance,
           ),
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Numéro de la salle : ", content: salle),
+          Partie(text: "Numéro de la salle : ", content: fiche.salle),
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Heure de debut :", content: "${heuredebut.hour}:${heuredebut.minute}"),
+          Partie(
+              text: "Heure de debut :",
+              content: "${fiche.heureDebut.hour}:${fiche.heureDebut.minute}"),
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Heure de fin :", content: "${heurefin.hour}:${heurefin.minute}"),
+          Partie(
+              text: "Heure de fin :",
+              content: "${fiche.heureFin.hour}:${fiche.heureFin.minute}"),
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Durée:", content: "${duree.hour}: ${duree.minute}"),
+          Partie(text: "Durée:", content: "${fiche.totalHeures.hour}: ${fiche.totalHeures.minute}"),
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Semestre : ", content: semestre.toString()),
+          Partie(text: "Semestre : ", content: fiche.semestre.toString()),
           pw.SizedBox(
             height: 10,
           ),
-          Partie(text: "Nature : ", content: nature),
+          Partie(text: "Nature : ", content: fiche.typeSeance),
           pw.SizedBox(
             height: 10,
           ),
-          PartieSec(text: "Contenu : ", content: contenu, un: 1, deux: 3),
+          PartieSec(text: "Contenu : ", content: fiche.contenu, un: 1, deux: 3),
           pw.SizedBox(
             height: 10,
           ),
           PartieImg(
               text: "Signature du professeur : ",
-              content: base64Decode(signP),
+              content: base64Decode(fiche.signatureProf),
               un: 1,
               deux: 3),
           pw.SizedBox(
             height: 10,
           ),
           PartieImg(
-              text: "Signature du délégué : ", content: base64Decode(signD), un: 1, deux: 3)
+              text: "Signature du délégué : ",
+              content: base64Decode(fiche.signatureDelegue),
+              un: 1,
+              deux: 3)
         ]);
   }
 }

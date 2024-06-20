@@ -12,42 +12,9 @@ import 'package:firstapp/vues/delegue/pdfwidget.dart';
 import 'package:firstapp/localdb.dart';
 
 class PagePdf extends StatefulWidget {
-  const PagePdf({
-    Key? key,
-    required this.cours,
-    required this.prof,
-    required this.code,
-    required this.titre,
-    required this.salle,
-    required this.heuredebut,
-    required this.heurefin,
-    required this.duree,
-    required this.date,
-    required this.semestre,
-    required this.nature,
-    required this.niveaux,
-    required this.contenu,
-    required this.signP,
-    required this.signD,
-    required this.confidentialite,
-  }) : super(key: key);
+  const PagePdf({Key? key, required this.fiche}) : super(key: key);
 
-  final String cours;
-  final String prof;
-  final String code;
-  final String titre;
-  final String salle;
-  final TimeOfDay heuredebut;
-  final TimeOfDay heurefin;
-  final TimeOfDay duree;
-  final DateTime date;
-  final int semestre;
-  final String nature;
-  final String contenu;
-  final String niveaux;
-  final String signP;
-  final String signD;
-  final int confidentialite;
+  final Fiche fiche;
 
   @override
   State<PagePdf> createState() {
@@ -99,25 +66,8 @@ class _PagePdf extends State<PagePdf> {
                 }*/
                 final file = File(cheminpdf);
 
-                Fiche fiche = Fiche(
-                    semestre: widget.semestre,
-                    date: widget.date,
-                    codeCours: widget.code,
-                    enseignant: widget.prof,
-                    heureDebut: widget.heuredebut,
-                    heureFin: widget.heurefin,
-                    totalHeures: widget.duree,
-                    salle: widget.salle,
-                    niveaux: widget.niveaux,
-                    typeSeance: widget.nature,
-                    titreSeance: widget.titre,
-                    signatureDelegue: widget.signD,
-                    signatureProf: widget.signP,
-                    contenu: widget.contenu,
-                    confidentialite: widget.confidentialite);
-
                 // ignore: use_build_context_synchronously
-                await LocalDataBase(context).addFiche(fiche, context);
+                await LocalDataBase(context).addFiche(widget.fiche, context);
 
                 final ByteData data =
                     await rootBundle.load("assets/images/logouniv.jpg");
@@ -128,24 +78,7 @@ class _PagePdf extends State<PagePdf> {
                   pw.MultiPage(
                     pageFormat: PdfPageFormat.a4,
                     build: (context) {
-                      return [
-                        Personal(
-                            cours: widget.cours,
-                            prof: widget.prof,
-                            code: widget.code,
-                            titre: widget.titre,
-                            salle: widget.salle,
-                            heuredebut: widget.heuredebut,
-                            heurefin: widget.heurefin,
-                            duree: widget.duree,
-                            date: widget.date,
-                            semestre: widget.semestre,
-                            nature: widget.nature,
-                            contenu: widget.contenu,
-                            signP: widget.signP,
-                            signD: widget.signD,
-                            logo: image)
-                      ];
+                      return [Personal(fiche: widget.fiche, logo: image)];
                     },
                   ),
                 );
@@ -153,7 +86,7 @@ class _PagePdf extends State<PagePdf> {
                 // ignore: use_build_context_synchronously
                 showCupertinoModalPopup(
                   context: context,
-                  builder: (_) {
+                  builder: (BuildContext context) {
                     return AlertDialog(
                       title: const Text(
                         "Confirmation",
@@ -228,7 +161,7 @@ class _PagePdf extends State<PagePdf> {
                           style: TextStyle(fontSize: 10, fontFamily: 'Arial'),
                         ),
                         Text(
-                          "BLABLABLA",
+                          "PAIX-TRAVAIL-PATRIE",
                           style: TextStyle(fontSize: 10, fontFamily: 'Arial'),
                         ),
                         Text(
@@ -255,7 +188,7 @@ class _PagePdf extends State<PagePdf> {
                           style: TextStyle(fontSize: 10),
                         ),
                         Text(
-                          "BLABLABLA",
+                          "PAIX-TRAVAIL-PATRIE",
                           style: TextStyle(fontSize: 10),
                         ),
                         Text(
@@ -282,78 +215,78 @@ class _PagePdf extends State<PagePdf> {
               const SizedBox(
                 height: 30,
               ),
-              MyWidgetSec(
-                text: "Libellé du cours: \n",
-                content: widget.cours,
-                un: 1,
-                deux: 2,
-              ),
+              MyWidget(
+                  text: "Nom du professeur: ",
+                  content: widget.fiche.enseignant),
               const SizedBox(
                 height: 10,
               ),
-              MyWidget(text: "Nom du professeur: ", content: widget.prof),
-              const SizedBox(
-                height: 10,
-              ),
-              MyWidget(text: "Code de la matière : ", content: widget.code),
+              MyWidget(
+                  text: "Code de la matière : ",
+                  content: widget.fiche.codeCours),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
                 text: "Titre de la séance : \n",
-                content: widget.titre,
+                content: widget.fiche.titreSeance,
                 un: 1,
                 deux: 2,
               ),
               const SizedBox(
                 height: 10,
               ),
-              MyWidget(text: "Numéro de la salle : ", content: widget.salle),
+              MyWidget(
+                  text: "Numéro de la salle : ", content: widget.fiche.salle),
               const SizedBox(
                 height: 10,
               ),
               MyWidget(
                   text: "Heure de debut :",
-                  content: widget.heuredebut.format(context)),
-              const SizedBox(
-                height: 10,
-              ),
-              MyWidget(text: "Date :", content: widget.date.toString()),
+                  content: widget.fiche.heureDebut.format(context)),
               const SizedBox(
                 height: 10,
               ),
               MyWidget(
                   text: "Heure de fin :",
-                  content: widget.heurefin.format(context)),
+                  content: widget.fiche.heureFin.format(context)),
               const SizedBox(
                 height: 10,
               ),
-              MyWidget(text: "Durée :", content: widget.duree.format(context)),
+              MyWidget(text: "Date :", content: widget.fiche.date.toString()),
               const SizedBox(
                 height: 10,
               ),
               MyWidget(
-                  text: "Semestre : ", content: widget.semestre.toString()),
+                  text: "Durée :",
+                  content: widget.fiche.totalHeures.format(context)),
               const SizedBox(
                 height: 10,
               ),
-              MyWidget(text: "Nature du cours : ", content: widget.nature),
+              MyWidget(
+                  text: "Semestre : ",
+                  content: widget.fiche.semestre.toString()),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidget(
+                  text: "Nature du cours : ", content: widget.fiche.typeSeance),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
                   text: "Contenu : \n",
-                  content: widget.contenu,
+                  content: widget.fiche.contenu,
                   un: 1,
                   deux: 2),
               MyWidgetImg(
                   text: "Signature du professeur : ",
-                  content: base64Decode(widget.signP),
+                  content: base64Decode(widget.fiche.signatureProf),
                   un: 1,
                   deux: 2),
               MyWidgetImg(
                   text: "Signature du Delegué : ",
-                  content: base64Decode(widget.signD),
+                  content: base64Decode(widget.fiche.signatureDelegue),
                   un: 1,
                   deux: 2)
             ],
