@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('semestres', function (Blueprint $table) {
             $table->id();
             $table->string('numSemestre');
+            $table->integer('anneeDepart');
+            $table->integer('anneeFin');
+            $tble->integer('numSemaine');
             $table->timestamps();
         });
     }
