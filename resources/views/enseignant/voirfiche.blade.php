@@ -78,7 +78,6 @@
                 </div>
                 <div class="modal-body">
                     <form id="wizard_with_validation" action="{{ route('update_fiche_surveillance', ['id' => $fiche]) }}" method="POST">
-
                         @csrf
                         <div class="form-group">
                             <label for="chefdesalle">Chef de salle (Enseignant)*</label>

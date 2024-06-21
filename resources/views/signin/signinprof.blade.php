@@ -42,11 +42,6 @@
 
                     <h3 class="title">Connexion</h3><br>
                     <div class="input-container">
-                        <input type="text" name="nomEns" class="input">
-                        <label for="Nom">Nom</label>
-                        <span>Nom</span>
-                    </div>
-                    <div class="input-container">
                         <input type="email" name="emailEns" class="input">
                         <label for="Email">Email</label>
                         <span>Email</span>

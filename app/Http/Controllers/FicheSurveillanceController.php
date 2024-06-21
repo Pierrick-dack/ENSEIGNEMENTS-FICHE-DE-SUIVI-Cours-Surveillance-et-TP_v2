@@ -73,19 +73,19 @@ class FicheSurveillanceController extends Controller
 
         ]);
 
-        $fiche = FicheSurveillance::findOrFail($id);
-        $fiche->update($validatedData);
-        $fiche->surveillants()->delete();
+        $fiches = FicheSurveillance::findOrFail($id);
+        $fiches->update($validatedData);
+        $fiches->surveillants()->delete();
 
         // Ajouter ou mettre à jour les surveillants
         foreach ($validatedData['name'] as $name) {
-            $fiche->surveillants()->create(['nom' => $name]);
+            $fiches->surveillants()->create(['nom' => $name]);
         }
 
         // Sauvegarder la signature si elle est présente
         if (isset($validatedData['signature'])) {
-            $fiche->signature = $validatedData['signature'];
-            $fiche->save();
+            $fiches->signature = $validatedData['signature'];
+            $fiches->save();
         }
 
         return redirect()->route('VoirFicheSurvey')->with('success', 'Fiche mise à jour avec succès');

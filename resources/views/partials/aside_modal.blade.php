@@ -14,7 +14,8 @@
                 <img src="{{ asset("asset/Images/chef.png") }}" class="img-circle elevation-2" alt="User">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ session('username') }}</a>
+                <a href="#" class="d-block">Chef</a>
+                <!-- <a href="#" class="d-block">{{ session('username') }}Chef</a> -->
             </div>
         </div>
 
@@ -207,6 +208,15 @@
                                 <input type="text" class="form-control" id="matDel" name="matDel" placeholder="Matricule">
                                 <div class="input-group-append">
                                     <div class="input-group-text"><span class="fas fa-id-card"></span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" >
+                            <label for="nivDel" >Niveau</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="nivDel" name="nivDel" placeholder="Niveau">
+                                <div class="input-group-append" >
+                                    <div class="input-group-text"><span class="fas fa-id-card" ></span></div>
                                 </div>
                             </div>
                         </div>

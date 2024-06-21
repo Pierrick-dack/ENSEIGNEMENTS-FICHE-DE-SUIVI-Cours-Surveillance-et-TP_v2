@@ -4,6 +4,7 @@
 use App\Http\Controllers\ICTL1Controller;
 use App\Http\Controllers\ICTL2Controller;
 use App\Http\Controllers\ICTL3Controller;
+use App\Http\Controllers\NiveauController;
 use App\Http\Controllers\TableFichesSurveillancesController;
 use App\Http\Controllers\TableFichesTravauxPratiquesController;
 use App\Http\Controllers\EnseignantController;
@@ -137,3 +138,9 @@ Route::get('/ICTL3', [ICTL3Controller::class, 'index'])->name('ictl3');
 // Suppression
 Route::get('/ICTL1_delete', [ICTL1Controller::class, 'destroy'])->name('ue_l1.destroy');
 Route::get('/ICTL2_delete', [ICTL2Controller::class, 'destroy'])->name('ue_l2.destroy');
+
+// Routes pour les classes
+Route::post('/classes', [NiveauController::class, 'store'])->name('classes.store');
+Route::get('/user', [AuthDelegueController::class, 'getUser'])->name('user.get');
+
+

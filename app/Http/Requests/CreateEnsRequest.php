@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LogAdminRequest extends FormRequest {
+class CreateEnsRequest extends FormRequest {
 
     public function authorize(): bool {
         return true;
@@ -12,8 +12,9 @@ class LogAdminRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'emailCD' => 'required|email',
-            'mdpCD' => 'required|min:6|max:12',
+            'nomEns' => 'required',
+            'emailEns' => 'required|email',
+            'mdpEns' => 'required|min:6|max:12',
         ];
     }
 }

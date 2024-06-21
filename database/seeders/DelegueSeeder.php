@@ -15,6 +15,7 @@ class DelegueSeeder extends Seeder {
             'nameDel' => 'Pierrick',
             'emailDel' => 'pierrick@gmail.com',
             'matDel' => '21Q2493',
+            'nivDel' => 'L3',
             'mdpDel' => Hash::make('rnbking2001'),
         ]);
 

@@ -43,11 +43,6 @@
                     <h3 class="title">Connexion</h3><br>
 
                     <div class="input-container">
-                        <input type="text" name="nomCD" class="input">
-                        <label for="nomCD">Nom</label>
-                        <span>Nom</span>
-                    </div>
-                    <div class="input-container">
                         <input type="email" name="emailCD" class="input">
                         <label for="email">Email</label>
                         <span>Email</span>

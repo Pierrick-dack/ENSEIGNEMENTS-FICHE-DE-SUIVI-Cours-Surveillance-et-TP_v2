@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateEnsRequest;
 use App\Models\Enseignant;
 use Illuminate\Http\Request;
 use App\Http\Requests\LogEnsRequest;
@@ -32,7 +33,7 @@ class AuthEnseignantController extends Controller {
 
     }
 
-    public function store(LogEnsRequest $request) {
+    public function store(CreateEnsRequest $request) {
 
         $data = $request -> validated();
 

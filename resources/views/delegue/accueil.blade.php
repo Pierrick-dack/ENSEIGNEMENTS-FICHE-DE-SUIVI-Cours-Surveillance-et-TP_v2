@@ -41,7 +41,7 @@
             <p>Cette fiche permet de suivre les informations importantes concernant une séance de travail pratique.</p>
             <br>
             <div class="card-container">
-                <a href="{{ route('Créer-fiche-travaux-pratiques') }}" class="card new-card">
+                <a href="{{ route('user.get') }}" class="card new-card">
                     <div class="fiche-icon">
                         <i class="fas fa-plus"></i>
                         <div id="loader" class="loader"></div>

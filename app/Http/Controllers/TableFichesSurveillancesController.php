@@ -10,12 +10,12 @@ class TableFichesSurveillancesController extends Controller
 {
     public function mainFichesSurveillances()
     {
-        $fichesSurvey = $this->getFichesTP();
+        $fichesSurvey = $this->getFichesSurveillance();
 
         return view('chef.pages.tables.tableFicheSurveillances', compact('fichesSurvey'));
     }
 
-    private function getFichesTP()
+    private function getFichesSurveillance()
     {
         // Récupérez toutes les fiches depuis la base de données
         return FicheSurveillance::all();
@@ -24,12 +24,12 @@ class TableFichesSurveillancesController extends Controller
     public function destroy($id)
     {
 
-        $fichesTP = FicheTravauxPratiques::find($id);
+        $fichesSurvey = FicheSurveillance::find($id);
 
-        if (!$fichesTP) {
+        if (!$fichesSurvey) {
             return redirect()->route('fiches_surveillances')->with('error', 'Délégué non trouvé.');
         }
-        $fichesTP->delete();
+        $fichesSurvey->delete();
 
         return redirect()->route('fiches_surveillances')->with('success', 'La fiche a été supprimée avec succès.');
     }

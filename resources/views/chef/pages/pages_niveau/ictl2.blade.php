@@ -57,11 +57,12 @@
                                         <td>{{ $coursS1l2->codeUE }}</td>
                                         <td>{{ $coursS1l2->intituleUE }}</td>
                                         <td>
-                                            <div class="progress progress-xs">
-                                                <div class="progress-bar progress-bar-danger" style="width: 23%"></div>
+                                            <div class="progress progress-xs progress-striped active">
+                                                <div class="progress-bar bg-success" style="width: 70%"></div>
                                             </div>
                                         </td>
-                                        <td><span class="badge bg-danger">23%</span></td>
+                                        </td>
+                                        <td><span class="badge bg-success">70%</span></td>
                                         <td>
                                             <a href="#" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#editDelegateModal" data-id="{{ $coursS1l2->id }}" data-codeUE="{{ $coursS1l2->codeUE }}" data-intituleUE="{{ $coursS1l2->intituleUE }}">
                                                 Modifier

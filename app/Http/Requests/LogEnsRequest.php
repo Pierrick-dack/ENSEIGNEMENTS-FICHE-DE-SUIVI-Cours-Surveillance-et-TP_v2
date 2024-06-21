@@ -12,7 +12,6 @@ class LogEnsRequest extends FormRequest {
 
     public function rules(): array {
         return [
-            'nomEns' => 'required',
             'emailEns' => 'required|email',
             'mdpEns' => 'required|min:6|max:12',
         ];
