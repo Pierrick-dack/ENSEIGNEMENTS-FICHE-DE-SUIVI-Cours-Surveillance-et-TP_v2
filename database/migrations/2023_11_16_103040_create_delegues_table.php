@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('emailDel');
             $table->string('matDel');
             $table->string('nivDel');
+            $table->string('filDel');
             $table->string('mdpDel');
             $table->timestamps();
         });
