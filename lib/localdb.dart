@@ -8,6 +8,7 @@ import 'package:firstapp/models/fichesurveillance.dart';
 import 'package:firstapp/models/fichetravaux.dart';
 import 'package:firstapp/models/filiere.dart';
 import 'package:firstapp/models/niveau.dart';
+import 'package:firstapp/models/semestre.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -51,7 +52,9 @@ class LocalDataBase {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       codeUE VARCHAR(64) NOT NULL,
       intituleUE VARCHAR(255) NOT NULL,
-      niveau_id INTEGER, FOREIGN KEY (niveau_id) REFERENCES niveaux(id)
+      enseignant VARCHAR(255) NOT NULL,
+      niveau_id INTEGER, FOREIGN KEY (niveau_id) REFERENCES niveaux(id),
+      semestre_id INTEGER, FOREIGN KEY (semestre_id) REFERENCES semestre(id)
     );''';
 
   static const chefsTable = '''
@@ -67,7 +70,9 @@ class LocalDataBase {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nameDel VARCHAR(255) NOT NULL,
         matDel VARCHER(8) NOT NULL,
-        mdpDel VARCHAR(255) NOT NULL
+        mdpDel VARCHAR(255) NOT NULL,
+        nivDel VARCHAR(255) NOT NULL, 
+        filDel VARCHAR(255) NOT NULL
       );''';
 
   static const enseignantsTable = '''
@@ -75,7 +80,6 @@ class LocalDataBase {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nomEns VARCHAR(255) NOT NULL, 
         emailEns VARCHAR(255) NOT NULL,
-        numBurEns VARCHAR(64) NOT NULL,
         mdpEns VARCHAR(255) NOT NULL
       );''';
 
@@ -102,7 +106,9 @@ class LocalDataBase {
   static const niveauxTable = '''
       CREATE TABLE niveaux(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        numero INTEGER NOT NULL
+        codeNiveau VARCHAR(32) NOT NULL,
+        intituleNiveau VARCHAR(255) NOT NULL,
+        filiereNiveau VARCHAR(255) NOT NULL
       );''';
 
   static const ficheSurveillanceTable = '''
@@ -135,7 +141,10 @@ class LocalDataBase {
   static const semestreTable = '''
       CREATE TABLE semestre(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        numSemestre VARCHAR(64) NOT NULL
+        numSemestre VARCHAR(64) NOT NULL, 
+        anneeDepart INTEGER NOT NULL, 
+        anneeFin INTEGER NOT NULL,
+        numSemaine INTEGER NOT NULL
       )
       ''';
 
@@ -325,6 +334,19 @@ class LocalDataBase {
     }
   }
 
+  Future<void> addSemestre(Semestre semestre, BuildContext context) async {
+    EasyLoading.show(status: "Chargement en cours", dismissOnTap: false);
+    try {
+      final db = await database;
+      await db.insert('semestre', semestre.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+      EasyLoading.showSuccess("Enregistrement effectué");
+    } catch (e) {
+      EasyLoading.showError("Erreur lors de l'ajout du niveau",
+          duration: const Duration(milliseconds: 2500));
+    }
+  }
+
   Future<List<Admin>> getAdmin() async {
     final db = await database;
 
@@ -352,7 +374,9 @@ class LocalDataBase {
           id: items[index]['id'],
           nameDel: items[index]['nameDel'],
           mdpDel: items[index]['mdpDel'],
-          matDel: items[index]['matDel']),
+          matDel: items[index]['matDel'],
+          nivDel: items[index]['nivDel'],
+          filDel: items[index]['filDel']),
     );
   }
 
@@ -367,10 +391,25 @@ class LocalDataBase {
         id: items[index]['id'],
         nomEns: items[index]['nomEns'],
         emailEns: items[index]['emailEns'],
-        numBurEns: items[index]['numBurEns'],
         mdpEns: items[index]['mdpEns'],
       ),
     );
+  }
+
+  Future<Enseignant> getOneEnseignant(Enseignant enseignant) async {
+    final db = await database;
+
+    final result = await db
+        .query('enseignants', where: 'id == ?', whereArgs: [enseignant.id]);
+
+    // ignore: unnecessary_cast
+    final item = result.first as Map<String, dynamic>;
+
+    return Enseignant(
+        id: item['id'],
+        nomEns: item['nomEns'],
+        emailEns: item['emailEns'],
+        mdpEns: item['mdpEns']);
   }
 
   Future<List<Cours>> getCours() async {
@@ -381,9 +420,11 @@ class LocalDataBase {
     return List.generate(
       items.length,
       (index) => Cours(
-        codeUE: items[index]['codeUe'],
-        intituleUE: items[index]['codeUE'],
-      ),
+          codeUE: items[index]['codeUe'],
+          intituleUE: items[index]['codeUE'],
+          enseignant: items[index]['enseignant'],
+          niveau_id: items[index]['niveau_id'],
+          semestre_id: items[index]['semestre_id']),
     );
   }
 
@@ -608,8 +649,57 @@ class LocalDataBase {
     List<Map<String, dynamic>> items = await db.query('filiere', orderBy: 'id');
     return List.generate(
       items.length,
-      (index) => Niveau(id: items[index]['id'], numero: items[index]['numero']),
+      (index) => Niveau(
+          id: items[index]['id'],
+          codeNiveau: items[index]['codeNiveau'],
+          intituleNiveau: items[index]['intituleNiveau'],
+          filiereNiveau: items[index]['filiereNiveaus']),
     );
+  }
+
+  Future<Niveau> getOneNiveau(String niveau) async {
+    final db = await database;
+
+    final result =
+        await db.query('niveaux', where: 'codeNiveau == ?', whereArgs: [niveau]);
+
+    // ignore: unnecessary_cast
+    final item = result.first as Map<String, dynamic>;
+    return Niveau(
+        id: item['id'],
+        codeNiveau: item['codeNiveau'],
+        intituleNiveau: item['intituleNiveau'],
+        filiereNiveau: item['filiereNiveau']);
+  }
+
+  Future<List<Semestre>> getSemestre() async {
+    final db = await database;
+
+    List<Map<String, dynamic>> items = await db.query('filiere', orderBy: 'id');
+
+    return List.generate(
+        items.length,
+        (index) => Semestre(
+            id: items[index]['id'],
+            numSemestre: items[index]['numSemestre'],
+            anneeDepart: items[index]['anneeDepart'],
+            anneeFin: items[index]['anneeFin'],
+            numSemaine: items[index]['numSemaine']));
+  }
+
+  Future<Semestre> getOneSemestre(Semestre semestre) async {
+    final db = await database;
+    final items =
+        await db.query('semestre', where: 'id==?', whereArgs: [semestre.id]);
+
+    // ignore: unnecessary_cast
+    final item = items.first as Map<String, dynamic>;
+    return Semestre(
+        id: item['id'],
+        numSemestre: item['numSemestre'],
+        anneeDepart: item['anneeDepart'],
+        anneeFin: item['anneeFin'],
+        numSemaine: item['numSemaine']);
   }
 
   /*Future<void> sendToApi() async {
@@ -691,9 +781,15 @@ class LocalDataBase {
 
   void updateBd() async {
     final db = await database;
-    String requete = "DELETE FROM enseignants";
-    db.execute(requete);
+
+    String requete = "DROP TABLE cours";
+    db.execute(coursTable);
   }
+  //supprimer la table cours
+  //creer la table cours
+  //faire un upgrade de la table des delegues
+  //supprimer la table du numero chez niveau et upgrade les autres tables
+  //upgrade de la table des semestres
 }
 
 TimeOfDay stringToTimeOfDay(String tod) {

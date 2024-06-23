@@ -5,23 +5,25 @@ class Delegue {
   final String nameDel;
   final String mdpDel;
   final String matDel;
-  //final String classeDel;
+  final String nivDel;
+  final String filDel;
 
-  Delegue(
-      {this.id,
-      required this.nameDel,
-      required this.mdpDel,
-      required this.matDel
-      //required this.classeDel,
-      });
+  Delegue({
+    this.id,
+    required this.nameDel,
+    required this.mdpDel,
+    required this.matDel,
+    required this.nivDel,
+    required this.filDel,
+  });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'nameDel': nameDel,
       'mdpDel': mdpDel,
-      'matDel': matDel
-      //'classeDel': classeDel,
+      'matDel': matDel,
+      'nivDel': nivDel
     };
   }
 
@@ -30,9 +32,9 @@ class Delegue {
         id: map['id'],
         nameDel: map['nameDel'],
         mdpDel: map['mdpDel'],
-        matDel: map['matDel']
-        //classeDel: map['classeDel']
-        );
+        matDel: map['matDel'],
+        nivDel: map['nivDel'],
+        filDel: map['filDel']);
   }
 
   factory Delegue.fromJson(Map<String, dynamic> json) {
@@ -40,8 +42,8 @@ class Delegue {
         id: json['id'],
         nameDel: json['nameDel'],
         mdpDel: json['mdpDel'],
-        matDel: json['matDel']
-        //classeDel: json['classeDel']
-        );
+        matDel: json['matDel'],
+        nivDel: json['nivDel'],
+        filDel: json['filDel']);
   }
 }

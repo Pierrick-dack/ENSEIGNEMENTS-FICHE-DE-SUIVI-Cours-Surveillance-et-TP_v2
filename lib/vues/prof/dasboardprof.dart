@@ -19,33 +19,32 @@ class DashboardProf extends StatefulWidget {
 
 List<Fiche> ficheslist = [];
 TimeOfDay heuretotale = const TimeOfDay(hour: 00, minute: 00);
-Enseignant enseignant =
-    Enseignant(nomEns: "", emailEns: "", numBurEns: "", mdpEns: "");
 
 class _DashboardProf extends State<DashboardProf> {
   @override
   void initState() {
     super.initState();
-    enseignant = widget.prof;
   }
 
   @override
   Widget build(BuildContext context) {
-    recupFiche(ficheslist,widget.prof, context);
+    recupFiche(ficheslist, widget.prof, context);
     heuretotale = calculheure(ficheslist, context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text("DASHBOARD"),
+          title: const Text("DASHBOARD", style: TextStyle(color: Colors.white),),
           centerTitle: true,
           actions: [
             IconButton(
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (_) => const ProfileProf(),
+                    builder: (_) => ProfileProf(
+                      enseignant: widget.prof,
+                    ),
                   ),
                 );
               },
@@ -85,7 +84,7 @@ class _DashboardProf extends State<DashboardProf> {
                         children: [
                           IconButton(
                             onPressed: () {
-                              recupFiche(ficheslist, widget.prof,context);
+                              recupFiche(ficheslist, widget.prof, context);
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (_) =>
@@ -128,10 +127,9 @@ class _DashboardProf extends State<DashboardProf> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            heuretotale.format(context),
-                            style: const TextStyle(fontSize: 35),
-                          ),
+                          IconButton(onPressed: (){
+
+                          }, icon: const Icon(Icons.book)),
                           const Text(
                             "Total d'heures de cours",
                             style: TextStyle(
@@ -240,7 +238,7 @@ class _DashboardProf extends State<DashboardProf> {
   }
 }
 
-void recupFiche(List<Fiche> fiche, Enseignant enseignan,context) async {
+void recupFiche(List<Fiche> fiche, Enseignant enseignan, context) async {
   //Future<List<Fiche>> fiches = LocalDataBase(context).getFiche();
   Future<List<Fiche>> fiches = LocalDataBase(context).getFicheProf(enseignan);
   List<Fiche> ficheList = await fiches;
@@ -254,17 +252,17 @@ void recupFiche(List<Fiche> fiche, Enseignant enseignan,context) async {
 TimeOfDay calculheure(List<Fiche> fiches, context) {
   int totalHeure = 0;
   int totalMinutes = 0;
-  
+
   for (int i = 0; i < fiches.length; i++) {
     totalHeure = fiches[i].totalHeures.hour + totalHeure;
     totalMinutes = fiches[i].totalHeures.minute + totalMinutes;
   }
-  
+
   //print("$totalHeure et $totalMinutes");
   int restHeure = (totalMinutes - totalMinutes % 60) ~/ 60;
   ;
   totalHeure = restHeure + totalHeure;
   totalMinutes = totalMinutes - (restHeure * 60);
-  
+
   return TimeOfDay(hour: totalHeure, minute: totalMinutes);
 }

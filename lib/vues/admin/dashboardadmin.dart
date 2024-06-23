@@ -31,17 +31,17 @@ final TextEditingController mdp = TextEditingController();
 
 final TextEditingController nomP = TextEditingController();
 final TextEditingController emailP = TextEditingController();
-final TextEditingController bureau = TextEditingController();
 final TextEditingController mdpEns = TextEditingController();
 
 String name = "";
 String mat = "";
 String classe = "";
 String mdpS = "";
+String niv = "";
+String fili = "";
 
 String nameP = "";
 String mailP = "";
-String bureauP = "";
 String mdpENS = "";
 List<String> list = ["ICT L1", "ICT L2", "ICT L3", "ICT M1", "ICT M2"];
 List<Widget> widgets = List.empty();
@@ -150,13 +150,6 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                                           ),
                                                         ),
                                                         TextFormField(
-                                                          controller: bureau,
-                                                          decoration:
-                                                              const InputDecoration(
-                                                                  labelText:
-                                                                      'Numero de bureau: '),
-                                                        ),
-                                                        TextFormField(
                                                           controller: mdpEns,
                                                           decoration:
                                                               const InputDecoration(
@@ -184,7 +177,6 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                             onPressed: () async {
                                               if (nomP.text.isEmpty ||
                                                   emailP.text.isEmpty ||
-                                                  bureau.text.isEmpty ||
                                                   mdpEns.text.isEmpty) {
                                                 EasyLoading.showError(
                                                     'Vous avez une donnée qui vous manque',
@@ -193,7 +185,6 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                               } else {
                                                 nameP = nomP.text;
                                                 mailP = emailP.text;
-                                                bureauP = bureau.text;
                                                 mdpENS = mdpEns.text;
                                                 recupProf(enseignants, context);
                                                 print(enseignants);
@@ -203,14 +194,12 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                                             1,
                                                         nomEns: nameP,
                                                         emailEns: mailP,
-                                                        numBurEns: bureauP,
                                                         mdpEns: mdpENS);
                                                 await LocalDataBase(context)
                                                     .addProfesseur(
                                                         enseignant, context);
                                                 nomP.clear();
                                                 emailP.clear();
-                                                bureau.clear();
                                                 mdpEns.clear();
                                                 Navigator.of(context).pop();
                                               }
@@ -230,7 +219,6 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                               setState(() {
                                                 nomP.clear();
                                                 emailP.clear();
-                                                bureau.clear();
                                                 mdpEns.clear();
                                               });
                                               Navigator.of(context).pop();
@@ -364,7 +352,8 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                               if (nom.text.isEmpty ||
                                                   matricule.text.isEmpty ||
                                                   filiere.text.isEmpty ||
-                                                  niveau.text.isEmpty) {
+                                                  niveau.text.isEmpty ||
+                                                  mdp.text.isEmpty) {
                                                 EasyLoading.showError(
                                                     'Vous avez une donnée qui vous manque',
                                                     duration: const Duration(
@@ -372,8 +361,8 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                               } else {
                                                 name = nom.text;
                                                 mat = matricule.text;
-                                                classe =
-                                                    filiere.text + niveau.text;
+                                                niv = niveau.text;
+                                                fili = filiere.text;
                                                 mdpS = mdp.text;
                                                 recupDele(delegues.length,
                                                     delegues, context);
@@ -390,6 +379,8 @@ class _DashboardAdmin extends State<DashboardAdmin> {
                                                     id: delegues.length + 1,
                                                     nameDel: name,
                                                     mdpDel: mdpS,
+                                                    filDel: fili,
+                                                    nivDel: niv,
                                                     matDel: mat);
                                                 await LocalDataBase(context)
                                                     .addDelegue(

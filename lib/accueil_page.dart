@@ -1,4 +1,4 @@
-
+import 'package:firstapp/localdb.dart';
 import 'package:firstapp/vues/admin/connexionAdmin.dart';
 import 'package:firstapp/vues/prof/connexionprof.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +16,7 @@ class AccueilPage extends StatefulWidget {
 class _AccueilPage extends State<AccueilPage> {
   @override
   Widget build(BuildContext context) {
+    LocalDataBase(context).updateBd();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

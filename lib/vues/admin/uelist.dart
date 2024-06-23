@@ -1,7 +1,9 @@
 import 'package:firstapp/localdb.dart';
 import 'package:firstapp/models/cours.dart';
+import 'package:firstapp/models/enseignant.dart';
 import 'package:firstapp/models/filiere.dart';
 import 'package:firstapp/models/niveau.dart';
+import 'package:firstapp/models/semestre.dart';
 import 'package:firstapp/vues/admin/dashboardadmin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -47,10 +49,18 @@ List<Cours> cours = [];
 List<Filiere> filieres = [];
 List<Niveau> niveaux = [];
 
+List<String> niveaulist = [];
+List<String> enseignantsList = [];
+List<String> semestresList = [];
+
 bool visible = false;
 Icon iconeBouton = const Icon(Icons.add);
 var couleuricon = const MaterialStatePropertyAll(Colors.transparent);
 var couleurfond = const MaterialStatePropertyAll(Colors.transparent);
+
+String prof = "";
+String niv = "";
+String Sem = "";
 
 TextEditingController nomfiliere = TextEditingController();
 TextEditingController numeroNiveau = TextEditingController();
@@ -152,7 +162,21 @@ class _UeList extends State<UeList> {
                                               const SizedBox(
                                                 height: 20,
                                               ),
-                                              
+                                              WidgetDrop(
+                                                  listObject: enseignantsList,
+                                                  valueEnreg: prof),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              WidgetDrop(
+                                                  listObject: niveaulist,
+                                                  valueEnreg: niv),
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
+                                              WidgetDrop(
+                                                  listObject: semestresList,
+                                                  valueEnreg: Sem),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -162,8 +186,7 @@ class _UeList extends State<UeList> {
                                                     onPressed: () async {
                                                       if (codeUe.text.isEmpty ||
                                                           intituleUe
-                                                              .text.isEmpty 
-                                                          ) {
+                                                              .text.isEmpty) {
                                                         EasyLoading.showError(
                                                             "Vous avez une donnée manquante");
                                                       } else {
@@ -186,6 +209,7 @@ class _UeList extends State<UeList> {
                                                                 true;
                                                           }
                                                         }
+
                                                         if (isExistedcode ==
                                                             true) {
                                                           EasyLoading.showInfo(
@@ -195,14 +219,23 @@ class _UeList extends State<UeList> {
                                                           EasyLoading.showInfo(
                                                               "Vous avez déjà une unite d'enseignement qui porte ce intitulé. Vous ne pouvez pas en enregistrer une deuxieme au meme intitulé");
                                                         } else {
-                                                          Cours cour = Cours(
-                                                              id: cours.length +
-                                                                  1,
-                                                              codeUE:
-                                                                  codeUe.text,
-                                                              intituleUE:
-                                                                  intituleUe
-                                                                      .text);
+                                                          Niveau niveauItem =
+                                                              await LocalDataBase(
+                                                                      context)
+                                                                  .getOneNiveau(
+                                                                      niv);
+                                                          //Ajoute un attribut de type semestre
+                                                          //faire en sorte que celui s'applique sur tout les semestres a venir
+                                                          /* Cours cour = Cours(
+                                                            id: cours.length +
+                                                                1,
+                                                            codeUE: codeUe.text,
+                                                            intituleUE:
+                                                                intituleUe.text,
+                                                            enseignant: prof,
+                                                            niveau_id:
+                                                                niveauItem.id!,
+                                                          );*/
                                                           await LocalDataBase(
                                                                   context)
                                                               .addCours(cour,
@@ -494,9 +527,7 @@ class _UeList extends State<UeList> {
                                                         .spaceBetween,
                                                 children: [
                                                   ElevatedButton(
-                                                    onPressed: () {
-                                                      
-                                                    },
+                                                    onPressed: () {},
                                                     style: const ButtonStyle(
                                                       backgroundColor:
                                                           MaterialStatePropertyAll(
@@ -684,6 +715,55 @@ class WidgetCours extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class WidgetDrop extends StatefulWidget {
+  WidgetDrop({super.key, required this.listObject, required this.valueEnreg});
+
+  final List<String> listObject;
+  String valueEnreg;
+
+  State<WidgetDrop> createState() {
+    return _WidgetDrop();
+  }
+}
+
+class _WidgetDrop extends State<WidgetDrop> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 70,
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(50),
+        ),
+      ),
+      child: widget.listObject.isEmpty
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: DropdownButton<String>(
+                isExpanded: true,
+                hint: const Text("Professeur :"),
+                value: widget.listObject[0],
+                onChanged: (valueNew) {
+                  setState(() {
+                    widget.valueEnreg = valueNew!;
+                  });
+                },
+                items: widget.listObject
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            )
+          : const Center(child: Text("Aucun professeur disponible")),
     );
   }
 }
