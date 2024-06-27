@@ -27,7 +27,6 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h3 class="card-title mb-0">Liste des unités d'enseignements</h3>
-                    <a href="#" class="btn btn-primary">Ajouter un cours</a>
                 </div>
 
                 <!-- ************************************************ Semestre 1 ***************************************** -->
@@ -58,11 +57,10 @@
                                         <td>{{ $coursS1l2->intituleUE }}</td>
                                         <td>
                                             <div class="progress progress-xs progress-striped active">
-                                                <div class="progress-bar bg-success" style="width: 70%"></div>
+                                                <div class="progress-bar bg-success" style="width: 95%"></div>
                                             </div>
                                         </td>
-                                        </td>
-                                        <td><span class="badge bg-success">70%</span></td>
+                                        <td><span class="badge bg-success">95%</span></td>
                                         <td>
                                             <a href="#" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#editDelegateModal" data-id="{{ $coursS1l2->id }}" data-codeUE="{{ $coursS1l2->codeUE }}" data-intituleUE="{{ $coursS1l2->intituleUE }}">
                                                 Modifier
@@ -100,6 +98,8 @@
                                     <th scope="col">N°</th>
                                     <th scope="col">Code UE</th>
                                     <th scope="col">Intitulé UE</th>
+                                    <th scope="col">Progression</th>
+                                    <th scope="col">Pourcentage</th>
                                     <th scope="col">Modifier</th>
                                     <th scope="col">Supprimer</th>
                                 </tr>
@@ -110,6 +110,12 @@
                                         <td>{{ $coursS2l2->id }}</td>
                                         <td>{{ $coursS2l2->codeUE }}</td>
                                         <td>{{ $coursS2l2->intituleUE }}</td>
+                                        <td>
+                                            <div class="progress progress-xs progress-striped active">
+                                                <div class="progress-bar bg-success" style="width: 95%"></div>
+                                            </div>
+                                        </td>
+                                        <td><span class="badge bg-success">95%</span></td>
                                         <td>
                                             <a href="#" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#editDelegateModal" data-id="{{ $coursS2l2->id }}" data-codeUE="{{ $coursS2l2->codeUE }}" data-intituleUE="{{ $coursS2l2->intituleUE }}">
                                                 Modifier

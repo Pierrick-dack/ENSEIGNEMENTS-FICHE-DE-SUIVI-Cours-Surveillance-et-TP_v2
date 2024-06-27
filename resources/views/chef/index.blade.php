@@ -113,7 +113,7 @@
                             <div class="card-body">
                                 <h3 class="card-title">ICTL3</h3>
                                 <p class="card-text">Cliquez sur le bouton ci-dessous pour plus d'informations concernant ICTL3.</p>
-                                <a href="#" class="btn btn-light">Voir la page</a>
+                                <a href="{{route('ictl3')}}" class="btn btn-light">Voir la page</a>
                             </div>
                         </div>
                     </div>
@@ -145,78 +145,6 @@
             </div><!-- /.container-fluid -->
         </section>
         <!-- /.content -->
-
-        <!-- Modal -->
-        <div class="modal fade" id="createClassModal" tabindex="-1" role="dialog" aria-labelledby="createClassModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="createClassModalLabel">Créer une nouvelle classe</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="createClassForm">
-                            @csrf
-                            <div class="form-group">
-                                <label for="className">Nom de la classe</label>
-                                <input type="text" class="form-control" id="className" name="className" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="classDescription">Description de la classe</label>
-                                <textarea class="form-control" id="classDescription" name="classDescription" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Créer</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-
-
-    <script>
-        $(document).ready(function () {
-            $('#createClassForm').on('submit', function (e) {
-                e.preventDefault();
-
-                var formData = {
-                    className: $('#className').val(),
-                    classDescription: $('#classDescription').val(),
-                    _token: $('input[name="_token"]').val()
-                };
-
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('classes.store') }}', // Assurez-vous que cette route existe
-                    data: formData,
-                    success: function (response) {
-                        if (response.success) {
-                            // Fermer le modal
-                            $('#createClassModal').modal('hide');
-
-                            // Ajouter la nouvelle classe au tableau de bord
-                            var newClassCard = `
-                            <div class="col-lg-4 col-6">
-                                <div class="card bg-primary text-white">
-                                    <div class="card-body">
-                                        <h3 class="card-title">${response.class.name}</h3>
-                                        <p class="card-text">${response.class.description}</p>
-                                        <a href="#" class="btn btn-light">Voir la page</a>
-                                    </div>
-                                </div>
-                            </div>`;
-                            $('.row.mt-5').append(newClassCard);
-                        }
-                    },
-                    error: function (response) {
-                        alert('Erreur lors de la création de la classe');
-                    }
-                });
-            });
-        });
-    </script>
-
 
 @endsection
