@@ -1,9 +1,13 @@
 import 'package:firstapp/localdb.dart';
 import 'package:firstapp/models/enseignant.dart';
 import 'package:firstapp/models/fiche.dart';
+import 'package:firstapp/models/fichesurveillance.dart';
+import 'package:firstapp/models/fichetravaux.dart';
 import 'package:firstapp/vues/admin/dashboardadmin.dart';
 import 'package:firstapp/vues/prof/formfichesurveillance.dart';
 import 'package:firstapp/vues/prof/listfiche.dart';
+import 'package:firstapp/vues/prof/listfichesurveillance.dart';
+import 'package:firstapp/vues/prof/listfichetravaux.dart';
 import 'package:firstapp/vues/prof/profile.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +22,8 @@ class DashboardProf extends StatefulWidget {
 }
 
 List<Fiche> ficheslist = [];
+List<FicheSurveillance> fichesSurveillanceList = [];
+List<FicheTravaux> fichesTravaux = [];
 TimeOfDay heuretotale = const TimeOfDay(hour: 00, minute: 00);
 
 class _DashboardProf extends State<DashboardProf> {
@@ -29,13 +35,21 @@ class _DashboardProf extends State<DashboardProf> {
   @override
   Widget build(BuildContext context) {
     recupFiche(ficheslist, widget.prof, context);
+    recupFicheSurveillance(fichesSurveillanceList, widget.prof, context);
+    recupFicheTravaux(fichesTravaux, widget.prof, context);
     heuretotale = calculheure(ficheslist, context);
+    int nombretotal = ficheslist.length +
+        fichesSurveillanceList.length +
+        fichesTravaux.length;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: const Text("DASHBOARD", style: TextStyle(color: Colors.white),),
+          title: const Text(
+            "DASHBOARD",
+            style: TextStyle(color: Colors.white),
+          ),
           centerTitle: true,
           actions: [
             IconButton(
@@ -64,7 +78,7 @@ class _DashboardProf extends State<DashboardProf> {
               Row(
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Container(
                       padding: const EdgeInsets.all(10),
@@ -94,7 +108,7 @@ class _DashboardProf extends State<DashboardProf> {
                             },
                             icon: const Icon(
                               Icons.folder_shared_sharp,
-                              size: 50,
+                              size: 70,
                             ),
                           ),
                           Container(
@@ -102,7 +116,7 @@ class _DashboardProf extends State<DashboardProf> {
                             child: const Text(
                               "Fiches de suivi",
                               style:
-                                  TextStyle(color: Colors.black, fontSize: 20),
+                                  TextStyle(color: Colors.black, fontSize: 16),
                             ),
                           ),
                         ],
@@ -111,7 +125,7 @@ class _DashboardProf extends State<DashboardProf> {
                   ),
                   const Spacer(),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Container(
                       padding: const EdgeInsets.all(10),
@@ -127,13 +141,15 @@ class _DashboardProf extends State<DashboardProf> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          IconButton(onPressed: (){
-
-                          }, icon: const Icon(Icons.book)),
+                          Text(
+                            " $nombretotal",
+                            style: const TextStyle(fontSize: 30),
+                          ),
                           const Text(
-                            "Total d'heures de cours",
+                            "Nombre total de fiches ",
                             style: TextStyle(
-                                fontSize: 25, fontFamily: "Times New Roman"),
+                              fontSize: 20,
+                            ),
                           )
                         ],
                       ),
@@ -147,24 +163,61 @@ class _DashboardProf extends State<DashboardProf> {
               Row(
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Container(
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 168, 215, 254),
-                          border: Border.all(
-                              color: const Color.fromARGB(255, 5, 31, 159),
-                              width: 2),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(10),
-                          )),
+                        color: const Color.fromARGB(255, 168, 215, 254),
+                        border: Border.all(
+                            color: const Color.fromARGB(255, 5, 31, 159),
+                            width: 2),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              print('recuperation');
+
+                              recupFicheSurveillance(
+                                  fichesSurveillanceList, widget.prof, context);
+                              print(fichesSurveillanceList);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => ListFicheSurveillance(
+                                      fiches: fichesSurveillanceList),
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.folder_shared_sharp,
+                              size: 70,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            child: const Text(
+                              "Fiches de surveillance",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const Spacer(),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.25,
                     width: MediaQuery.of(context).size.width * 0.42,
                     child: Container(
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 195, 255, 198),
                         border: Border.all(
@@ -173,6 +226,37 @@ class _DashboardProf extends State<DashboardProf> {
                         borderRadius: const BorderRadius.all(
                           Radius.circular(10),
                         ),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              recupFicheTravaux(
+                                  fichesTravaux, widget.prof, context);
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      ListFicheTravaux(fiches: fichesTravaux),
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.folder_shared_sharp,
+                              size: 70,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            child: const Text(
+                              "Fiches de travaux pratiques",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 16),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -247,6 +331,29 @@ void recupFiche(List<Fiche> fiche, Enseignant enseignan, context) async {
     fiche.clear();
   }
   fiche.addAll(ficheList);
+}
+
+void recupFicheSurveillance(
+    List<FicheSurveillance> fichesSurv, Enseignant enseignant, context) async {
+  Future<List<FicheSurveillance>> fiches =
+      LocalDataBase(context).getFicheSurveillanceProf(enseignant);
+  List<FicheSurveillance> ficheslist = await fiches;
+  if (fichesSurv.isNotEmpty) {
+    fichesSurv.clear();
+  }
+  fichesSurv.addAll(ficheslist);
+  print(fichesSurv);
+}
+
+void recupFicheTravaux(
+    List<FicheTravaux> fichesTravaux, Enseignant enseignant, context) async {
+  Future<List<FicheTravaux>> fiches =
+      LocalDataBase(context).getFicheTravauxProf(enseignant);
+  List<FicheTravaux> ficheslist = await fiches;
+  if (fichesTravaux.isNotEmpty) {
+    fichesTravaux.clear();
+  }
+  fichesTravaux.addAll(ficheslist);
 }
 
 TimeOfDay calculheure(List<Fiche> fiches, context) {

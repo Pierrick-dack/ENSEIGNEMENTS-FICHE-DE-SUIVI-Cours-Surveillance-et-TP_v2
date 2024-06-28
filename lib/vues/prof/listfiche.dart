@@ -27,16 +27,6 @@ class _ListeFiche extends State<ListeFiche> {
               Navigator.of(context).pop();
             },
           ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  recupAllsuivi(widget.fiches, context);
-                });
-              },
-              icon: const Icon(Icons.refresh),
-            )
-          ],
           backgroundColor: const Color.fromARGB(255, 2, 53, 95),
           title: const Text(
             "FICHES DE SUIVI",

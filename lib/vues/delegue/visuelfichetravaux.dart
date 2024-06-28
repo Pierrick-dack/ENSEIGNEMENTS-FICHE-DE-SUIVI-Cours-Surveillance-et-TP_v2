@@ -1,30 +1,31 @@
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:firstapp/models/fichesurveillance.dart';
+import 'package:firstapp/models/fichetravaux.dart';
 import 'package:firstapp/vues/delegue/pagepdf.dart';
-import 'package:firstapp/vues/prof/pdfsurveillance.dart';
+import 'package:firstapp/vues/delegue/pdftravaux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
+
 import 'package:pdf/widgets.dart' as pw;
 
-class VisuelFicheSurveillance extends StatefulWidget {
-  const VisuelFicheSurveillance({
+class VisuelficheTravaux extends StatefulWidget {
+  const VisuelficheTravaux({
     Key? key,
-    required this.ficheSurveillance,
-  }) : super(key: key);
+    required this.fichetravaux,
+  });
 
-  final FicheSurveillance ficheSurveillance;
+  final FicheTravaux fichetravaux;
 
-  @override
-  State<VisuelFicheSurveillance> createState() {
-    return _VisuelFicheSurveillance();
+  State<VisuelficheTravaux> createState() {
+    return _VisuelficheTravaux();
   }
 }
 
-class _VisuelFicheSurveillance extends State<VisuelFicheSurveillance> {
+class _VisuelficheTravaux extends State<VisuelficheTravaux> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -71,8 +72,19 @@ class _VisuelFicheSurveillance extends State<VisuelFicheSurveillance> {
                     pageFormat: PdfPageFormat.a4,
                     build: (context) {
                       return [
-                        PdfSurveillance(
-                            ficheSurveillance: widget.ficheSurveillance,
+                        PdfTravaux(
+                            titreSeanceTP: widget.fichetravaux.titreSeanceTP,
+                            enseignant: widget.fichetravaux.enseignant,
+                            codeCours: widget.fichetravaux.codeCours,
+                            heureDebut: widget.fichetravaux.heureDebut,
+                            heureFin: widget.fichetravaux.heureFin,
+                            objectifsTP: widget.fichetravaux.objectifsTP,
+                            materielNecessaire:
+                                widget.fichetravaux.materielNecessaire,
+                            procedureTP: widget.fichetravaux.procedureTP,
+                            observation: widget.fichetravaux.observation,
+                            resultatsAttendus:
+                                widget.fichetravaux.resultatsAttendus,
                             logo: image)
                       ];
                     },
@@ -154,7 +166,7 @@ class _VisuelFicheSurveillance extends State<VisuelFicheSurveillance> {
                           style: TextStyle(fontSize: 10, fontFamily: 'Arial'),
                         ),
                         Text(
-                          "BLABLABLA",
+                          "PAIX-TRAVAIL-PATRIE",
                           style: TextStyle(fontSize: 10, fontFamily: 'Arial'),
                         ),
                         Text(
@@ -181,7 +193,7 @@ class _VisuelFicheSurveillance extends State<VisuelFicheSurveillance> {
                           style: TextStyle(fontSize: 10),
                         ),
                         Text(
-                          "BLABLABLA",
+                          "PAIX-TRAVAIL-PATRIE",
                           style: TextStyle(fontSize: 10),
                         ),
                         Text(
@@ -209,51 +221,79 @@ class _VisuelFicheSurveillance extends State<VisuelFicheSurveillance> {
                 height: 30,
               ),
               MyWidgetSec(
-                  text: "Chef de salle :",
-                  content: widget.ficheSurveillance.chefDeSalle,
+                  text: "Code du cours :",
+                  content: widget.fichetravaux.codeCours,
                   un: 1,
                   deux: 1),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
-                  text: "Salle :",
-                  content: widget.ficheSurveillance.salle,
+                  text: "Titre de la seance: ",
+                  content: widget.fichetravaux.titreSeanceTP,
+                  un: 1,
+                  deux: 1),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidgetSec(
+                  text: "Heure de debut:",
+                  content: widget.fichetravaux.heureDebut.format(context),
+                  un: 1,
+                  deux: 1),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidgetSec(
+                  text: "Heure de fin: ",
+                  content: widget.fichetravaux.heureFin.format(context),
                   un: 1,
                   deux: 2),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
-                  text: "Date :",
-                  content:
-                      "${widget.ficheSurveillance.date.day}/${widget.ficheSurveillance.date.month}/${widget.ficheSurveillance.date.year}",
-                  un: 1,
-                  deux: 1),
-              const SizedBox(
-                height: 10,
-              ),
-              MyWidgetSec(
-                  text: "Session :",
-                  content: widget.ficheSurveillance.session,
+                  text: "Enseignant :",
+                  content: widget.fichetravaux.enseignant,
                   un: 1,
                   deux: 2),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
-                  text: "Code de l'unité d'enseignement :",
-                  content: widget.ficheSurveillance.codeCours,
+                  text: "Materiel Necessaire:",
+                  content: widget.fichetravaux.materielNecessaire,
                   un: 1,
-                  deux: 1),
+                  deux: 3),
               const SizedBox(
                 height: 10,
               ),
               MyWidgetSec(
-                  text: "Intitulé de l'unité d'enseignement :",
-                  content: widget.ficheSurveillance.intituleUE,
+                  text: "Objectifs  :",
+                  content: widget.fichetravaux.objectifsTP,
                   un: 1,
-                  deux: 1)
+                  deux: 3),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidgetSec(
+                  text: "Observations :",
+                  content: widget.fichetravaux.observation,
+                  un: 1,
+                  deux: 2),
+              const SizedBox(
+                height: 10,
+              ),
+              MyWidgetSec(
+                  text: "Procedure de Travaux pratiques :",
+                  content: widget.fichetravaux.procedureTP,
+                  un: 1,
+                  deux: 1),
+              MyWidgetSec(
+                  text: "Resultats Attendus: ",
+                  content: widget.fichetravaux.resultatsAttendus,
+                  un: 1,
+                  deux: 2),
             ],
           ),
         ),

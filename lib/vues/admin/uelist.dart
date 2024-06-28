@@ -1,57 +1,28 @@
 import 'package:firstapp/localdb.dart';
 import 'package:firstapp/models/cours.dart';
 import 'package:firstapp/models/enseignant.dart';
-import 'package:firstapp/models/filiere.dart';
 import 'package:firstapp/models/niveau.dart';
 import 'package:firstapp/models/semestre.dart';
 import 'package:firstapp/vues/admin/dashboardadmin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class UeList extends StatefulWidget {
-  const UeList({super.key});
+  const UeList({
+    super.key,
+    required this.ue,
+  });
 
+  final List<Cours> ue;
   @override
   State<UeList> createState() {
     return _UeList();
   }
 }
 
-void recupUe(List<Cours> ue, context) async {
-  Future<List<Cours>> cour = LocalDataBase(context).getCours();
-  List<Cours> enseigne = await cour;
-  if (ue.isNotEmpty) {
-    ue.clear();
-  }
-  ue.addAll(enseigne);
-}
-
-void recupFil(List<Filiere> filiere, context) async {
-  Future<List<Filiere>> fil = LocalDataBase(context).getFiliere();
-  List<Filiere> filier = await fil;
-  if (filiere.isNotEmpty) {
-    filiere.clear();
-  }
-  filiere.addAll(filier);
-}
-
-void recupNiv(List<Niveau> niveau, context) async {
-  Future<List<Niveau>> niv = LocalDataBase(context).getNiveau();
-  List<Niveau> nivo = await niv;
-  if (niveau.isNotEmpty) {
-    niveau.clear();
-  }
-  niveau.addAll(nivo);
-}
-
-List<Cours> cours = [];
-List<Filiere> filieres = [];
-List<Niveau> niveaux = [];
-
 List<String> niveaulist = [];
-List<String> enseignantsList = [];
-List<String> semestresList = [];
 
 bool visible = false;
 Icon iconeBouton = const Icon(Icons.add);
@@ -60,18 +31,20 @@ var couleurfond = const MaterialStatePropertyAll(Colors.transparent);
 
 String prof = "";
 String niv = "";
-String Sem = "";
+String sem = "";
 
-TextEditingController nomfiliere = TextEditingController();
 TextEditingController numeroNiveau = TextEditingController();
 TextEditingController codeUe = TextEditingController();
 TextEditingController intituleUe = TextEditingController();
-TextEditingController codefiliere = TextEditingController();
-TextEditingController filiere = TextEditingController();
+
+TextEditingController codeNiveau = TextEditingController();
+TextEditingController intituleNiveau = TextEditingController();
 
 class _UeList extends State<UeList> {
   @override
   Widget build(BuildContext context) {
+    //print("affichage dans la page");
+    
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -96,20 +69,18 @@ class _UeList extends State<UeList> {
           child: ListView(
             scrollDirection: Axis.vertical,
             children: const [
-              WidgetCours(
-                  filiere: "ICT ",
-                  niveau: 3,
-                  professeur: "Dr NZEKON",
-                  ue: "ICT 301")
+              WidgetCours(niveau: 3, professeur: "Dr NZEKON", ue: "ICT 301")
             ],
           ),
         ),
-        bottomNavigationBar: Container(
+        /*bottomNavigationBar: Container(
           padding: const EdgeInsets.all(10),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
                 onPressed: () {
+                  niv = niveaulist[0];
                   showCupertinoModalPopup(
                     context: context,
                     builder: (BuildContext context) {
@@ -118,7 +89,7 @@ class _UeList extends State<UeList> {
                           child: Column(
                             children: [
                               SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.8,
+                                width: MediaQuery.of(context).size.width * 0.85,
                                 height:
                                     MediaQuery.of(context).size.height * 0.35,
                                 child: SingleChildScrollView(
@@ -163,112 +134,159 @@ class _UeList extends State<UeList> {
                                                 height: 20,
                                               ),
                                               WidgetDrop(
-                                                  listObject: enseignantsList,
-                                                  valueEnreg: prof),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              WidgetDrop(
+                                                  objet: "Classe",
                                                   listObject: niveaulist,
                                                   valueEnreg: niv),
                                               const SizedBox(
                                                 height: 20,
                                               ),
-                                              WidgetDrop(
+                                              /*WidgetDrop(
                                                   listObject: semestresList,
-                                                  valueEnreg: Sem),
+                                                  valueEnreg: sem),*/
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
-                                                        .spaceBetween,
+                                                        .spaceAround,
                                                 children: [
-                                                  ElevatedButton(
-                                                    onPressed: () async {
-                                                      if (codeUe.text.isEmpty ||
-                                                          intituleUe
-                                                              .text.isEmpty) {
-                                                        EasyLoading.showError(
-                                                            "Vous avez une donnée manquante");
-                                                      } else {
-                                                        bool isExistedcode =
-                                                            false;
-                                                        bool isExistedinti =
-                                                            false;
-                                                        recupUe(cours, context);
-                                                        for (int i = 0;
-                                                            i < cours.length;
-                                                            i++) {
-                                                          if (cours[i].codeUE ==
-                                                              codeUe.text) {
-                                                            isExistedcode =
-                                                                true;
-                                                          } else if (cours[i]
-                                                                  .intituleUE ==
-                                                              intituleUe.text) {
-                                                            isExistedinti =
-                                                                true;
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.28,
+                                                    child: ElevatedButton(
+                                                      onPressed: () async {
+                                                        Semestre semestre1 =
+                                                            Semestre(
+                                                                numSemestre:
+                                                                    "1");
+                                                        Semestre semestre2 =
+                                                            Semestre(
+                                                                numSemestre:
+                                                                    "2");
+                                                        await LocalDataBase(
+                                                                context)
+                                                            .addSemestre(
+                                                                semestre1,
+                                                                context);
+                                                        // ignore: use_build_context_synchronously
+                                                        await LocalDataBase(
+                                                                context)
+                                                            .addSemestre(
+                                                                semestre2,
+                                                                context);
+                                                        if (codeUe
+                                                                .text.isEmpty ||
+                                                            intituleUe
+                                                                .text.isEmpty) {
+                                                          EasyLoading.showError(
+                                                              "Vous avez une donnée manquante");
+                                                        } else {
+                                                          bool isExistedcode =
+                                                              false;
+                                                          bool isExistedinti =
+                                                              false;
+
+                                                          for (int i = 0;
+                                                              i <
+                                                                  widget.ue
+                                                                      .length;
+                                                              i++) {
+                                                            if (widget.ue[i]
+                                                                    .codeUE ==
+                                                                codeUe.text) {
+                                                              isExistedcode =
+                                                                  true;
+                                                            } else if (widget
+                                                                    .ue[i]
+                                                                    .intituleUE ==
+                                                                intituleUe
+                                                                    .text) {
+                                                              isExistedinti =
+                                                                  true;
+                                                            }
+                                                          }
+
+                                                          if (isExistedcode ==
+                                                              true) {
+                                                            EasyLoading.showInfo(
+                                                                "Vous avez déjà une unite d'enseignement qui porte ce code. Vous ne pouvez pas en enregistrer une deuxieme au meme code");
+                                                          } else if (isExistedinti ==
+                                                              true) {
+                                                            EasyLoading.showInfo(
+                                                                "Vous avez déjà une unite d'enseignement qui porte ce intitulé. Vous ne pouvez pas en enregistrer une deuxieme au meme intitulé");
+                                                          } else {
+                                                            Classe classeItem =
+                                                                // ignore: use_build_context_synchronously
+                                                                await LocalDataBase(
+                                                                        context)
+                                                                    .getOneNiveau(
+                                                                        niv);
+                                                            Semestre semestre =
+                                                                // ignore: use_build_context_synchronously
+                                                                await LocalDataBase(
+                                                                        context)
+                                                                    .getOneSemestre(
+                                                                        sem);
+                                                            Cours cour = Cours(
+                                                                id: widget.ue
+                                                                        .length +
+                                                                    1,
+                                                                codeUE:
+                                                                    codeUe.text,
+                                                                intituleUE:
+                                                                    intituleUe
+                                                                        .text,
+                                                                niveau_id:
+                                                                    classeItem
+                                                                        .id!,
+                                                                semestre_id:
+                                                                    semestre
+                                                                        .id!);
+                                                            // ignore: use_build_context_synchronously
+                                                            await LocalDataBase(
+                                                                    context)
+                                                                .addCours(cour,
+                                                                    context);
                                                           }
                                                         }
-
-                                                        if (isExistedcode ==
-                                                            true) {
-                                                          EasyLoading.showInfo(
-                                                              "Vous avez déjà une unite d'enseignement qui porte ce code. Vous ne pouvez pas en enregistrer une deuxieme au meme code");
-                                                        } else if (isExistedinti ==
-                                                            true) {
-                                                          EasyLoading.showInfo(
-                                                              "Vous avez déjà une unite d'enseignement qui porte ce intitulé. Vous ne pouvez pas en enregistrer une deuxieme au meme intitulé");
-                                                        } else {
-                                                          Niveau niveauItem =
-                                                              await LocalDataBase(
-                                                                      context)
-                                                                  .getOneNiveau(
-                                                                      niv);
-                                                          //Ajoute un attribut de type semestre
-                                                          //faire en sorte que celui s'applique sur tout les semestres a venir
-                                                          /* Cours cour = Cours(
-                                                            id: cours.length +
-                                                                1,
-                                                            codeUE: codeUe.text,
-                                                            intituleUE:
-                                                                intituleUe.text,
-                                                            enseignant: prof,
-                                                            niveau_id:
-                                                                niveauItem.id!,
-                                                          );*/
-                                                          await LocalDataBase(
-                                                                  context)
-                                                              .addCours(cour,
-                                                                  context);
-                                                        }
-                                                      }
-                                                    },
-                                                    style: const ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStatePropertyAll(
-                                                              Colors.green),
-                                                    ),
-                                                    child: const Text(
-                                                      "VALIDER",
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                  ElevatedButton(
-                                                    style: const ButtonStyle(
+                                                      },
+                                                      style: const ButtonStyle(
                                                         backgroundColor:
                                                             MaterialStatePropertyAll(
-                                                                Colors.red)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const Text(
-                                                      "ANNULER",
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.white),
+                                                                Colors.green),
+                                                      ),
+                                                      child: const Text(
+                                                        "VALIDER",
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.29,
+                                                    child: ElevatedButton(
+                                                      style: const ButtonStyle(
+                                                          backgroundColor:
+                                                              MaterialStatePropertyAll(
+                                                                  Colors.red)),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      child: const Text(
+                                                        "ANNULER",
+                                                        style: TextStyle(
+                                                            fontSize: 14,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -294,7 +312,6 @@ class _UeList extends State<UeList> {
                     iconSize: const MaterialStatePropertyAll(40),
                     backgroundColor: couleurfond),
               ),
-              const Spacer(),
               IconButton(
                 onPressed: () {
                   showCupertinoModalPopup(
@@ -307,179 +324,7 @@ class _UeList extends State<UeList> {
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.8,
                                 height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                        "CREATION D'UNE FILIERE",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(10),
-                                        child: Form(
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              TextFormField(
-                                                controller: nomfiliere,
-                                                decoration: const InputDecoration(
-                                                    labelText:
-                                                        "Nom de la filière :"),
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              TextFormField(
-                                                controller: codefiliere,
-                                                decoration: const InputDecoration(
-                                                    labelText:
-                                                        "Code de la filière :"),
-                                              ),
-                                              const SizedBox(
-                                                height: 20,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      bool
-                                                          isExistedFilIntitule =
-                                                          false;
-                                                      bool isExistedFilCode =
-                                                          false;
-                                                      if (nomfiliere
-                                                              .text.isEmpty ||
-                                                          codefiliere
-                                                              .text.isEmpty) {
-                                                        EasyLoading.showError(
-                                                            "Il vous manque une information",
-                                                            duration:
-                                                                const Duration(
-                                                                    milliseconds:
-                                                                        2500));
-                                                      } else {
-                                                        recupFil(
-                                                            filieres, context);
-                                                        for (int i = 0;
-                                                            i < filieres.length;
-                                                            i++) {
-                                                          if (filieres[i]
-                                                                  .intFil ==
-                                                              nomfiliere.text) {
-                                                            isExistedFilIntitule =
-                                                                true;
-                                                          } else if (filieres[i]
-                                                                  .codeFil ==
-                                                              codefiliere
-                                                                  .text) {
-                                                            isExistedFilCode =
-                                                                true;
-                                                          }
-                                                        }
-                                                        if (isExistedFilCode ==
-                                                            true) {
-                                                          EasyLoading.showInfo(
-                                                              "Vous avez déjà une filière qui porte ce code. Vous ne pouvez en enregistrer un autre au meme code.");
-                                                        } else if (isExistedFilIntitule ==
-                                                            true) {
-                                                          EasyLoading.showInfo(
-                                                              "Vous avez deja une filiere qui porte cet intitulé. Vous ne pouvez pas en enregistrer une autre au meme intitulé.");
-                                                        } else {
-                                                          Filiere filiere = Filiere(
-                                                              id: filieres
-                                                                      .length +
-                                                                  1,
-                                                              codeFil:
-                                                                  codefiliere
-                                                                      .text,
-                                                              intFil: nomfiliere
-                                                                  .text);
-                                                          LocalDataBase(context)
-                                                              .addFiliere(
-                                                                  filiere,
-                                                                  context);
-                                                        }
-                                                      }
-                                                    },
-                                                    style: const ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStatePropertyAll(
-                                                              Colors.green),
-                                                    ),
-                                                    child: const Text(
-                                                      "VALIDER",
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                  ElevatedButton(
-                                                    style: const ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStatePropertyAll(
-                                                                Colors.red)),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: const Text(
-                                                      "ANNULER",
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-                icon: const Icon(Icons.engineering),
-                style: ButtonStyle(
-                    iconColor: couleuricon,
-                    iconSize: const MaterialStatePropertyAll(40),
-                    backgroundColor: couleurfond),
-              ),
-              const Spacer(),
-              IconButton(
-                onPressed: () {
-                  showCupertinoModalPopup(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        content: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.8,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
+                                    MediaQuery.of(context).size.height * 0.4,
                                 child: SingleChildScrollView(
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -503,20 +348,24 @@ class _UeList extends State<UeList> {
                                                 CrossAxisAlignment.center,
                                             mainAxisSize: MainAxisSize.min,
                                             children: [
+                                              const SizedBox(
+                                                height: 20,
+                                              ),
                                               TextFormField(
-                                                controller: filiere,
-                                                decoration: const InputDecoration(
-                                                    labelText:
-                                                        "Nom de la filière associée :"),
+                                                controller: codeNiveau,
+                                                decoration:
+                                                    const InputDecoration(
+                                                        labelText:
+                                                            "Code du niveau :"),
                                               ),
                                               const SizedBox(
                                                 height: 20,
                                               ),
                                               TextFormField(
-                                                controller: numeroNiveau,
+                                                controller: intituleNiveau,
                                                 decoration: const InputDecoration(
                                                     labelText:
-                                                        "Numéro du niveau :"),
+                                                        "Intitulé du niveau :"),
                                               ),
                                               const SizedBox(
                                                 height: 20,
@@ -527,7 +376,72 @@ class _UeList extends State<UeList> {
                                                         .spaceBetween,
                                                 children: [
                                                   ElevatedButton(
-                                                    onPressed: () {},
+                                                    onPressed: () async {
+                                                      bool code = false;
+                                                      bool intitule = false;
+                                                      for (int i = 0;
+                                                          i < classes.length;
+                                                          i++) {
+                                                        if (classes[i]
+                                                                .className ==
+                                                            codeNiveau.text) {
+                                                          code = true;
+
+                                                          print(
+                                                              'codeNiveau.text');
+                                                        }
+                                                        if (classes[i]
+                                                                .classDescription ==
+                                                            intituleNiveau
+                                                                .text) {
+                                                          intitule = true;
+                                                        }
+                                                      }
+                                                      if (code == true) {
+                                                        EasyLoading.showInfo(
+                                                          "Vous avez déjà un niveau ayant niveau qui a ce code",
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      2500),
+                                                        );
+                                                      } else if (intitule ==
+                                                          true) {
+                                                        EasyLoading.showInfo(
+                                                          "Vous avez déjà un niveau ayant niveau qui a cet intitule",
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      2500),
+                                                        );
+                                                      } else {
+                                                        Classe niveauAdd = Classe(
+                                                            className:
+                                                                codeNiveau.text,
+                                                            classDescription:
+                                                                intituleNiveau
+                                                                    .text);
+                                                        /*if (niveaux.isEmpty) {
+                                                          niveauAdd.id = 0;
+                                                        } else {
+                                                          niveauAdd
+                                                              .id = ((niveaux[
+                                                                      niveaux.length -
+                                                                          1])
+                                                                  .id! +
+                                                              1)!;
+                                                        }*/
+                                                        await LocalDataBase(
+                                                                context)
+                                                            .addClasse(
+                                                                niveauAdd,
+                                                                context);
+                                                      }
+                                                      codeNiveau.clear();
+                                                      intituleNiveau.clear();
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
                                                     style: const ButtonStyle(
                                                       backgroundColor:
                                                           MaterialStatePropertyAll(
@@ -542,9 +456,10 @@ class _UeList extends State<UeList> {
                                                   ),
                                                   ElevatedButton(
                                                     style: const ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStatePropertyAll(
-                                                                Colors.red)),
+                                                      backgroundColor:
+                                                          MaterialStatePropertyAll(
+                                                              Colors.red),
+                                                    ),
                                                     onPressed: () {
                                                       Navigator.of(context)
                                                           .pop();
@@ -579,7 +494,6 @@ class _UeList extends State<UeList> {
                     iconSize: const MaterialStatePropertyAll(40),
                     backgroundColor: couleurfond),
               ),
-              const Spacer(),
               IconButton(
                 icon: iconeBouton,
                 style: const ButtonStyle(
@@ -598,6 +512,8 @@ class _UeList extends State<UeList> {
                           Color.fromARGB(255, 171, 176, 250));
                       couleuricon =
                           const MaterialStatePropertyAll(Colors.black);
+                      recupUe(widget.ue, context);
+                      recupNiv(widget.classe, context);
                     } else {
                       visible = false;
                       iconeBouton = const Icon(Icons.add);
@@ -611,7 +527,7 @@ class _UeList extends State<UeList> {
               ),
             ],
           ),
-        ),
+        ),*/
       ),
     );
   }
@@ -620,12 +536,10 @@ class _UeList extends State<UeList> {
 class WidgetCours extends StatelessWidget {
   const WidgetCours(
       {Key? key,
-      required this.filiere,
       required this.niveau,
       required this.professeur,
       required this.ue});
 
-  final String filiere;
   final int niveau;
   final String professeur;
   final String ue;
@@ -647,12 +561,6 @@ class WidgetCours extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text(
-                  filiere,
-                  style: const TextStyle(
-                    fontSize: 20,
-                  ),
-                ),
                 Text(
                   niveau.toString(),
                   style: const TextStyle(
@@ -720,10 +628,15 @@ class WidgetCours extends StatelessWidget {
 }
 
 class WidgetDrop extends StatefulWidget {
-  WidgetDrop({super.key, required this.listObject, required this.valueEnreg});
+  WidgetDrop(
+      {super.key,
+      required this.objet,
+      required this.listObject,
+      required this.valueEnreg});
 
   final List<String> listObject;
-  String valueEnreg;
+  String? valueEnreg;
+  final String objet;
 
   State<WidgetDrop> createState() {
     return _WidgetDrop();
@@ -733,6 +646,7 @@ class WidgetDrop extends StatefulWidget {
 class _WidgetDrop extends State<WidgetDrop> {
   @override
   Widget build(BuildContext context) {
+    widget.valueEnreg = widget.listObject[0];
     return Container(
       height: 70,
       padding: const EdgeInsets.all(5),
@@ -742,13 +656,13 @@ class _WidgetDrop extends State<WidgetDrop> {
           Radius.circular(50),
         ),
       ),
-      child: widget.listObject.isEmpty
+      child: widget.listObject.isNotEmpty
           ? Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: DropdownButton<String>(
                 isExpanded: true,
-                hint: const Text("Professeur :"),
-                value: widget.listObject[0],
+                hint: Text("${widget.valueEnreg} :"),
+                value: widget.valueEnreg,
                 onChanged: (valueNew) {
                   setState(() {
                     widget.valueEnreg = valueNew!;
@@ -763,7 +677,7 @@ class _WidgetDrop extends State<WidgetDrop> {
                 }).toList(),
               ),
             )
-          : const Center(child: Text("Aucun professeur disponible")),
+          : Center(child: Text("Aucun ${widget.objet} disponible")),
     );
   }
 }

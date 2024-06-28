@@ -198,7 +198,7 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
                           style: TextStyle(fontSize: 10, fontFamily: 'Arial'),
                         ),
                         Text(
-                          "BLABLABLA",
+                          "PAIX-TRAVAIL-PATRIE",
                           style: TextStyle(fontSize: 10, fontFamily: 'Arial'),
                         ),
                         Text(
@@ -225,7 +225,7 @@ class _PagePdfTravaux extends State<PagePdfTravaux> {
                           style: TextStyle(fontSize: 10),
                         ),
                         Text(
-                          "BLABLABLA",
+                          "PAIX-TRAVAIL-PATRIE",
                           style: TextStyle(fontSize: 10),
                         ),
                         Text(

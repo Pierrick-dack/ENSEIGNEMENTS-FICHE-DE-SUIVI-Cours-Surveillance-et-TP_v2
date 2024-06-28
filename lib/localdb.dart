@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firstapp/api.dart';
 import 'package:firstapp/models/admin.dart';
 import 'package:firstapp/models/cours.dart';
 import 'package:firstapp/models/delegue.dart';
@@ -6,12 +7,14 @@ import 'package:firstapp/models/enseignant.dart';
 import 'package:firstapp/models/fiche.dart';
 import 'package:firstapp/models/fichesurveillance.dart';
 import 'package:firstapp/models/fichetravaux.dart';
-import 'package:firstapp/models/filiere.dart';
 import 'package:firstapp/models/niveau.dart';
 import 'package:firstapp/models/semestre.dart';
+import 'package:firstapp/urls.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 Database? _database;
@@ -43,18 +46,24 @@ class LocalDataBase {
     await db.execute(deleguesTable);
     await db.execute(enseignantsTable);
     await db.execute(ficheTable);
-    await db.execute(niveauxTable);
+    await db.execute(classeTable);
+    await db.execute(semestreTable);
+    await db.execute(filiereTable);
+    await db.execute(niveauEtudeTable);
+    await db.execute(ficheSurveillanceTable);
+    await db.execute(ficheTravauxTable);
   }
 
   static const coursTable = '''
 
     CREATE TABLE cours(
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      codeUE VARCHAR(64) NOT NULL,
-      intituleUE VARCHAR(255) NOT NULL,
-      enseignant VARCHAR(255) NOT NULL,
-      niveau_id INTEGER, FOREIGN KEY (niveau_id) REFERENCES niveaux(id),
-      semestre_id INTEGER, FOREIGN KEY (semestre_id) REFERENCES semestre(id)
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      codeUE TEXT NOT NULL,
+      intituleUE TEXT NOT NULL,
+      niveau_id INTEGER,
+      semestre_id INTEGER,
+      FOREIGN KEY (niveau_id) REFERENCES niveaux(id),
+      FOREIGN KEY (semestre_id) REFERENCES semestre(id)
     );''';
 
   static const chefsTable = '''
@@ -71,8 +80,7 @@ class LocalDataBase {
         nameDel VARCHAR(255) NOT NULL,
         matDel VARCHER(8) NOT NULL,
         mdpDel VARCHAR(255) NOT NULL,
-        nivDel VARCHAR(255) NOT NULL, 
-        filDel VARCHAR(255) NOT NULL
+        nivDel VARCHAR(255) NOT NULL
       );''';
 
   static const enseignantsTable = '''
@@ -103,12 +111,11 @@ class LocalDataBase {
         confidentialite TINYINT NOT NULL
       );''';
 
-  static const niveauxTable = '''
-      CREATE TABLE niveaux(
+  static const classeTable = '''
+      CREATE TABLE classes(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        codeNiveau VARCHAR(32) NOT NULL,
-        intituleNiveau VARCHAR(255) NOT NULL,
-        filiereNiveau VARCHAR(255) NOT NULL
+        className VARCHAR(32) NOT NULL,
+        classDescription VARCHAR(255) NOT NULL
       );''';
 
   static const ficheSurveillanceTable = '''
@@ -138,15 +145,26 @@ class LocalDataBase {
         resultatsAttendus VARCHAR(256) NOT NULL
       )''';
 
-  static const semestreTable = '''
-      CREATE TABLE semestre(
+  static const niveauEtudeTable = '''
+      CREATE TABLE niveaux_etude(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        numSemestre VARCHAR(64) NOT NULL, 
-        anneeDepart INTEGER NOT NULL, 
-        anneeFin INTEGER NOT NULL,
-        numSemaine INTEGER NOT NULL
+        codeNiveau VARCHAR(32) NOT NULL,
+        intituleNiveau VARCHAR(256) NOT NULL
       )
       ''';
+
+  static const semestreTable = '''
+      CREATE TABLE semestres(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        numSemestre VARCHAR(64) NOT NULL
+      )''';
+
+  static const filiereTable = '''
+      CREATE TABLE filieres(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        codeFil VARCHAR(64) NOT NULL,
+        intFil VARCHAR(256) NOT NULL
+      )''';
 
   Future<void> addProfesseur(
       Enseignant enseignant, BuildContext context) async {
@@ -154,6 +172,7 @@ class LocalDataBase {
       status: 'Chargement en cours',
       dismissOnTap: false,
     );
+
     try {
       final db = await database;
 
@@ -162,7 +181,7 @@ class LocalDataBase {
 
       EasyLoading.showSuccess('Enregistrement Effectué');
     } catch (e) {
-      //print("erreur $e");
+      print("erreur $e");
       EasyLoading.showError(
           duration: const Duration(milliseconds: 2500),
           'Erreur lors de l\'ajout du Compte Professeur');
@@ -170,22 +189,24 @@ class LocalDataBase {
   }
 
   Future<void> updateNomProfessseur(
-      Enseignant enseignant, String newNom, BuildContext context) async {
+      Enseignant enseignant, BuildContext context) async {
     EasyLoading.show(status: "Chargement en cours", dismissOnTap: false);
     try {
       final db = await database;
-
-      String requete = '''
-        UPDATE 'nom_table'
-        SET nom == ?
-        WHERE id_professeur == ?
-      ''';
-
-      db.execute(requete, [newNom, enseignant.id]);
+      await db.update(
+          'enseignants',
+          {
+            'nomEns': enseignant.nomEns,
+            'emailEns': enseignant.emailEns,
+            'mdpEns': enseignant.mdpEns
+          },
+          where: 'id==?',
+          whereArgs: [enseignant.id]);
 
       EasyLoading.showSuccess("Information mise de jour avec succès",
           duration: const Duration(milliseconds: 2500));
     } catch (e) {
+      print(e);
       EasyLoading.showError("Erreur lors de la mise à jour de l'information",
           duration: const Duration(milliseconds: 2500));
     }
@@ -204,6 +225,7 @@ class LocalDataBase {
 
       EasyLoading.showSuccess('Enregistrement Effectué');
     } catch (e) {
+      print(e);
       EasyLoading.showError(
           duration: const Duration(milliseconds: 2500),
           'Erreur lors de l\'ajout du délégué');
@@ -226,6 +248,27 @@ class LocalDataBase {
       EasyLoading.showError(
           duration: const Duration(milliseconds: 2500),
           'Erreur lors de l\'ajout de l\'utilisateur');
+    }
+  }
+
+  Future<void> updateChef(Admin admin, BuildContext context) async {
+    final db = await database;
+    try {
+      await db.update(
+          'chefs',
+          {
+            'nomCD': admin.nomCD,
+            'emailCD': admin.emailCD,
+            'mdpCD': admin.mdpCD
+          },
+          where: 'id==?',
+          whereArgs: [admin.id]);
+      EasyLoading.showSuccess("Information mise de jour avec succès",
+          duration: const Duration(milliseconds: 2500));
+    } catch (e) {
+      print(e);
+      EasyLoading.showError("Erreur lors de la mise à jour de l'information",
+          duration: const Duration(milliseconds: 2500));
     }
   }
 
@@ -296,56 +339,18 @@ class LocalDataBase {
     }
   }
 
-  Future<void> addFiliere(Filiere filiere, BuildContext context) async {
-    EasyLoading.show(
-      status: 'Chargement en cours',
-      dismissOnTap: false,
-    );
-    try {
-      final db = await database;
-      await db.insert('filiere', filiere.toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-
-      EasyLoading.showSuccess('Enregistrement Effectué');
-    } catch (e) {
-      //print("erreur $e");
-      EasyLoading.showError(
-          duration: const Duration(milliseconds: 2500),
-          'Erreur lors de l\'ajout de la filiere');
-    }
-  }
-
-  Future<void> addNiveaux(Niveau niveau, BuildContext context) async {
-    EasyLoading.show(
-      status: 'Chargement en cours',
-      dismissOnTap: false,
-    );
-    try {
-      final db = await database;
-      await db.insert('niveaux', niveau.toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-
-      EasyLoading.showSuccess('Enregistrement Effectué');
-    } catch (e) {
-      //print("erreur $e");
-      EasyLoading.showError(
-          duration: const Duration(milliseconds: 2500),
-          'Erreur lors de l\'ajout du niveau');
-    }
-  }
-
-  Future<void> addSemestre(Semestre semestre, BuildContext context) async {
+  /*Future<void> addSemestre(Semestre semestre, BuildContext context) async {
     EasyLoading.show(status: "Chargement en cours", dismissOnTap: false);
     try {
       final db = await database;
-      await db.insert('semestre', semestre.toMap(),
+      await db.insert('semestres', semestre.toMap(),
           conflictAlgorithm: ConflictAlgorithm.replace);
       EasyLoading.showSuccess("Enregistrement effectué");
     } catch (e) {
       EasyLoading.showError("Erreur lors de l'ajout du niveau",
           duration: const Duration(milliseconds: 2500));
     }
-  }
+  }*/
 
   Future<List<Admin>> getAdmin() async {
     final db = await database;
@@ -371,13 +376,24 @@ class LocalDataBase {
     return List.generate(
       items.length,
       (index) => Delegue(
-          id: items[index]['id'],
-          nameDel: items[index]['nameDel'],
-          mdpDel: items[index]['mdpDel'],
-          matDel: items[index]['matDel'],
-          nivDel: items[index]['nivDel'],
-          filDel: items[index]['filDel']),
+        id: items[index]['id'],
+        nameDel: items[index]['nameDel'],
+        mdpDel: items[index]['mdpDel'],
+        matDel: items[index]['matDel'],
+        nivDel: items[index]['nivDel'],
+      ),
     );
+  }
+
+  Future<List<Niveau>> getNiveaux() async {
+    final db = await database;
+
+    List<Map<String, dynamic>> items = await db.query('niveaux_etude');
+    return List.generate(
+        items.length,
+        (index) => Niveau(
+            codeNiveau: items[index]['codeNiveau'],
+            intituleNiveau: items[index]['intituleNiveau']));
   }
 
   Future<List<Enseignant>> getEnseignants() async {
@@ -422,7 +438,6 @@ class LocalDataBase {
       (index) => Cours(
           codeUE: items[index]['codeUe'],
           intituleUE: items[index]['codeUE'],
-          enseignant: items[index]['enseignant'],
           niveau_id: items[index]['niveau_id'],
           semestre_id: items[index]['semestre_id']),
     );
@@ -487,6 +502,34 @@ class LocalDataBase {
 
     List<Map<String, dynamic>> items =
         await db.query('fiches', orderBy: 'date');
+    return List.generate(
+      items.length,
+      (index) => Fiche(
+        id: items[index]['id'],
+        semestre: items[index]['semestre'],
+        date: DateTime.parse(items[index]['date']),
+        codeCours: items[index]['codeCours'],
+        enseignant: items[index]['enseignant'],
+        heureDebut: stringToTimeOfDay(items[index]['heureDebut']),
+        heureFin: stringToTimeOfDay(items[index]['heureFin']),
+        totalHeures: stringToTimeOfDay(items[index]['totalHeures']),
+        salle: items[index]['salle'],
+        typeSeance: items[index]['typeSeance'],
+        titreSeance: items[index]['titreSeance'],
+        niveaux: items[index]['niveaux'],
+        contenu: items[index]['contenu'],
+        signatureDelegue: items[index]['signatureDelegue'],
+        signatureProf: items[index]['signatureProf'],
+        confidentialite: items[index]['confidentialite'],
+      ),
+    );
+  }
+
+  Future<List<Fiche>> getFicheNiveau(String niveau) async {
+    final db = await database;
+
+    List<Map<String, dynamic>> items = await db.query('fiches',
+        orderBy: 'date', where: 'niveaux==?', whereArgs: [niveau]);
     return List.generate(
       items.length,
       (index) => Fiche(
@@ -602,12 +645,13 @@ class LocalDataBase {
     return List.generate(
       items.length,
       (index) => FicheSurveillance(
-        chefDeSalle: items[index]['chefDeSalle'],
-        salle: items[index]['salle'],
+        id: items[index]['id'],
+        chefDeSalle: items[index]['chefDeSalle'].toString(),
+        salle: items[index]['salle'].toString(),
         date: DateTime.parse(items[index]['date']),
-        session: items[index]['session'],
-        codeCours: items[index]['codeCours'],
-        intituleUE: items[index]['intituleUE'],
+        session: items[index]['session'].toString(),
+        codeCours: items[index]['codeCours'].toString(),
+        intituleUE: items[index]['intituleUE'].toString(),
         confirmation: items[index]['confirmation'],
       ),
     );
@@ -631,123 +675,65 @@ class LocalDataBase {
     );
   }
 
-  Future<List<Filiere>> getFiliere() async {
-    final db = await database;
-
-    List<Map<String, dynamic>> items = await db.query('filiere', orderBy: 'id');
-    return List.generate(
-        items.length,
-        (index) => Filiere(
-            id: items[index]['id'],
-            codeFil: items[index]['codeFil'],
-            intFil: items[index]['intFil']));
-  }
-
-  Future<List<Niveau>> getNiveau() async {
-    final db = await database;
-
-    List<Map<String, dynamic>> items = await db.query('filiere', orderBy: 'id');
-    return List.generate(
-      items.length,
-      (index) => Niveau(
-          id: items[index]['id'],
-          codeNiveau: items[index]['codeNiveau'],
-          intituleNiveau: items[index]['intituleNiveau'],
-          filiereNiveau: items[index]['filiereNiveaus']),
-    );
-  }
-
-  Future<Niveau> getOneNiveau(String niveau) async {
-    final db = await database;
-
-    final result =
-        await db.query('niveaux', where: 'codeNiveau == ?', whereArgs: [niveau]);
-
-    // ignore: unnecessary_cast
-    final item = result.first as Map<String, dynamic>;
-    return Niveau(
-        id: item['id'],
-        codeNiveau: item['codeNiveau'],
-        intituleNiveau: item['intituleNiveau'],
-        filiereNiveau: item['filiereNiveau']);
-  }
-
   Future<List<Semestre>> getSemestre() async {
     final db = await database;
 
-    List<Map<String, dynamic>> items = await db.query('filiere', orderBy: 'id');
+    List<Map<String, dynamic>> items =
+        await db.query('semestres', orderBy: 'id');
 
     return List.generate(
         items.length,
         (index) => Semestre(
-            id: items[index]['id'],
-            numSemestre: items[index]['numSemestre'],
-            anneeDepart: items[index]['anneeDepart'],
-            anneeFin: items[index]['anneeFin'],
-            numSemaine: items[index]['numSemaine']));
+              id: items[index]['id'],
+              numSemestre: items[index]['numSemestre'],
+            ));
   }
 
-  Future<Semestre> getOneSemestre(Semestre semestre) async {
+  void suppressionDelegue(Delegue delegue) async {
     final db = await database;
-    final items =
-        await db.query('semestre', where: 'id==?', whereArgs: [semestre.id]);
+
+    await db.delete('delegues', where: 'id==?', whereArgs: [delegue.id]);
+  }
+
+  Future<Semestre> getOneSemestre(String semestre) async {
+    final db = await database;
+    final items = await db.query('semestres',
+        where: 'numSemestre==?', whereArgs: [semestre.toString()]);
 
     // ignore: unnecessary_cast
     final item = items.first as Map<String, dynamic>;
     return Semestre(
-        id: item['id'],
-        numSemestre: item['numSemestre'],
-        anneeDepart: item['anneeDepart'],
-        anneeFin: item['anneeFin'],
-        numSemaine: item['numSemaine']);
+      id: item['id'],
+      numSemestre: item['numSemestre'],
+    );
   }
 
-  /*Future<void> sendToApi() async {
+  Future<void> sendToApi() async {
     EasyLoading.show(status: "Chargement... ", dismissOnTap: true);
-
+    final db = await database;
     try {
-      final delegue = Uri.parse(Urls.enregistrerDelegue);
-
+      final prof = Uri.parse(Urls.enregistrerProf);
       final jsonData = await getAllDataFromDataBase();
-
       var api = API();
-      print(delegue.toString());
-      print("envoie de la requete");
-      /*api.postRequest(route: delegue.toString(), data: jsonData['delegues']);
-      var response = await api.postRequest(
-          route: delegue.toString(), data: jsonData['delegues']);*/
 
-      final response = await http.post(delegue,
-          headers: {
-            'Accept': 'application/json',
-          },
-          body: jsonData['delegues']);
-      print("envoie effectué");
-      /*final response = await http.post(delegue,
-          headers: {
-            'Accept': 'application/json',
-          },
-          body: jsonData['delegues']);*/
-
-      if (response.statusCode == 200) {
-        EasyLoading.showSuccess("enregistrement reussi",
-            duration: const Duration(milliseconds: 2000));
-      } else {
-        print("l'enregistrement n'a pas reussi");
-        print(
-            'Envoie non effectué des donnees. Status code: ${response.statusCode}');
-      }
-    } on Exception catch (_, e) {
+      api.postRequest(route: prof.toString(), data: jsonData['enseignants']);
+    } on http.ClientException catch (e) {
+      print("Erreur de connexion : $e");
+      EasyLoading.showError(
+        "Erreur de connexion",
+        duration: const Duration(milliseconds: 2500),
+      );
+    } catch (e) {
       if (kDebugMode) {
         print(e);
-        print("l'erreur $e");
+        print("l'erreur ${e.toString()}");
       }
       EasyLoading.showError(
         "veuillez réessayer",
         duration: const Duration(milliseconds: 2500),
       );
     }
-  }*/
+  }
 
   Future<Map<String, String>> getAllDataFromDataBase() async {
     final db = await database;
@@ -757,16 +743,19 @@ class LocalDataBase {
     final List<Map<String, dynamic>> delegues = await db.query('delegues');
     final List<Map<String, dynamic>> enseignant = await db.query('enseignants');
     final List<Map<String, dynamic>> fiche = await db.query('fiches');
-    final List<Map<String, dynamic>> filiere = await db.query('filieres');
     final List<Map<String, dynamic>> niveaux = await db.query('niveaux');
+    final List<Map<String, dynamic>> semestres = await db.query('semestres');
+    //final List<Map<String, dynamic>> ficheSurveillance =
+    //await db.query('fiche_surveillance');
 
-    final chefsJson = json.encode({'chefs': chefs});
-    final coursJson = json.encode({'cours': cours});
-    final deleguesJson = json.encode({'delegues': delegues});
-    final enseignantsJson = json.encode({'enseignants': enseignant});
-    final ficheJson = json.encode({'fiches': fiche});
-    final filiereJson = json.encode({'filieres': filiere});
-    final niveauxJson = json.encode({'niveaux': niveaux});
+    final chefsJson = json.encode(chefs);
+    final coursJson = json.encode(cours);
+    final deleguesJson = json.encode(delegues);
+    final enseignantsJson = jsonEncode(enseignant);
+    final ficheJson = json.encode(fiche);
+    final semestreJson = jsonEncode(semestres);
+    final niveauxJson = json.encode(niveaux);
+    //final ficheSurveillanceJson = json.encode(ficheSurveillance);
 
     return {
       'chefs': chefsJson,
@@ -774,22 +763,16 @@ class LocalDataBase {
       'delegues': deleguesJson,
       'enseignants': enseignantsJson,
       'fiches': ficheJson,
-      'filieres': filiereJson,
-      'niveaux': niveauxJson
+      'niveaux': niveauxJson,
+      'semestres': semestreJson,
+      //'fiche_surveillance': ficheSurveillanceJson
     };
   }
 
   void updateBd() async {
     final db = await database;
-
-    String requete = "DROP TABLE cours";
-    db.execute(coursTable);
+    await db.delete('enseignants', where: 'nomEns==onana');
   }
-  //supprimer la table cours
-  //creer la table cours
-  //faire un upgrade de la table des delegues
-  //supprimer la table du numero chez niveau et upgrade les autres tables
-  //upgrade de la table des semestres
 }
 
 TimeOfDay stringToTimeOfDay(String tod) {

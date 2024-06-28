@@ -1,5 +1,6 @@
 import 'package:firstapp/accueil_page.dart';
 import 'package:firstapp/models/enseignant.dart';
+import 'package:firstapp/vues/admin/dashboardadmin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -104,16 +105,22 @@ class _ProfileProfState extends State<ProfileProf> {
                         DesignWidget(
                           text: "Nom",
                           information: widget.enseignant.nomEns,
+                          enseignants: widget.enseignant,
                           controller: controler,
                           icon: const Icon(Icons.person),
                         ),
-                        
-                        
                         DesignWidget(
                             text: "email",
                             controller: controler,
+                            enseignants: widget.enseignant,
                             information: widget.enseignant.emailEns,
                             icon: const Icon(Icons.email_outlined)),
+                        DesignWidget(
+                            text: "Mot de passe",
+                            information: widget.enseignant.mdpEns,
+                            enseignants: widget.enseignant,
+                            controller: controler,
+                            icon: const Icon(Icons.password)),
                         Center(
                           child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.8,
@@ -135,6 +142,7 @@ class _ProfileProfState extends State<ProfileProf> {
 class DesignWidget extends StatefulWidget {
   DesignWidget(
       {Key? key,
+      required this.enseignants,
       required this.text,
       required this.information,
       required this.controller,
@@ -144,6 +152,7 @@ class DesignWidget extends StatefulWidget {
   final String text;
   String information;
   final Icon icon;
+  Enseignant enseignants;
   final TextEditingController controller;
   @override
   State<DesignWidget> createState() {
@@ -195,7 +204,7 @@ class _DesignWidget extends State<DesignWidget> {
                   onPressed: () {
                     showCupertinoModalPopup(
                         context: context,
-                        builder: (_) {
+                        builder: (context) {
                           return AlertDialog(
                             content: SingleChildScrollView(
                                 child: Column(
@@ -238,8 +247,16 @@ class _DesignWidget extends State<DesignWidget> {
                                                       duration: const Duration(
                                                           milliseconds: 2500));
                                                 } else {
-                                                  widget.information =
-                                                      widget.controller.text;
+                                                  if (text == "Nom") {
+                                                    //widget.enseignants.nomEns =
+                                                    //  widget.controller.text;
+                                                  }
+                                                  setState(() {
+                                                    widget.information =
+                                                        widget.controller.text;
+                                                  });
+                                                  widget.controller.clear();
+                                                  Navigator.of(context).pop();
                                                   //mise a jour dans la base de données
                                                 }
                                               },

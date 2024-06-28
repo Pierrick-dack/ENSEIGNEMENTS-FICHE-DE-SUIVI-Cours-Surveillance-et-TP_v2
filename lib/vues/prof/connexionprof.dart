@@ -155,10 +155,15 @@ class _ConnexionProf extends State<ConnexionProf> {
                                   ),
                                 ),
                               );
+                              EasyLoading.showSuccess("Connexion reussie",
+                                  duration: const Duration(milliseconds: 2500));
+                              print('je change de page');
+                            } else {
+                              print('execution');
+                              EasyLoading.showError("Identifiants incorrect",
+                                  duration: const Duration(milliseconds: 2500));
                             }
                           }
-                          EasyLoading.showError("Identifiants incorrect",
-                              duration: const Duration(milliseconds: 2500));
                         }
                       }
                     },

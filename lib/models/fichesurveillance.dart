@@ -6,7 +6,7 @@ class FicheSurveillance {
   final String session;
   final String codeCours;
   final String intituleUE;
-  final bool confirmation;
+  final int confirmation;
 
   FicheSurveillance(
       {this.id,

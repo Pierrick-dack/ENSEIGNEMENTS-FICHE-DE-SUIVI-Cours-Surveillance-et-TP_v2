@@ -202,7 +202,7 @@ class _DesignWidget extends State<DesignWidget> {
                   onPressed: () {
                     showCupertinoModalPopup(
                         context: context,
-                        builder: (_) {
+                        builder: (context) {
                           return AlertDialog(
                             content: SingleChildScrollView(
                                 child: Column(

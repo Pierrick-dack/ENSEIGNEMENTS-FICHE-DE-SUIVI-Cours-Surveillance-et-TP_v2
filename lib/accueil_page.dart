@@ -16,7 +16,6 @@ class AccueilPage extends StatefulWidget {
 class _AccueilPage extends State<AccueilPage> {
   @override
   Widget build(BuildContext context) {
-    LocalDataBase(context).updateBd();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(

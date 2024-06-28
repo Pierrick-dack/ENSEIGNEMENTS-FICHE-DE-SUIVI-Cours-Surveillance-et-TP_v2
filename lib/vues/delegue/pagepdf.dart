@@ -52,7 +52,12 @@ class _PagePdf extends State<PagePdf> {
                 EasyLoading.init();
                 final directory = await getExternalStorageDirectory();
                 const dossierPers = 'ICT FOLLOW UP/fiches de suivi';
+
                 final cherminPers = '${directory?.path}/$dossierPers';
+                if (!Directory("${directory?.path}/ICT FOLLOW UP")
+                    .existsSync()) {
+                  Directory("${directory?.path}/ICT FOLLOW UP").createSync();
+                }
                 if (!Directory(cherminPers).existsSync()) {
                   Directory(cherminPers).createSync();
                 }

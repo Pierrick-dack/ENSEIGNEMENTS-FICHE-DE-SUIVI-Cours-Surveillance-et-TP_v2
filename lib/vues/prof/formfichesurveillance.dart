@@ -204,7 +204,7 @@ class _FormFicheSurveillance extends State<FormFicheSurveillance> {
                             session: sesion,
                             codeCours: codeCours,
                             intituleUE: intituleUe,
-                            confirmation: true);
+                            confirmation: 1);
 
                         Navigator.of(context).push(
                           MaterialPageRoute(

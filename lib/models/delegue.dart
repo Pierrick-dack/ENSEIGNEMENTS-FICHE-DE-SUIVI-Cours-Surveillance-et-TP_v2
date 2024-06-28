@@ -6,7 +6,6 @@ class Delegue {
   final String mdpDel;
   final String matDel;
   final String nivDel;
-  final String filDel;
 
   Delegue({
     this.id,
@@ -14,7 +13,6 @@ class Delegue {
     required this.mdpDel,
     required this.matDel,
     required this.nivDel,
-    required this.filDel,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,21 +27,21 @@ class Delegue {
 
   factory Delegue.fromMap(Map<String, dynamic> map) {
     return Delegue(
-        id: map['id'],
-        nameDel: map['nameDel'],
-        mdpDel: map['mdpDel'],
-        matDel: map['matDel'],
-        nivDel: map['nivDel'],
-        filDel: map['filDel']);
+      id: map['id'],
+      nameDel: map['nameDel'],
+      mdpDel: map['mdpDel'],
+      matDel: map['matDel'],
+      nivDel: map['nivDel'],
+    );
   }
 
   factory Delegue.fromJson(Map<String, dynamic> json) {
     return Delegue(
-        id: json['id'],
-        nameDel: json['nameDel'],
-        mdpDel: json['mdpDel'],
-        matDel: json['matDel'],
-        nivDel: json['nivDel'],
-        filDel: json['filDel']);
+      id: json['id'],
+      nameDel: json['nameDel'],
+      mdpDel: json['mdpDel'],
+      matDel: json['matDel'],
+      nivDel: json['nivDel'],
+    );
   }
 }

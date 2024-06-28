@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firstapp/localdb.dart';
+import 'package:firstapp/models/delegue.dart';
 import 'package:firstapp/models/enseignant.dart';
 import 'package:firstapp/vues/admin/dashboardadmin.dart';
 import 'package:firstapp/vues/delegue/fiche_suivi.dart';
@@ -15,8 +16,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DashboardDelegue extends StatefulWidget {
-  const DashboardDelegue({super.key});
+  const DashboardDelegue({super.key, required this.delegue});
 
+  final Delegue delegue;
   @override
   State<DashboardDelegue> createState() {
     return _DashboardDelegue();
@@ -25,16 +27,17 @@ class DashboardDelegue extends StatefulWidget {
 
 List<Enseignant> enseignants = [];
 List<String> nomEns = [];
+List<Fiche> pdfname = [];
 
 class _DashboardDelegue extends State<DashboardDelegue> {
-  List<Fiche>? fiches;
   TextEditingController search = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     recup(enseignants, context);
-    print(enseignants);
-    print(enseignants.length);
+    recupFichesNiveau(pdfname, widget.delegue.nivDel, context);
+    print('les fiches du niveau $pdfname');
+
     nomEns.clear();
 
     for (int i = 0; i < enseignants.length; i++) {
@@ -103,6 +106,7 @@ class _DashboardDelegue extends State<DashboardDelegue> {
                                 MaterialPageRoute(
                                   builder: (_) => FicheSuivi(
                                     nomEns: nomEns,
+                                    delegue: widget.delegue,
                                   ),
                                 ),
                               );
@@ -193,64 +197,96 @@ class _DashboardDelegue extends State<DashboardDelegue> {
           decoration:
               const BoxDecoration(color: Color.fromARGB(127, 189, 187, 187)),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              IconButton(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                iconSize: 40,
-                color: const Color.fromARGB(255, 5, 48, 69),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => const DashboardDelegue(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.home),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    iconSize: 40,
+                    color: const Color.fromARGB(255, 5, 48, 69),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => DashboardDelegue(
+                            delegue: widget.delegue,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.home),
+                  ),
+                  Text("DASHBOARD")
+                ],
               ),
-              IconButton(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                iconSize: 40,
-                color: const Color.fromARGB(255, 5, 48, 69),
-                onPressed: () async {
-                  List<Fiche> pdfname = [];
-                  recupAllsuivi(pdfname, context);
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => Fiches(
-                        fiches: pdfname,
-                      ),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.book),
-                style: ButtonStyle(
-                    iconSize: MaterialStateProperty.all(30),
-                    iconColor: MaterialStateProperty.all(Colors.purple)),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    iconSize: 40,
+                    color: const Color.fromARGB(255, 5, 48, 69),
+                    onPressed: () async {
+                      recupFichesNiveau(
+                          pdfname, widget.delegue.nivDel, context);
+                      print("la liste qui part $pdfname");
+                      // ignore: use_build_context_synchronously
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => Fiches(
+                            fiches: pdfname,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.book),
+                    style: ButtonStyle(
+                        iconSize: MaterialStateProperty.all(30),
+                        iconColor: MaterialStateProperty.all(Colors.purple)),
+                  ),
+                  Text("FICHES")
+                ],
               ),
-              IconButton(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                iconSize: 40,
-                color: const Color.fromARGB(255, 5, 48, 69),
-                onPressed: () {},
-                icon: const Icon(Icons.delete),
-                style: ButtonStyle(
-                    iconSize: MaterialStateProperty.all(30),
-                    iconColor: MaterialStateProperty.all(Colors.purple)),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    iconSize: 40,
+                    color: const Color.fromARGB(255, 5, 48, 69),
+                    onPressed: () {},
+                    icon: const Icon(Icons.delete),
+                    style: ButtonStyle(
+                        iconSize: MaterialStateProperty.all(30),
+                        iconColor: MaterialStateProperty.all(Colors.purple)),
+                  ),
+                  Text("CORBEILLE")
+                ],
               ),
-              IconButton(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                iconSize: 40,
-                color: const Color.fromARGB(255, 5, 48, 69),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (_) => const Profile()));
-                },
-                icon: const Icon(Icons.person),
-                style: ButtonStyle(
-                    iconSize: MaterialStateProperty.all(30),
-                    iconColor: MaterialStateProperty.all(Colors.purple)),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  IconButton(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    iconSize: 40,
+                    color: const Color.fromARGB(255, 5, 48, 69),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => Profile(
+                            delegue: widget.delegue,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.person),
+                    style: ButtonStyle(
+                        iconSize: MaterialStateProperty.all(30),
+                        iconColor: MaterialStateProperty.all(Colors.purple)),
+                  ),
+                  Text("PROFIL")
+                ],
               ),
             ],
           ),

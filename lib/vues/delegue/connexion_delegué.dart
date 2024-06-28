@@ -1,3 +1,5 @@
+import 'package:firstapp/models/delegue.dart';
+import 'package:firstapp/vues/admin/dashboardadmin.dart';
 import 'package:firstapp/vues/delegue/dashboardelegue.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -17,9 +19,11 @@ class _ConnexionDelegue extends State<ConnexionDelegue> {
 
   String matricul = "";
   String cod = "";
+  List<Delegue> delegue = [];
 
   @override
   Widget build(BuildContext context) {
+    recupDele(delegue, context);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -121,21 +125,54 @@ class _ConnexionDelegue extends State<ConnexionDelegue> {
                             "remplissez tous les champs s'il vous plait",
                             duration: const Duration(milliseconds: 3000));
                       } else {
-                        matricul = matricule.value.toString();
-                        cod = code.value.toString();
+                        matricul = matricule.text;
+                        cod = code.text;
                         int a = matricule.text.length;
                         if (a != 7) {
                           setState(() {
                             EasyLoading.showError(
-                                "Votre matricule est incorrect",
-                                duration: const Duration(milliseconds: 3000));
+                              "Votre matricule est incorrect",
+                              duration: const Duration(milliseconds: 3000),
+                            );
                           });
                         } else {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const DashboardDelegue(),
-                            ),
-                          );
+                          bool ok = false;
+                          recupDele(delegue, context);
+                          print(delegue.length);
+                          for (int i = 0; i < delegue.length; i++) {
+                            if (matricul == delegue[i].matDel &&
+                                cod == delegue[i].mdpDel) {
+                              ok = true;
+                              EasyLoading.showSuccess(
+                                "Connexion reussi",
+                                duration: const Duration(milliseconds: 2500),
+                              );
+                              Delegue delegueitem = delegue[i];
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) => DashboardDelegue(
+                                    delegue: delegueitem,
+                                  ),
+                                ),
+                              );
+                              EasyLoading.showSuccess(
+                                "Connexion reussi",
+                                duration: const Duration(milliseconds: 2500),
+                              );
+                            } else if (matricul == delegue[i].matDel &&
+                                cod != delegue[i].mdpDel) {
+                              EasyLoading.showInfo(
+                                  "mot de passe non correspondant",
+                                  duration: const Duration(seconds: 3));
+                            }
+                          }
+
+                          if (ok == false) {
+                            EasyLoading.showError(
+                              "Identifiants invalides",
+                              duration: const Duration(seconds: 3),
+                            );
+                          }
                         }
                       }
                     },

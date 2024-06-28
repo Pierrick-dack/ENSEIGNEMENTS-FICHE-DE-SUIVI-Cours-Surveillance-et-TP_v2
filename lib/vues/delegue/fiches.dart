@@ -21,7 +21,6 @@ class Fiches extends StatefulWidget {
 }
 
 class _FichesState extends State<Fiches> {
-  List<Fiche> fiches = [];
   TextEditingController search = TextEditingController();
 
   @override
@@ -40,7 +39,7 @@ class _FichesState extends State<Fiches> {
             IconButton(
               onPressed: () {
                 setState(() {
-                  recupAllsuivi(fiches, context);
+                  repeatWidgetText(widget.fiches.length, fiches);
                 });
               },
               icon: const Icon(Icons.refresh),
@@ -57,7 +56,7 @@ class _FichesState extends State<Fiches> {
           const SizedBox(
             height: 20,
           ),
-          Container(
+          /*Container(
             margin: const EdgeInsets.only(left: 10, right: 10),
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
@@ -82,7 +81,7 @@ class _FichesState extends State<Fiches> {
                 ),
               ),
             ),
-          ),
+          ),*/
           const SizedBox(
             height: 10,
           ),
@@ -111,7 +110,7 @@ class FicheRep extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(10),
           child: Text(
-            "${fiche.date.day}/${fiche.date.month}/${fiche.date.year}",
+            "${fiche.date.day}/${fiche.date.month}",
             style: const TextStyle(fontSize: 20),
           ),
         ),
