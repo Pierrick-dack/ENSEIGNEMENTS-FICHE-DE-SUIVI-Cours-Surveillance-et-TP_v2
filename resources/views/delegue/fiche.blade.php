@@ -407,7 +407,6 @@
                 document.body.removeChild(link);
             }
 
-
             // Écouter le clic sur le bouton "Enregistrer"
             document.getElementById('enregistrerBtn').addEventListener('click', genererPDF);
 

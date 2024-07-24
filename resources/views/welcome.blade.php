@@ -7,6 +7,20 @@
         <link rel="stylesheet" href="fontawesome-free-6.1.1-web/css/all.min.css">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('asset/Images/UY1.png') }}">
         <title>Accueil</title>
+        <style>
+            .download-btn {
+                background-color: #3498db; /* Bleu */
+                color: white; /* Texte blanc */
+                border-radius: 20px; /* Bords arrondis */
+                padding: 10px 20px; /* Padding pour agrandir le bouton */
+                display: inline-block; /* Pour garder le lien inline avec des styles de bloc */
+                text-decoration: none; /* Supprimer le soulignement du lien */
+                transition: background-color 0.3s; /* Transition douce pour le survol */
+            }
+            .download-btn:hover {
+                background-color: #2980b9; /* Un bleu plus foncé au survol */
+            }
+        </style>
     </head>
 
     <body>
@@ -28,6 +42,13 @@
                 Get Started
             </button>
             <p>Choisissez un type de connexion parmi les trois options ci-dessous :</p>
+
+            <div class="download-frame border rounded p-3 mt-3">
+                <a href="{{ asset('apk/app-release.apk') }}" download="MonApp" class="download-btn">
+                    Téléchargez ici la version mobile : <i class="fas fa-download"></i>
+                    <i class="fas fa-angle-double-down ml-2"></i>
+                </a>
+            </div>
         </div>
 
 

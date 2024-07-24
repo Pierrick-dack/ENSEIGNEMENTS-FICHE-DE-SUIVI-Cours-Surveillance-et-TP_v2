@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 17 mai 2024 à 14:01
+-- Généré le : mer. 24 juil. 2024 à 22:22
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -41,7 +41,21 @@ CREATE TABLE `chefs` (
 --
 
 INSERT INTO `chefs` (`id`, `nomCD`, `emailCD`, `mdpCD`, `created_at`, `updated_at`) VALUES
-(1, 'Chef', 'chef@gmail.com', '$2y$12$iLYDodo108GG35ioXqJYU.idviHDcfHuE4reFYfJJHG8huU.lyhaS', '2024-05-17 10:59:25', '2024-05-17 10:59:25');
+(1, 'Chef', 'chef@gmail.com', '$2y$12$0Kpowg9OelbtJ0fFYkikZOsgf8c8Rzyj./Nbb.BmF/qfkYYvOTf1W', '2024-06-03 06:20:54', '2024-06-03 06:20:54');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `classes`
+--
+
+CREATE TABLE `classes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -53,6 +67,8 @@ CREATE TABLE `cours` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `codeUE` varchar(255) NOT NULL,
   `intituleUE` varchar(255) NOT NULL,
+  `niveau_id` bigint(20) UNSIGNED NOT NULL,
+  `semestre_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -61,44 +77,52 @@ CREATE TABLE `cours` (
 -- Déchargement des données de la table `cours`
 --
 
-INSERT INTO `cours` (`id`, `codeUE`, `intituleUE`, `created_at`, `updated_at`) VALUES
-(1, 'ICT101', 'Introduction to Business Information Systems', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(2, 'ICT102', 'Object-Oriented Programming', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(3, 'ICT103', 'Introduction to Programming', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(4, 'ICT104', 'Computer systems', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(5, 'ICT105', 'Introduction to algorithms', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(6, 'ICT106', 'Data Structures and Patterns I', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(7, 'ICT107', 'Mathematics for computer science I', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(8, 'ICT108', 'Creating Web Application', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(9, 'ICT109', 'Discrete Mathematics I', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(10, 'ICT110', 'Database Analysis and Design', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(11, 'ICT111', 'Data Coding', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(12, 'ICT201', 'Introduction to Software Engineering', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(13, 'ICT202', 'Software Development for Mobile devices', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(14, 'ICT203', 'Database Systems', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(15, 'ICT204', 'Introduction to Operating System', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(16, 'ICT205', 'Introduction to Programming in .NET', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(17, 'ICT206', 'Introduction to Computer Network', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(18, 'ICT207', 'Software Development in Java I', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(19, 'ICT208', 'Computer Architecture', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(20, 'ICT214', 'Introduction to Cryptography', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(21, 'ICT216', 'Network Administration', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(22, 'ICT218', 'Advanced Mobile Application Development', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(23, 'ICT301', 'Software Architectures and Design', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(24, 'ICT302', 'Introduction to Artificial Intelligence', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(25, 'ICT303', 'Data Communication and Security', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(26, 'ICT304', 'Software Testing and Deployment', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(27, 'ICT305', 'Web Application Development', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(28, 'ICT306', 'Business Intelligence', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(29, 'ICT307', 'Computer Systems Engineering', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(30, 'ICT308', 'Software Development in Java II', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(31, 'ICT310', 'Professional Issues in IT', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(32, 'ICT313', 'Cyber and Internet Security', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(33, 'ICT314', 'Computer Forensics and Incident Response', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(34, 'ICT315', 'Network Application Development', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(35, 'ICT316', 'Digital communication', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(36, 'ICT317', 'Information system', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(37, 'ICT318', 'Java Enterprise Edition', '2024-05-17 10:59:24', '2024-05-17 10:59:24');
+INSERT INTO `cours` (`id`, `codeUE`, `intituleUE`, `niveau_id`, `semestre_id`, `created_at`, `updated_at`) VALUES
+(1, 'ICT101', 'Introduction to Business Information Systems', 1, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(2, 'ICT102', 'Object-Oriented Programming', 1, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(3, 'ICT103', 'Introduction to Programming', 1, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(4, 'ICT104', 'Computer systems', 1, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(5, 'ICT105', 'Introduction to algorithms', 1, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(6, 'ICT106', 'Data Structures and Patterns I', 1, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(7, 'ICT107', 'Mathematics for computer science I', 1, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(8, 'ICT108', 'Creating Web Application', 1, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(9, 'ICT109', 'Discrete Mathematics I', 1, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(10, 'ICT110', 'Database Analysis and Design', 1, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(11, 'ICT111', 'Data Coding', 1, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(12, 'ENG104', 'English I', 1, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(13, 'FRA104', 'Français I', 1, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(14, 'ICT201', 'Introduction to Software Engineering', 2, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(15, 'ICT202', 'Software Development for Mobile devices', 2, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(16, 'ICT203', 'Database Systems', 2, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(17, 'ICT204', 'Introduction to Operating System', 2, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(18, 'ICT205', 'Introduction to Programming in .NET', 2, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(19, 'ICT206', 'Introduction to Computer Network', 2, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(20, 'ICT207', 'Software Development in Java I', 2, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(21, 'ICT208', 'Computer Architecture', 2, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(22, 'ICT213', 'Introduction to Computer Security and Risk Management', 2, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(23, 'ICT214', 'Introduction to Cryptography', 2, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(24, 'ICT215', 'Introduction to Computer Networking', 2, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(25, 'ICT216', 'Network Administration', 2, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(26, 'ICT217', 'Software Engineering', 2, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(27, 'ICT218', 'Advanced Mobile Application Development', 2, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(28, 'ENG203', 'English II', 2, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(29, 'FRA203', 'Français II', 2, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(30, 'ICT300', 'Internship', 3, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(31, 'ICT301', 'Software Architectures and Design', 3, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(32, 'ICT302', 'Introduction to Artificial Intelligence', 3, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(33, 'ICT303', 'Data Communication and Security', 3, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(34, 'ICT304', 'Software Testing and Deployment', 3, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(35, 'ICT305', 'Web Application Development', 3, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(36, 'ICT306', 'Business Intelligence', 3, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(37, 'ICT307', 'Computer Systems Engineering', 3, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(38, 'ICT308', 'Software Development in Java II', 3, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(39, 'ICT310', 'Professional Issues in IT', 3, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(40, 'ICT313', 'Cyber and Internet Security', 3, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(41, 'ICT314', 'Computer Forensics and Incident Response', 3, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(42, 'ICT315', 'Network Application Development', 3, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(43, 'ICT316', 'Digital communication', 3, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(44, 'ICT317', 'Information system', 3, 1, '2024-06-03 06:21:04', '2024-06-03 06:21:04'),
+(45, 'ICT318', 'Java Enterprise Edition', 3, 2, '2024-06-03 06:21:04', '2024-06-03 06:21:04');
 
 -- --------------------------------------------------------
 
@@ -109,7 +133,9 @@ INSERT INTO `cours` (`id`, `codeUE`, `intituleUE`, `created_at`, `updated_at`) V
 CREATE TABLE `delegues` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `nameDel` varchar(255) NOT NULL,
+  `emailDel` varchar(255) NOT NULL,
   `matDel` varchar(255) NOT NULL,
+  `nivDel` varchar(255) NOT NULL,
   `mdpDel` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -119,8 +145,8 @@ CREATE TABLE `delegues` (
 -- Déchargement des données de la table `delegues`
 --
 
-INSERT INTO `delegues` (`id`, `nameDel`, `matDel`, `mdpDel`, `created_at`, `updated_at`) VALUES
-(1, 'Pierrick', '21Q2493', '$2y$12$Z.oEY4i.IWg5l3v8Cmj57uanwuDrAdSCD9u9yKOVWFfRFQ3uiBe7K', '2024-05-17 10:59:24', '2024-05-17 10:59:24');
+INSERT INTO `delegues` (`id`, `nameDel`, `emailDel`, `matDel`, `nivDel`, `mdpDel`, `created_at`, `updated_at`) VALUES
+(1, 'Pierrick', 'pierrick@gmail.com', '21Q2493', 'L3', '$2y$12$IqLhbnIKusWbVvCUKeArqO12uyasdnNBflbZYx82YJdi7iy3xLHOG', '2024-06-20 05:20:59', '2024-06-20 05:20:59');
 
 -- --------------------------------------------------------
 
@@ -142,7 +168,9 @@ CREATE TABLE `enseignants` (
 --
 
 INSERT INTO `enseignants` (`id`, `nomEns`, `emailEns`, `mdpEns`, `created_at`, `updated_at`) VALUES
-(1, 'test', 'test@gmail.com', '$2y$12$xKAbu0.TC.oa9/VBYNRySuem8NMKWOPti04qNGHNVF0dcXL1oOoD6', '2024-05-17 10:59:24', '2024-05-17 10:59:24');
+(1, 'test', 'test@gmail.com', '$2y$12$tFgznl8oqNnGYoD/OytvNeZWxYzxzTakAb54joevJVp4bcMlE.ciK', '2024-06-03 06:21:19', '2024-06-03 06:21:19'),
+(2, 'Dr Nzekon', 'armelnzekon@gmail.com', '$2y$12$yutqFoDxvcVNvTsqAGUfpeY3JUMlruEUbVBdIiVpAa2A5VYwfXICu', '2024-06-27 20:22:39', '2024-06-27 20:22:39'),
+(3, 'Dr Messi', 'messi@gmail.com', '$2y$12$V8BxA8NPbD6uhk6i5KqXWuo1rJyX3uuI1jVEoTTNRMcVizdw2uyum', '2024-06-28 13:08:45', '2024-06-28 13:08:45');
 
 -- --------------------------------------------------------
 
@@ -187,6 +215,15 @@ CREATE TABLE `fiches` (
   `confidentialite` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Déchargement des données de la table `fiches`
+--
+
+INSERT INTO `fiches` (`id`, `semestre`, `date`, `codeCours`, `enseignant`, `heureDebut`, `heureFin`, `totalHeures`, `salle`, `typeSeance`, `titreSeance`, `niveau`, `contenu`, `signatureDelegue`, `signatureProf`, `created_at`, `updated_at`, `confidentialite`) VALUES
+(1, 1, '2024-06-03', 'ICT101', 'test', '14:34:00', '16:34:00', '', 'R101', 'CM', 'Test', '1', 'Test d\'intégrité', NULL, NULL, '2024-06-03 12:34:43', '2024-06-03 12:34:43', 1),
+(2, 1, '2024-06-03', 'ICT201', 'test', '14:35:00', '20:35:00', '', 'R101', 'CM', 'Test', '2', 'test', NULL, NULL, '2024-06-03 12:35:43', '2024-06-03 12:35:43', 1),
+(3, 2, '2024-07-19', 'ICT300', 'Dr Messi', '08:32:00', '11:32:00', '', 'S107', 'CM', 'Test', '3', '- Vérification des fonctionnalités de l\'application\r\n- Test et débogage\r\n- Analyse\r\n- Observations', NULL, NULL, '2024-07-19 20:33:33', '2024-07-19 20:33:33', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -205,6 +242,15 @@ CREATE TABLE `fiche_surveillances` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `fiche_surveillances`
+--
+
+INSERT INTO `fiche_surveillances` (`id`, `chefdesalle`, `salle`, `date`, `session`, `codeCours`, `intituleUE`, `presence_confirmee`, `created_at`, `updated_at`) VALUES
+(1, 'Moi', 'zzzzzzz', '2024-06-08', 'aaaaaa', 'ICT300', 'Internship', 0, '2024-06-08 12:09:52', '2024-06-08 12:09:52'),
+(2, 'Dr Nzekon', 'S107', '2024-06-28', '2024', 'ICT101', 'Introduction to Business Information Systems', 0, '2024-06-28 13:06:12', '2024-06-28 13:06:12'),
+(3, 'Dr Nzekon', 'S107', '2024-07-20', '2024', 'ICT310', 'Professional Issues in IT', 0, '2024-07-20 04:14:00', '2024-07-20 04:14:00');
 
 -- --------------------------------------------------------
 
@@ -227,6 +273,13 @@ CREATE TABLE `fiche_travaux_pratiques` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `fiche_travaux_pratiques`
+--
+
+INSERT INTO `fiche_travaux_pratiques` (`id`, `titreSeanceTP`, `enseignant`, `codeCours`, `heureDebut`, `heureFin`, `objectifsTP`, `materielNecessaire`, `procedureTP`, `observations`, `resultatsAttendus`, `created_at`, `updated_at`) VALUES
+(1, 'Analyse', 'Dr Nzekon', 'ICT300', '10:35:00', '15:36:00', '- Test', '- Ordinateur\r\n- Connexion internet', '- Cloner le projet sur GitHub', '- Parfaite compréhension des étudiants', '- Démarrage de l\'application', '2024-07-19 20:39:07', '2024-07-19 20:39:07');
 
 -- --------------------------------------------------------
 
@@ -259,23 +312,22 @@ CREATE TABLE `migrations` (
 --
 
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
-(23, '2023_11_16_103149_create_niveaux_table', 1),
-(217, '2014_10_12_000000_create_users_table', 2),
-(218, '2014_10_12_100000_create_password_reset_tokens_table', 2),
-(219, '2019_08_19_000000_create_failed_jobs_table', 2),
-(220, '2019_12_14_000001_create_personal_access_tokens_table', 2),
-(221, '2023_11_16_102557_create_enseignants_table', 2),
-(222, '2023_11_16_103040_create_delegues_table', 2),
-(223, '2023_11_16_103129_create_fiches_table', 2),
-(224, '2023_11_16_103139_create_filieres_table', 2),
-(225, '2023_11_16_103156_create_cours_table', 2),
-(226, '2023_11_16_113916_create_chefs_table', 2),
-(227, '2023_12_07_091738_add_confidentialite_to_fiches_table', 2),
-(228, '2024_02_08_192945_notifications', 2),
-(229, '2024_04_22_174758_create_niveaux_etude_table', 2),
-(230, '2024_04_25_074617_create_fiche_surveillances_table', 2),
-(231, '2024_04_25_151335_create_surveillants_table', 2),
-(232, '2024_05_17_095432_create_fiche_travaux_pratiques_table', 2);
+(1, '2014_10_12_000000_create_users_table', 1),
+(2, '2014_10_12_100000_create_password_reset_tokens_table', 1),
+(3, '2019_08_19_000000_create_failed_jobs_table', 1),
+(4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
+(5, '2023_11_16_102557_create_enseignants_table', 1),
+(7, '2023_11_16_103129_create_fiches_table', 1),
+(8, '2023_11_16_103139_create_filieres_table', 1),
+(9, '2023_11_16_113916_create_chefs_table', 2),
+(10, '2024_06_03_045326_create_semestres_table', 3),
+(11, '2024_04_22_174758_create_niveaux_etude_table', 4),
+(12, '2024_04_25_074617_create_fiche_surveillances_table', 5),
+(13, '2024_04_25_151335_create_surveillants_table', 6),
+(14, '2024_05_17_095432_create_fiche_travaux_pratiques_table', 7),
+(15, '2023_12_07_091738_add_confidentialite_to_fiches_table', 8),
+(16, '2024_06_08_112631_create_classes_table', 9),
+(17, '2023_11_16_103040_create_delegues_table', 10);
 
 -- --------------------------------------------------------
 
@@ -296,27 +348,11 @@ CREATE TABLE `niveaux_etude` (
 --
 
 INSERT INTO `niveaux_etude` (`id`, `codeNiveau`, `intituleNiveau`, `created_at`, `updated_at`) VALUES
-(1, 'L1', 'Licence 1', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(2, 'L2', 'Licence 2', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(3, 'L3', 'Licence 3', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(4, 'M1', 'Master 1', '2024-05-17 10:59:24', '2024-05-17 10:59:24'),
-(5, 'M2', 'Master 2', '2024-05-17 10:59:24', '2024-05-17 10:59:24');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `notifications`
---
-
-CREATE TABLE `notifications` (
-  `id` varchar(255) NOT NULL,
-  `type` varchar(255) NOT NULL,
-  `data` varchar(255) NOT NULL,
-  `read_at` varchar(255) DEFAULT NULL,
-  `notifiable` varchar(255) NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+(1, 'L1', 'Licence 1', '2024-06-03 06:20:42', '2024-06-03 06:20:42'),
+(2, 'L2', 'Licence 2', '2024-06-03 06:20:42', '2024-06-03 06:20:42'),
+(3, 'L3', 'Licence 3', '2024-06-03 06:20:42', '2024-06-03 06:20:42'),
+(4, 'M1', 'Master 1', '2024-06-03 06:20:42', '2024-06-03 06:20:42'),
+(5, 'M2', 'Master 2', '2024-06-03 06:20:42', '2024-06-03 06:20:42');
 
 -- --------------------------------------------------------
 
@@ -352,6 +388,27 @@ CREATE TABLE `personal_access_tokens` (
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `semestres`
+--
+
+CREATE TABLE `semestres` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `numSemestre` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `semestres`
+--
+
+INSERT INTO `semestres` (`id`, `numSemestre`, `created_at`, `updated_at`) VALUES
+(1, '1', '2024-06-03 06:21:30', '2024-06-03 06:21:30'),
+(2, '2', '2024-06-03 06:21:30', '2024-06-03 06:21:30');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `surveillants`
 --
 
@@ -362,6 +419,19 @@ CREATE TABLE `surveillants` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `surveillants`
+--
+
+INSERT INTO `surveillants` (`id`, `fiche_surveillance_id`, `nom`, `created_at`, `updated_at`) VALUES
+(1, 1, 'sssssssss', '2024-06-08 12:09:52', '2024-06-08 12:09:52'),
+(2, 2, 'MR Pierrick', '2024-06-28 13:06:12', '2024-06-28 13:06:12'),
+(3, 2, 'Mr Kamfouo', '2024-06-28 13:06:12', '2024-06-28 13:06:12'),
+(4, 3, 'Mr Jules', '2024-07-20 04:14:00', '2024-07-20 04:14:00'),
+(5, 3, 'John', '2024-07-20 04:14:00', '2024-07-20 04:14:00'),
+(6, 3, 'Abena', '2024-07-20 04:14:00', '2024-07-20 04:14:00'),
+(7, 3, 'Marc', '2024-07-20 04:14:00', '2024-07-20 04:14:00');
 
 -- --------------------------------------------------------
 
@@ -388,6 +458,12 @@ CREATE TABLE `users` (
 -- Index pour la table `chefs`
 --
 ALTER TABLE `chefs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `classes`
+--
+ALTER TABLE `classes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -452,12 +528,6 @@ ALTER TABLE `niveaux_etude`
   ADD PRIMARY KEY (`id`);
 
 --
--- Index pour la table `notifications`
---
-ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Index pour la table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
@@ -470,6 +540,12 @@ ALTER TABLE `personal_access_tokens`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
+
+--
+-- Index pour la table `semestres`
+--
+ALTER TABLE `semestres`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Index pour la table `surveillants`
@@ -496,10 +572,16 @@ ALTER TABLE `chefs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT pour la table `classes`
+--
+ALTER TABLE `classes`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT pour la table `cours`
 --
 ALTER TABLE `cours`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT pour la table `delegues`
@@ -511,7 +593,7 @@ ALTER TABLE `delegues`
 -- AUTO_INCREMENT pour la table `enseignants`
 --
 ALTER TABLE `enseignants`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `failed_jobs`
@@ -523,19 +605,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT pour la table `fiches`
 --
 ALTER TABLE `fiches`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `fiche_surveillances`
 --
 ALTER TABLE `fiche_surveillances`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `fiche_travaux_pratiques`
 --
 ALTER TABLE `fiche_travaux_pratiques`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `filieres`
@@ -547,7 +629,7 @@ ALTER TABLE `filieres`
 -- AUTO_INCREMENT pour la table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT pour la table `niveaux_etude`
@@ -562,10 +644,16 @@ ALTER TABLE `personal_access_tokens`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT pour la table `semestres`
+--
+ALTER TABLE `semestres`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT pour la table `surveillants`
 --
 ALTER TABLE `surveillants`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT pour la table `users`

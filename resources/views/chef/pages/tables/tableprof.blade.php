@@ -39,7 +39,7 @@
                                         <tr>
                                             <th scope="col">N°</th>
                                             <th scope="col">Noms</th>
-                                            <th scope="col">Matricules</th>
+                                            <th scope="col">Email</th>
                                             <th scope="col">Date de création</th>
                                             <th scope="col">Modifier</th>
                                             <th scope="col">Supprimer</th>
